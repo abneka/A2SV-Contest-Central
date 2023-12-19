@@ -1,5 +1,6 @@
 ﻿using Application.Contracts.Persistence.Common;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repositories.Common
 {
@@ -40,9 +41,9 @@ namespace Persistence.Repositories.Common
             return await _dbContext.Set<T>().ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(int Id)
+        public async Task<T?> GetByIdAsync(int id)
         {
-            var item = await _dbContext.Set<T>().FindAsync(Id);
+            var item = await _dbContext.Set<T>().FindAsync(id);
             return item;
         }
 
