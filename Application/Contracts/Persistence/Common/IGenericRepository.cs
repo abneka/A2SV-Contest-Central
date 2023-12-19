@@ -8,7 +8,7 @@ public interface IGenericRepository<T> where T : class
     public Task<IReadOnlyList<T>> GetAllAsync();
 
     //get by id
-    public Task<T> GetByIdAsync(int id);
+    public Task<T?> GetByIdAsync(int id);
 
     //create new
     public Task<T> CreateAsync(T entity);
