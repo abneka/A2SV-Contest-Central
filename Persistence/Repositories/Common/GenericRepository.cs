@@ -21,7 +21,7 @@ namespace Persistence.Repositories.Common
             return item.Entity;
         }
 
-        public async Task<Unit> DeleteAsync(int Id)
+        public async Task<Unit> DeleteAsync(Guid Id)
         {
             var item = await GetByIdAsync(Id);
             _dbContext.Set<T>().Remove(item);
@@ -29,7 +29,7 @@ namespace Persistence.Repositories.Common
             return Unit.Value;
         }
 
-        public async Task<bool> Exists(int id)
+        public async Task<bool> Exists(Guid id)
         {
             var item = await _dbContext.Set<T>().FindAsync(id);
             
@@ -41,13 +41,13 @@ namespace Persistence.Repositories.Common
             return await _dbContext.Set<T>().ToListAsync();
         }
 
-        public async Task<T?> GetByIdAsync(int id)
+        public async Task<T?> GetByIdAsync(Guid id)
         {
             var item = await _dbContext.Set<T>().FindAsync(id);
             return item;
         }
 
-        public async Task<Unit> UpdateAsync(int id, T entity)
+        public async Task<Unit> UpdateAsync(Guid id, T entity)
         {
             var item = await GetByIdAsync(id);
             // _dbContext.Entry(item).State = EntityState.Modified;
