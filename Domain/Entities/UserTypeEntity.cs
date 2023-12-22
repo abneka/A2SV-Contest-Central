@@ -6,5 +6,6 @@ namespace Domain.Entities
     {
         public string Name { get; set; } = string.Empty;
         public int Priority { get; set; }
+        public List<UserEntity> Users { get; set; } = new List<UserEntity>();
     }
 }

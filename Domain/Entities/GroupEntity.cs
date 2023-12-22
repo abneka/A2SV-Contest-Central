@@ -9,4 +9,5 @@ public class GroupEntity : BaseDomainEntity
     public string Abbreviation { get; set; } = string.Empty;
     public Guid LocationId { get; set; }
     public LocationEntity Location { get; set; } = null!;
+    public List<ContestGroupEntity> Contests { get; set; } = new List<ContestGroupEntity>();
 }
