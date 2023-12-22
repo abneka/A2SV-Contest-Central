@@ -13,4 +13,6 @@ public class UserEntity : BaseDomainEntity
     public string Password { get; set; } = null!; 
     public string? Token { get; set; } = "";
     public bool IsVerified { get; set; } = false;
+    public string? ConfirmationCode { get; set; }
+    public DateTime? ConfirmationCodeExpiration { get; set; }
 }

@@ -32,5 +32,14 @@
       <Folder Include="Features\Group\Queries\" />
       <Folder Include="Features\Location\" />
     </ItemGroup>
+  
+    <ItemGroup>
+      <Compile Remove="DTOs\ContestGroup\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="DTOs\ContestGroup\**" />
+    </ItemGroup>
+
 
 </Project>
