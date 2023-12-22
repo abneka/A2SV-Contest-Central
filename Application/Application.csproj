@@ -25,4 +25,12 @@
       <ProjectReference Include="..\Domain\Domain.csproj" />
     </ItemGroup>
 
+
+
+    <ItemGroup>
+      <Folder Include="Features\Group\Command\" />
+      <Folder Include="Features\Group\Queries\" />
+      <Folder Include="Features\Location\" />
+    </ItemGroup>
+
 </Project>
