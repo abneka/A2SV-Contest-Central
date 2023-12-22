@@ -1,9 +1,10 @@
 ﻿using Application.DTOs.Common;
+using Application.DTOs.Question;
 using Application.DTOs.User;
 
 namespace Application.DTOs.QuestionResult;
 
-public class UserQuestionResultDto : BaseDto
+public class UserQuestionResultResponseDto : BaseDto
 {
     public double Points { get; set; }
     public int RejectedAttemptCount { get; set; }
