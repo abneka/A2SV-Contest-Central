@@ -28,11 +28,14 @@
 
 
     <ItemGroup>
-      <Folder Include="Features\Group\Commands\CreateGroup\" />
       <Folder Include="Features\Group\Commands\UpdateGroup\" />
       <Folder Include="Features\Group\Queries\GetAllGroups\" />
       <Folder Include="Features\Group\Queries\GetOneGroup\" />
-      <Folder Include="Features\Location\" />
+      <Folder Include="Features\Location\Commands\CreateLocation\" />
+      <Folder Include="Features\Location\Commands\UpdateLocation\" />
+      <Folder Include="Features\Location\Queries\GetAllLocations\" />
+      <Folder Include="Features\Location\Queries\GetLocationById\" />
+      <Folder Include="Features\Location\Queries\GetLocationByName\" />
     </ItemGroup>
   
     <ItemGroup>
