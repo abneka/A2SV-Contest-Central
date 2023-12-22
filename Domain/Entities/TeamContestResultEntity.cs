@@ -2,9 +2,9 @@
 
 namespace Domain.Entities;
 
-public class UserContestResultEntity : BaseDomainEntity
+public class TeamContestResultEntity : BaseDomainEntity
 {
-    public Guid UserId { get; set; }
+    public Guid TeamId { get; set; }
     public Guid ContestId { get; set; }
     public float points { get; set; }
     public int rank { get; set; }
@@ -12,6 +12,6 @@ public class UserContestResultEntity : BaseDomainEntity
     public int successfulHackCount { get; set; }
     public int unsuccessfulHackCount { get; set; }
     public bool isVirtual { get; set; }
-    public UserEntity User { get; set; } = null!;
-    public ContestEntity Contest { get; set; } = null!;
+    public TeamEntity? Team { get; set; }
+    public ContestEntity? Contest { get; set; }
 }
