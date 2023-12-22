@@ -19,4 +19,10 @@
         <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.10" />
     </ItemGroup>
 
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+    </ItemGroup>
+
 </Project>
