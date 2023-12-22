@@ -2,7 +2,7 @@
 
 namespace Domain.Entities;
 
-public class QuestionsEntity : BaseDomainEntity
+public class QuestionEntity : BaseDomainEntity
 {
    
     public Guid ContestId { get; set; }
