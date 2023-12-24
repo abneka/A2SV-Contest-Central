@@ -1,4 +1,6 @@
 ﻿using Application.DTOs.Common;
+using Application.DTOs.QuestionResult;
+using Application.DTOs.TeamQuestionResult;
 
 namespace Application.DTOs.Question;
 

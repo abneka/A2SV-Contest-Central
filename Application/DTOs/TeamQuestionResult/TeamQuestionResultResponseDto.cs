@@ -1,8 +1,9 @@
-﻿using Domain.Common;
+﻿using Application.DTOs.Question;
+using Application.DTOs.Team;
 
-namespace Domain.Entities;
+namespace Application.DTOs.TeamQuestionResult;
 
-public class TeamQuestionResultEntity : BaseDomainEntity
+public class TeamQuestionResultResponseDto
 {
     public float Points { get; set; }
     public int RejectAttemptCount { get; set; }
@@ -10,8 +11,8 @@ public class TeamQuestionResultEntity : BaseDomainEntity
     public bool IsVirtual { get; set; }
     
     public Guid TeamId { get; set; }
-    public TeamEntity Team { get; set; } = null!;
+    public TeamReponseDto Team { get; set; } = null!;
     
     public Guid QuestionId { get; set; }
-    public QuestionEntity Question { get; set; } = null!;
+    public QuestionResponseDto Question { get; set; } = null!;
 }
