@@ -19,4 +19,27 @@
         <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.10" />
     </ItemGroup>
 
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <Folder Include="Features\Location\" />
+      <Folder Include="Features\Question\Commands\Update\" />
+      <Folder Include="Features\Question\Queries\" />
+    </ItemGroup>
+  
+    <ItemGroup>
+      <Compile Remove="DTOs\ContestGroup\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="DTOs\ContestGroup\**" />
+    </ItemGroup>
+
+
 </Project>
