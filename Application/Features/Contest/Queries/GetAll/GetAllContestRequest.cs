@@ -1,7 +1,7 @@
-using MediatR;
 using Application.DTOs.Contest;
+using MediatR;
 
-namespace Application.Features.Contest.Queries.GetAllContests;
+namespace Application.Features.Contest.Queries.GetAll;
 
 public class GetAllContestsRequest : IRequest<IReadOnlyList<ContestResponseDto>>
 {

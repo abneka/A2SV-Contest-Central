@@ -6,5 +6,5 @@ namespace Application.DTOs.TeamContestResult;
 public class GetContestResultByTeamResponseDto : ContestResultDto
 {
     public Guid TeamId { get; set; }
-    public TeamReponseDto Team { get; set; } = null!;
+    public TeamResponseDto Team { get; set; } = null!;
 }
