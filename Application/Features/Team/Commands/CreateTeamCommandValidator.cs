@@ -1,6 +1,11 @@
-﻿namespace Application.Features.Team.Commands;
+﻿using FluentValidation;
 
-public class CreateTeamCommandValidator
+namespace Application.Features.Team.Commands;
+
+public class CreateTeamCommandValidator : AbstractValidator<CreateTeamCommand>
 {
-    
+    public CreateTeamCommandValidator()
+    {
+        
+    }
 }

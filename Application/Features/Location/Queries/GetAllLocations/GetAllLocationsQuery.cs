@@ -1,6 +1,9 @@
-﻿namespace Application.Features.Location.Queries.GetAllLocations;
+﻿using Application.DTOs.Location;
+using MediatR;
 
-public class GetAllLocationsQuery
+namespace Application.Features.Location.Queries.GetAllLocations;
+
+public class GetAllLocationsQuery : IRequest<List<LocationResponseDto>>
 {
     
 }

@@ -1,9 +1,10 @@
 ﻿using Application.DTOs.Group;
 using MediatR;
 
-namespace Application.Features.Group.Commands.CreateGroup;
+namespace Application.Features.Group.Commands.UpdateGroup;
 
-public class CreateGroupCommand : IRequest<GroupResponseDto>
+public class UpdateGroupCommand : IRequest<GroupResponseDto>
 {
-    public GroupRequestDto GroupRequestDto { get; set; } = null!;
+    public GroupDto GroupDto { get; set; } = null!;
+    public Guid Id { get; set; }
 }

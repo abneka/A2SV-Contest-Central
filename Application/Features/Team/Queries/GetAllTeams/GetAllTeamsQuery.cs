@@ -1,6 +1,9 @@
-﻿namespace Application.Features.Team.Queries.GetAllTeams;
+﻿using Application.DTOs.Team;
+using MediatR;
 
-public class GetAllTeamsQuery
-{
+namespace Application.Features.Team.Queries.GetAllTeams;
+
+public class GetAllTeamsQuery : IRequest<List<TeamResponseDto>>
+{ 
     
 }

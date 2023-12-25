@@ -5,5 +5,5 @@ namespace Application.Features.Group.Commands.CreateGroup;
 
 public class CreateGroupCommand : IRequest<GroupResponseDto>
 {
-    public GroupRequestDto GroupRequestDto { get; set; } = null!;
+    public GroupDto GroupDto { get; set; } = null!;
 }

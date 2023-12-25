@@ -1,5 +1,6 @@
 ﻿using Application.Contracts.Persistence;
 using Application.DTOs.Group;
+using Application.Exceptions;
 using Application.Features.Group.Commands.CreateGroup;
 using AutoMapper;
 using Domain.Entities;
@@ -26,9 +27,11 @@ public class UpdateGroupCommandHandler : IRequestHandler<UpdateGroupCommand, Gro
         
         if (validationResult.Errors.Count > 0)
             throw new ValidationException(validationResult.Errors);
-        
-        var group = _mapper.Map<GroupEntity>(request.GroupDto);
-        var result = await _unitOfWork.A2SVGroupRepository.UpdateAsync(group.Id, group);
+        var toBeUpdatedGroup = await _unitOfWork.A2SVGroupRepository.GetByIdAsync(request.Id);
+        if (toBeUpdatedGroup == null)
+            throw new NotFoundException(nameof(toBeUpdatedGroup), request.Id);
+        var group = _mapper.Map(request.GroupDto, toBeUpdatedGroup);
+        var result = await _unitOfWork.A2SVGroupRepository.UpdateAsync(toBeUpdatedGroup.Id, group);
 
         return _mapper.Map<GroupResponseDto>(result);
     }

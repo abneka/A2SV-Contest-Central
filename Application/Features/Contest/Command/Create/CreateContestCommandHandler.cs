@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Contracts.Persistence;
 using Application.DTOs.Contest;
 using Application.Exceptions;
+using Application.Features.Contest.Command.Create;
 using AutoMapper;
 using Domain.Entities;
 using FluentValidation;
@@ -34,6 +35,9 @@ public class CreateContestCommandHandler : IRequestHandler<CreateContestCommand,
             throw new ValidationException(validationResult.Errors);
         }
 
+        // extract questions
+        // user transaction to make sure all questions and the contest are created
+        // we need another handler for fetching contest standing using the api  
         var new_contest = _mapper.Map<ContestEntity>(command.NewContest);
         // contest.UserId = ;
 

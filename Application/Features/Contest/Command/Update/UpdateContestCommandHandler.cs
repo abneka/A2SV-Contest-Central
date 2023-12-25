@@ -39,6 +39,9 @@ public class UpdateContestCommandHandler : IRequestHandler<UpdateContestCommand,
         {
             throw new NotFoundException($"Contest with id {command.ContestId} does't exist!", command);
         }
+        
+        // extract questions and replace the previous questions with the new ones
+        // use transaction to make sure that all questions and the contest are updated
 
         var update_contest = _mapper.Map<ContestEntity>(command.UpdateContest);
         

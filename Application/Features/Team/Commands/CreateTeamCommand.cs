@@ -1,6 +1,10 @@
-﻿namespace Application.Features.Team.Commands;
+﻿using Application.DTOs.Team;
+using Domain.Entities;
+using MediatR;
 
-public class CreateTeamCommand
+namespace Application.Features.Team.Commands;
+
+public class CreateTeamCommand : IRequest<TeamResponseDto>
 {
-    
+    public TeamRequestDto Team { get; set; } = null!;
 }

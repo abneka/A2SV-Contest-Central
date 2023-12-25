@@ -1,6 +1,9 @@
-﻿namespace Application.Features.Group.Queries.GetAllGroups;
+﻿using Application.DTOs.Group;
+using MediatR;
 
-public class GetAllGroups
+namespace Application.Features.Group.Queries.GetAllGroups;
+
+public class GetAllGroupsQuery : IRequest<List<GroupResponseDto>>
 {
     
 }

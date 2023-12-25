@@ -1,9 +1,9 @@
 ﻿using Application.DTOs.Location;
 using MediatR;
 
-namespace Application.Features.Location.Queries.GetAllLocations;
+namespace Application.Features.Location.Queries.GetLocationById;
 
-public class GetAllLocationsQuery : IRequest<List<LocationResponseDto>>
+public class GetLocationByIdQuery : IRequest<LocationResponseDto>
 {
-    
+    public Guid LocationId { get; set; }
 }

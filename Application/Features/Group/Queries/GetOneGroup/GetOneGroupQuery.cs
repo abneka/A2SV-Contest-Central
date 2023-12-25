@@ -1,6 +1,9 @@
-﻿namespace Application.Features.Group.Queries.GetOneGroup;
+﻿using Application.DTOs.Group;
+using MediatR;
 
-public class GetOneGroupQuery
+namespace Application.Features.Group.Queries.GetOneGroup;
+
+public class GetOneGroupQuery : IRequest<GroupResponseDto>
 {
-    
+    public Guid Id { get; set; }
 }

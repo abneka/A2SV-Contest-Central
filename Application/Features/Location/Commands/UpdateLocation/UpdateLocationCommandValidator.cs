@@ -1,6 +1,10 @@
-﻿namespace Application.Features.Location.Commands.UpdateLocation;
+﻿using FluentValidation;
 
-public class UpdateLocationCommandValidator
+namespace Application.Features.Location.Commands.UpdateLocation;
+
+public class UpdateLocationCommandValidator : AbstractValidator<UpdateLocationCommand>
 {
-    
+    public UpdateLocationCommandValidator()
+    {
+    }
 }

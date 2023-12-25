@@ -1,7 +1,6 @@
-﻿using Application.Features.Group.Commands.UpdateGroup;
-using FluentValidation;
+﻿using FluentValidation;
 
-namespace Application.Features.Group.Commands.CreateGroup;
+namespace Application.Features.Group.Commands.UpdateGroup;
 
 public class UpdateGroupCommandValidator : AbstractValidator<UpdateGroupCommand>
 {

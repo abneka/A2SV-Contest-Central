@@ -11,7 +11,7 @@ public class TeamQuestionResultResponseDto
     public bool IsVirtual { get; set; }
     
     public Guid TeamId { get; set; }
-    public TeamReponseDto Team { get; set; } = null!;
+    public TeamResponseDto Team { get; set; } = null!;
     
     public Guid QuestionId { get; set; }
     public QuestionResponseDto Question { get; set; } = null!;
