@@ -1,6 +1,6 @@
 ﻿namespace Application.DTOs.Team;
 
-public class TeamReponseDto
+public class TeamResponseDto
 {
     
 }
