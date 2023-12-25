@@ -1,8 +1,7 @@
-﻿
+﻿using Application.DTOs.Contest;
 using MediatR;
-using Application.DTOs.Contest;
 
-namespace Application.Features.Contest.Commands.CreateContest;
+namespace Application.Features.Contest.Command.Create;
 
 public class CreateContestCommand : IRequest<ContestResponseDto>
 {

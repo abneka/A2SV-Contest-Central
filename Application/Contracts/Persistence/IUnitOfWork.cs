@@ -1,4 +1,6 @@
-﻿namespace Application.Contracts.Persistence;
+﻿using Domain.Entities;
+
+namespace Application.Contracts.Persistence;
 
 public interface IUnitOfWork
 {

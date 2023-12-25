@@ -1,5 +1,6 @@
 ﻿
 using Application.Contracts.Persistence;
+using Application.Features.Contest.Command.Create;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 
