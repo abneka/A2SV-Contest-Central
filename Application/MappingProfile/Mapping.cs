@@ -15,7 +15,14 @@ namespace Application.MappingProfile
                 }
                 return srcMember != null;
             }));
-
+            
+            CreateMap<UserEntity, UserResponseDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
+                if (srcMember is int value && value == 0)
+                {
+                    return false;
+                }
+                return srcMember != null;
+            }));
         }
 
     }
