@@ -14,5 +14,16 @@ namespace Persistence
             
         }
         
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserEntity>()
+                .HasIndex(u => u.UserName)
+                .IsUnique();
+            
+            modelBuilder.Entity<UserEntity>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+        }
+        
     }
 }
