@@ -51,6 +51,6 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
             Subject = "Social Media App Verification",
             Body = $"Please verify your account by clicking the link below: <br/> <a href='{scheme}://{host}/Users/verify?email={user.Email.Replace("@", "%40")}&token={user.Token}'>Verify Email</a>"
         });
-        return res.Id;
+        return Guid.NewGuid();
     }
 }
