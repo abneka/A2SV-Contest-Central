@@ -29,16 +29,6 @@
 
     <ItemGroup>
       <Folder Include="Features\Location\" />
-      <Folder Include="Features\Question\Commands\Update\" />
-      <Folder Include="Features\Question\Queries\" />
-    </ItemGroup>
-  
-    <ItemGroup>
-      <Compile Remove="DTOs\ContestGroup\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove="DTOs\ContestGroup\**" />
     </ItemGroup>
 
 

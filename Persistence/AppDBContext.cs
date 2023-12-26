@@ -16,10 +16,21 @@ namespace Persistence
         public DbSet<ContestGroupEntity> ContestGroups { get; set; }
         public DbSet<TeamContestResultEntity> TeamContestResults { get; set; }
         public DbSet<UserContestResultEntity> UserContestResults { get; set; }
-
+        
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {
             
+        }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserEntity>()
+                .HasIndex(u => u.UserName)
+                .IsUnique();
+            
+            modelBuilder.Entity<UserEntity>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
         }
         
     }
