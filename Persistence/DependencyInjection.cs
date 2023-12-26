@@ -30,6 +30,7 @@ namespace Persistence
             });
             
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IContestRepository, ContestRepository>();
             services.AddScoped<IAuth, AuthRepository>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             return services;

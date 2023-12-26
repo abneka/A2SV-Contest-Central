@@ -1,4 +1,6 @@
-﻿namespace Application.Contracts.Persistence;
+﻿using Domain.Entities;
+
+namespace Application.Contracts.Persistence;
 
 public interface IUnitOfWork
 {
@@ -8,4 +10,7 @@ public interface IUnitOfWork
     IContestRepository ContestRepository { get; }
     ILocationRepository LocationRepository { get; }
     IA2SVGroupRepository A2SVGroupRepository { get; }
+    IUserContestResultRepository UserContestResultRepository { get; }
+    IUserQuestionResultRepository UserQuestionResultRepository { get; }
+    ITeamQuestionResultRepository TeamQuestionResultRepository { get; }
 }

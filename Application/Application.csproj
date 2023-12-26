@@ -28,28 +28,7 @@
 
 
     <ItemGroup>
-      <Folder Include="Features\Group\Commands\UpdateGroup\" />
-      <Folder Include="Features\Group\Queries\GetAllGroups\" />
-      <Folder Include="Features\Group\Queries\GetOneGroup\" />
-      <Folder Include="Features\Location\Commands\CreateLocation\" />
-      <Folder Include="Features\Location\Commands\UpdateLocation\" />
-      <Folder Include="Features\Location\Queries\GetAllLocations\" />
-      <Folder Include="Features\Location\Queries\GetLocationById\" />
-      <Folder Include="Features\Location\Queries\GetLocationByName\" />
       <Folder Include="Features\Location\" />
-      <Folder Include="Features\Question\Commands\CreateQuestion\" />
-      <Folder Include="Features\Question\Commands\DeleteQuesiton\" />
-      <Folder Include="Features\Question\Commands\UpdateQuestion\" />
-      <Folder Include="Features\Question\Queries\GetAllQuestions\" />
-      <Folder Include="Features\Question\Queries\GetSingleQuestion\" />
-    </ItemGroup>
-  
-    <ItemGroup>
-      <Compile Remove="DTOs\ContestGroup\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove="DTOs\ContestGroup\**" />
     </ItemGroup>
 
 

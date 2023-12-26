@@ -1,16 +1,11 @@
-using System.Security.Claims;
 using Application.DTOs.Contest;
-using Application.Features.Contest.Commands.CreateContest;
 using Application.Features.Contest.Commands.DeleteContest;
 using Application.Features.Contest.Commands.UpdateContest;
-using Application.Features.Contest.Queries.GetAllContests;
-using Application.Features.Contest.Queries.GetAllContestsByUserId;
 using Application.Features.Contest.Queries.GetSingleContest;
-using Application.Features.Contest.Queries.SearchContest;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Application.Exceptions;
-using WebApi.Service;
+using Application.Features.Contest.Queries.GetAll;
+using Application.Features.Contest.Command.Create;
 
 namespace WebApi.Controllers
 {
@@ -36,13 +31,13 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Route("GetSingleContest/{contestId:int}")]
-        public async Task<ActionResult<ContestResponseDto>> GetSingleContest(int contestId)
+        public async Task<ActionResult<ContestResponseDto>> GetSingleContest(Guid contestId)
         {
             var contest = await _mediator.Send(new GetSingleContestRequest{ContestId = contestId});
             return Ok(contest);
         }
 
-        [HttpContest]
+        [HttpPost]
         [Route("CreateContest")]
         public async Task<ActionResult<ContestResponseDto>> CreateContest([FromForm]  ContestRequestDto contestRequest)
         {
@@ -57,8 +52,8 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
-        [Route("UpdateContest/{id:int}")]
-        public async Task<ActionResult> UpdateContest(int id, ContestRequestDto ContestRequest)
+        [Route("UpdateContest/{id}")]
+        public async Task<ActionResult> UpdateContest(Guid id, ContestRequestDto ContestRequest)
         {            
             var command = new UpdateContestCommand
             {
@@ -67,32 +62,32 @@ namespace WebApi.Controllers
             };
 
             await _mediator.Send(command);
-            return NoContent("updated");
+            return NoContent();
         }
 
         [HttpDelete]
-        [Route("DeleteContest/{id:int}")]
-        public async Task<ActionResult> DeleteContest(int id)
+        [Route("DeleteContest/{id}")]
+        public async Task<ActionResult> DeleteContest(Guid id)
         {
             await _mediator.Send(new DeleteContestCommand { ContestId = id });
             return NoContent();
         }
 
-        [HttpGet]
-        [Route("GetContestResultByUserId/{UserId:int}")]
-        public async Task<ActionResult<IReadOnlyList<ContestResponseDto>>> GetContestsByUserId(int userId)
-        {
-            var contests = await _mediator.Send(new GetAllContestsByUserIdRequest{UserId = userId});
-            return Ok(contests);
-        }
+        // [HttpGet]
+        // [Route("GetContestResultByUserId/{UserId:int}")]
+        // public async Task<ActionResult<IReadOnlyList<ContestResponseDto>>> GetContestsByUserId(Guid userId)
+        // {
+        //     var contests = await _mediator.Send(new GetAllContestsByUserIdRequest{UserId = userId});
+        //     return Ok(contests);
+        // }
 
-        [HttpGet]
-        [Route("SearchContest/{query}")]
-        public async Task<ActionResult<IReadOnlyList<ContestResponseDto>>> SearchContest(string query)
-        {
-           var contests = await _mediator.Send(new SearchContestRequest {Query = query});
-           return Ok(contests);
-        }
+        // [HttpGet]
+        // [Route("SearchContest/{query}")]
+        // public async Task<ActionResult<IReadOnlyList<ContestResponseDto>>> SearchContest(string query)
+        // {
+        //    var contests = await _mediator.Send(new SearchContestRequest {Query = query});
+        //    return Ok(contests);
+        // }
 
     }
 }

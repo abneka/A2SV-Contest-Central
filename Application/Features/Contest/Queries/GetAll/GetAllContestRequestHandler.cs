@@ -3,7 +3,7 @@ using MediatR;
 using AutoMapper;
 using Application.DTOs.Contest;
 using Application.Contracts.Persistence;
-using Application.Features.Contest.Queries.GetAllContests;
+using Application.Features.Contest.Queries.GetAll;
 
 namespace Application.Features.Contest.Queries.GetSingleContest;
 
