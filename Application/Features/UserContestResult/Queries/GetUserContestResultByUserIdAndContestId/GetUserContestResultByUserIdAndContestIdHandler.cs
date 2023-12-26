@@ -6,20 +6,20 @@ using MediatR;
 
 namespace Application.Features.UserContestResult.Queries.GetUserContestResultByUserId;
 
-public class GetUserContestResultByUserIdHandler : IRequestHandler<GetUserContestResultByUserId, UserContestResultResponseDto>
+public class GetUserContestResultByUserIdAndContestIdHandler : IRequestHandler<GetUserContestResultByUserIdAndContestId, UserContestResultResponseDto>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
-    public GetUserContestResultByUserIdHandler(IMapper mapper, IUnitOfWork unitOfWork)
+    public GetUserContestResultByUserIdAndContestIdHandler(IMapper mapper, IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<UserContestResultResponseDto> Handle(GetUserContestResultByUserId request, CancellationToken cancellationToken)
+    public async Task<UserContestResultResponseDto> Handle(GetUserContestResultByUserIdAndContestId request, CancellationToken cancellationToken)
     {
-        var validator = new GetUserContestResultByUserIdValidator();
+        var validator = new GetUserContestResultByUserIdAndContestIdValidator();
         var validationResult = validator.Validate(request);
 
         if (!validationResult.IsValid)
