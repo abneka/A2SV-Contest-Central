@@ -7,4 +7,5 @@ namespace Application.Contracts.Persistence;
 public interface ITeamQuestionResultRepository : IGenericRepository<TeamQuestionResultEntity>
 {
     Task<List<TeamQuestionResultEntity>> GetTeamQuestionResultsByTeamIdAsync(Guid teamId);
+    Task<TeamQuestionResultEntity> GetTeamQuestionResultByQuestionIdTeamId(Guid requestQuestionId, Guid requestUserId);
 }

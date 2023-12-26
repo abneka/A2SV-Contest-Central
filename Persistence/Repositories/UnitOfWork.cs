@@ -19,13 +19,13 @@ public class UnitOfWork : IUnitOfWork
     
     public UnitOfWork(IUserRepository userRepository, IUserTypeRepository userTypeRepository, ITeamRepository teamRepository, IContestRepository contestRepository, ILocationRepository locationRepository, IA2SVGroupRepository a2SvGroupRepository, AppDBContext dbContext, IUserQuestionResultRepository userQuestionResultRepository, ITeamQuestionResultRepository teamQuestionResultRepository)
     {
+        _dbContext = dbContext;
         UserRepository = userRepository;
         UserTypeRepository = userTypeRepository;
         TeamRepository = teamRepository;
         ContestRepository = contestRepository;
         LocationRepository = locationRepository;
         A2SVGroupRepository = a2SvGroupRepository;
-        _dbContext = dbContext;
         UserQuestionResultRepository = userQuestionResultRepository;
         TeamQuestionResultRepository = teamQuestionResultRepository;
     }
