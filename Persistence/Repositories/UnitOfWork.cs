@@ -13,12 +13,13 @@ public class UnitOfWork : IUnitOfWork
     public ILocationRepository LocationRepository { get; }
     public IA2SVGroupRepository A2SVGroupRepository { get; }
     public IUserContestResultRepository UserContestResultRepository { get; }
+    public ITeamContestResultRepository TeamContestResultRepository { get; }
     public IUserQuestionResultRepository UserQuestionResultRepository { get; }
     public ITeamQuestionResultRepository TeamQuestionResultRepository { get; }
 
     private readonly AppDBContext _dbContext;
     
-    public UnitOfWork(IUserRepository userRepository, IUserTypeRepository userTypeRepository, ITeamRepository teamRepository, IContestRepository contestRepository, ILocationRepository locationRepository, IA2SVGroupRepository a2SvGroupRepository, AppDBContext dbContext, IUserQuestionResultRepository userQuestionResultRepository, ITeamQuestionResultRepository teamQuestionResultRepository)
+    public UnitOfWork(IUserRepository userRepository, IUserTypeRepository userTypeRepository, ITeamRepository teamRepository, IContestRepository contestRepository, ILocationRepository locationRepository, IA2SVGroupRepository a2SvGroupRepository, AppDBContext dbContext, IUserQuestionResultRepository userQuestionResultRepository, ITeamQuestionResultRepository teamQuestionResultRepository, IUserContestResultRepository userContestResultRepository, ITeamContestResultRepository teamContestResultRepository)
     {
         UserRepository = userRepository;
         UserTypeRepository = userTypeRepository;
@@ -29,5 +30,7 @@ public class UnitOfWork : IUnitOfWork
         _dbContext = dbContext;
         UserQuestionResultRepository = userQuestionResultRepository;
         TeamQuestionResultRepository = teamQuestionResultRepository;
+        UserContestResultRepository = userContestResultRepository;
+        TeamContestResultRepository = teamContestResultRepository;
     }
 }
