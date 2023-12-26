@@ -1,6 +1,6 @@
 ﻿namespace Application.DTOs.UserContestResult;
 
-public class GetUserContestResultRequestDto
+public class UserContestResultRequestDto
 {
     public Guid UserId { get; set; }
 }

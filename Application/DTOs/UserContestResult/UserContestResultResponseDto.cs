@@ -3,7 +3,7 @@ using Application.DTOs.User;
 
 namespace Application.DTOs.UserContestResult;
 
-public class GetUserContestResultResponseDto : ContestResultDto
+public class UserContestResultResponseDto : ContestResultDto
 {
     public Guid UserId { get; set; }
     public UserResponseDto User { get; set; } = null!;
