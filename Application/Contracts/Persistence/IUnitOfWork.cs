@@ -10,4 +10,6 @@ public interface IUnitOfWork
     IContestRepository ContestRepository { get; }
     ILocationRepository LocationRepository { get; }
     IA2SVGroupRepository A2SVGroupRepository { get; }
+    IUserQuestionResultRepository UserQuestionResultRepository { get; }
+    ITeamQuestionResultRepository TeamQuestionResultRepository { get; }
 }

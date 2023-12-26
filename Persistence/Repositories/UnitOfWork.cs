@@ -12,10 +12,12 @@ public class UnitOfWork : IUnitOfWork
     public IContestRepository ContestRepository { get; }
     public ILocationRepository LocationRepository { get; }
     public IA2SVGroupRepository A2SVGroupRepository { get; }
-    
+    public IUserQuestionResultRepository UserQuestionResultRepository { get; }
+    public ITeamQuestionResultRepository TeamQuestionResultRepository { get; }
+
     private readonly AppDBContext _dbContext;
     
-    public UnitOfWork(IUserRepository userRepository, IUserTypeRepository userTypeRepository, ITeamRepository teamRepository, IContestRepository contestRepository, ILocationRepository locationRepository, IA2SVGroupRepository a2SvGroupRepository, AppDBContext dbContext)
+    public UnitOfWork(IUserRepository userRepository, IUserTypeRepository userTypeRepository, ITeamRepository teamRepository, IContestRepository contestRepository, ILocationRepository locationRepository, IA2SVGroupRepository a2SvGroupRepository, AppDBContext dbContext, IUserQuestionResultRepository userQuestionResultRepository, ITeamQuestionResultRepository teamQuestionResultRepository)
     {
         UserRepository = userRepository;
         UserTypeRepository = userTypeRepository;
@@ -24,7 +26,7 @@ public class UnitOfWork : IUnitOfWork
         LocationRepository = locationRepository;
         A2SVGroupRepository = a2SvGroupRepository;
         _dbContext = dbContext;
+        UserQuestionResultRepository = userQuestionResultRepository;
+        TeamQuestionResultRepository = teamQuestionResultRepository;
     }
-    
-    public async 
 }
