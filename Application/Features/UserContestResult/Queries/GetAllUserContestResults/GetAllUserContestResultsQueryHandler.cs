@@ -5,18 +5,18 @@ using MediatR;
 
 namespace Application.Features.UserContestResult.Queries.GetAllUserContestResults;
 
-public class GetAllUserContestResultsRequestHandler : IRequestHandler<GetAllUserContestResultsRequest, List<UserContestResultResponseDto>>
+public class GetAllUserContestResultsQueryHandler : IRequestHandler<GetAllUserContestResultsQuery, List<UserContestResultResponseDto>>
 {
     private readonly IUserContestResultRepository _userContestResultRepository;
     private readonly IMapper _mapper;
 
-    public GetAllUserContestResultsRequestHandler(IUserContestResultRepository userContestResultRepository, IMapper mapper)
+    public GetAllUserContestResultsQueryHandler(IUserContestResultRepository userContestResultRepository, IMapper mapper)
     {
         _userContestResultRepository = userContestResultRepository;
         _mapper = mapper;
     }
 
-    public async Task<List<UserContestResultResponseDto>> Handle(GetAllUserContestResultsRequest request, CancellationToken cancellationToken)
+    public async Task<List<UserContestResultResponseDto>> Handle(GetAllUserContestResultsQuery query, CancellationToken cancellationToken)
     {
         var userContestResults = await _userContestResultRepository.GetAllAsync();
         

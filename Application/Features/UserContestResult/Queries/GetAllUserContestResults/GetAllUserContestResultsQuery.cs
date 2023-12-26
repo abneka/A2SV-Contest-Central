@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Features.UserContestResult.Queries.GetAllUserContestResults;
 
-public class GetAllUserContestResultsRequest : IRequest<List<UserContestResultResponseDto>>
+public class GetAllUserContestResultsQuery : IRequest<List<UserContestResultResponseDto>>
 {
     
 }
