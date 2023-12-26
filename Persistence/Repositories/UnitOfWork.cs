@@ -12,6 +12,7 @@ public class UnitOfWork : IUnitOfWork
     public IContestRepository ContestRepository { get; }
     public ILocationRepository LocationRepository { get; }
     public IA2SVGroupRepository A2SVGroupRepository { get; }
+    public IUserContestResultRepository UserContestResultRepository { get; }
     public IUserQuestionResultRepository UserQuestionResultRepository { get; }
     public ITeamQuestionResultRepository TeamQuestionResultRepository { get; }
 
