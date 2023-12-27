@@ -2,11 +2,12 @@ using Application.Contracts.Persistence;
 using Domain.Entities;
 using Persistence.Repositories.Common;
 
+
 namespace Persistence.Repositories
 {
     public class ContestRepository : GenericRepository<ContestEntity>, IContestRepository
     {
-        protected ContestRepository(AppDBContext dbContext) : base(dbContext)
+        public ContestRepository(AppDBContext dbContext) : base(dbContext)
         {
         }
 

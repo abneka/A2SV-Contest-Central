@@ -1,7 +1,7 @@
 using Application.Features.CodeforcesApi.Commands;
+using Application.Features.CodeforcesApi.Queries.CheckContestUrl;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace WebAPI.Controllers
 {
@@ -19,15 +19,16 @@ namespace WebAPI.Controllers
         [Route("fetch/{contest_id}")]
         public async Task<IActionResult> FetchContest(string contest_id)
         {
-            string res = await _mediator.Send(new FetchContestDataFromApiCommand{ContestId = contest_id});
-            var data = JsonConvert.DeserializeObject(res);
-            return Json(data);
+            await _mediator.Send(new FetchContestDataFromApiCommand { ContestId = contest_id });
+            return Ok();
         }
 
-        // [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        // public IActionResult Error()
-        // {
-        //     return View("Error!");
-        // }
+        [HttpGet]
+        [Route("ContestUrlChecker/{contest_url}")]
+        public async Task<IActionResult> ContestUrlChecker(string contest_url)
+        {
+            bool res = await _mediator.Send(new ContestUrlCheckerRequest { ContestUrl = contest_url });
+            return Ok(res);
+        }
     }
 }

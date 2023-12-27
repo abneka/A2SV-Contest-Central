@@ -14,7 +14,7 @@ public static class InfrastructureServicesRegistration
         IConfiguration configuration
     )
     {
-        services.AddTransient<IEmailSender, EmailSender>();
+        services.AddScoped<IEmailSender, EmailSender>();
         services.AddSingleton<IConfiguration>(configuration);
         services.AddScoped<ICodeforcesApiService, CodeforcesApiService>();
         services.Configure<CodeforcesAPISettings>(

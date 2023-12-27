@@ -35,10 +35,7 @@ namespace Infrastructure.ExternalServices
             response.EnsureSuccessStatusCode();
 
             string responseData = await response.Content.ReadAsStringAsync();
-
-            var data = JsonConvert.DeserializeObject(responseData);
-
-            return JsonConvert.SerializeObject(data); 
+            return responseData; 
         }
 
         private static string GenerateRandomString()
@@ -63,5 +60,6 @@ namespace Infrastructure.ExternalServices
                 return stringBuilder.ToString();
             }
         }
+
     }
 }
