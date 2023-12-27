@@ -1,5 +1,6 @@
 ﻿using Application.Contracts.Persistence;
 using Application.DTOs.TeamQuestionResult;
+using Application.Exceptions;
 using AutoMapper;
 using MediatR;
 
@@ -20,6 +21,7 @@ public class GetTeamQuestionResultByTeamIdQueryHandler : IRequestHandler<GetTeam
     {
         var questionResult =
             await _unitOfWork.TeamQuestionResultRepository.GetTeamQuestionResultsByTeamIdAsync(request.TeamId);
+        
         return _mapper.Map<List<TeamQuestionResultResponseDto>>(questionResult);
     }
 }

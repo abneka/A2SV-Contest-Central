@@ -20,16 +20,12 @@ public class GetUserQuestionResultByQuestionIdUserIdQueryHandler : IRequestHandl
 
     public async Task<UserQuestionsResultResponseDto> Handle(GetUserQuestionResultByQuestionIdUserIdQuery request, CancellationToken cancellationToken)
     {
-        var isUserExist = await _unitOfWork.UserRepository.Exists(request.UserId);
-        if (isUserExist is false)
-        {
-            throw new NotFoundException(nameof(User), request.UserId);
-        }
-        
-        // var isQuestionExist = await _unitOfWork.QuestionRepository.Exists(request.QuestionId);
-        
         var userQuestionResult = await _unitOfWork.UserQuestionResultRepository.GetUserQuestionResultByQuestionIdUserId(request.QuestionId, request.UserId);
         
+        if (userQuestionResult == null)
+        {
+            throw new Exception("No question result found for this question and user");
+        }
         return _mapper.Map<UserQuestionsResultResponseDto>(userQuestionResult);
     }
 }

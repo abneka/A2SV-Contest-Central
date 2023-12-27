@@ -44,7 +44,6 @@ namespace Persistence
             services.AddScoped<IUserContestResultRepository, UserContestResultRepository>();
             services.AddScoped<ITeamContestResultRepository, TeamContestResultRepository>();
             
-            
             return services;
         }
     }
