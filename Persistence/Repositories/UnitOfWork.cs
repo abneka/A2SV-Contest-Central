@@ -22,7 +22,7 @@ public class UnitOfWork : IUnitOfWork
 
     private readonly AppDBContext _dbContext;
     
-    public UnitOfWork(IUserRepository userRepository, IUserTypeRepository userTypeRepository, ITeamRepository teamRepository, IContestRepository contestRepository, ILocationRepository locationRepository, IA2SVGroupRepository a2SvGroupRepository, AppDBContext dbContext, IUserQuestionResultRepository userQuestionResultRepository, ITeamQuestionResultRepository teamQuestionResultRepository, IUserContestResultRepository userContestResultRepository, ITeamContestResultRepository teamContestResultRepository)
+    public UnitOfWork(IQuestionRepository questionRepository, IUserRepository userRepository, IUserTypeRepository userTypeRepository, ITeamRepository teamRepository, IContestRepository contestRepository, ILocationRepository locationRepository, IA2SVGroupRepository a2SvGroupRepository, AppDBContext dbContext, IUserQuestionResultRepository userQuestionResultRepository, ITeamQuestionResultRepository teamQuestionResultRepository, IUserContestResultRepository userContestResultRepository, ITeamContestResultRepository teamContestResultRepository)
     {
         _dbContext = dbContext;
         UserRepository = userRepository;
