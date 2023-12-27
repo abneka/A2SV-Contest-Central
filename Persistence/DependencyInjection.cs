@@ -41,6 +41,8 @@ namespace Persistence
             services.AddScoped<IUserTypeRepository, UserTypeRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
             services.AddScoped<IA2SVGroupRepository, A2SVGroupRepository>();
+            services.AddScoped<IUserContestResultRepository, UserContestResultRepository>();
+            services.AddScoped<ITeamContestResultRepository, TeamContestResultRepository>();
             
             
             return services;
