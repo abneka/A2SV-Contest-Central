@@ -7,21 +7,21 @@ using MediatR;
 
 namespace Application.Features.UserQuestionResult.Queries.GetUserQuestionResultByUserId;
 
-public class GetUserQuestionResultByTeamIdQueryHandler : IRequestHandler<GetUserQuestionResultByTeamIdQuery, List<UserQuestionsResultResponseDto>>
+public class GetUserQuestionResultByUserIdQueryHandler : IRequestHandler<GetUserQuestionResultByUserIdQuery, List<UserQuestionsResultResponseDto>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public GetUserQuestionResultByTeamIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public GetUserQuestionResultByUserIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
 
-    public async Task<List<UserQuestionsResultResponseDto>> Handle(GetUserQuestionResultByTeamIdQuery request, CancellationToken cancellationToken)
+    public async Task<List<UserQuestionsResultResponseDto>> Handle(GetUserQuestionResultByUserIdQuery request, CancellationToken cancellationToken)
     {
         var questionResult =
-            await _unitOfWork.UserQuestionResultRepository.GetByUserIdAsync(request.TeamId);
+            await _unitOfWork.UserQuestionResultRepository.GetByUserIdAsync(request.UserId);
         return _mapper.Map<List<UserQuestionsResultResponseDto>>(questionResult);
     }
 }

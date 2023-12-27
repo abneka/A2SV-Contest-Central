@@ -10,7 +10,7 @@ public class TeamQuestionResultRepository : GenericRepository<TeamQuestionResult
 {
     private readonly AppDBContext _dbContext;
     
-    protected TeamQuestionResultRepository(AppDBContext dbContext) : base(dbContext)
+    public TeamQuestionResultRepository(AppDBContext dbContext) : base(dbContext)
     {
         _dbContext = dbContext;
     }
@@ -19,5 +19,10 @@ public class TeamQuestionResultRepository : GenericRepository<TeamQuestionResult
     public async Task<List<TeamQuestionResultEntity>> GetTeamQuestionResultsByTeamIdAsync(Guid teamId)
     {
         return await _dbContext.TeamQuestionResults.Where(r => r.TeamId == teamId).ToListAsync();
+    }
+
+    public Task<TeamQuestionResultEntity> GetTeamQuestionResultByQuestionIdTeamId(Guid questionId, Guid teamId)
+    {
+        return _dbContext.TeamQuestionResults.FirstOrDefaultAsync(r => r.QuestionId == questionId && r.TeamId == teamId)!;
     }
 }
