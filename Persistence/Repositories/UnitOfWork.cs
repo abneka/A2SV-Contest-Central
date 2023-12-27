@@ -4,9 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata;
 namespace Persistence.Repositories;
 
 public class UnitOfWork : IUnitOfWork
+
 {
 
     public IUserRepository UserRepository { get; }
+    
+    public IQuestionRepository QuestionRepository { get; }
     public IUserTypeRepository UserTypeRepository { get; }
     public ITeamRepository TeamRepository { get; }
     public IContestRepository ContestRepository { get; }
@@ -28,6 +31,7 @@ public class UnitOfWork : IUnitOfWork
         ContestRepository = contestRepository;
         LocationRepository = locationRepository;
         A2SVGroupRepository = a2SvGroupRepository;
+        QuestionRepository = questionRepository;
         UserQuestionResultRepository = userQuestionResultRepository;
         TeamQuestionResultRepository = teamQuestionResultRepository;
         UserContestResultRepository = userContestResultRepository;
