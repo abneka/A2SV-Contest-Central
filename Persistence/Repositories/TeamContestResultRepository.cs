@@ -9,7 +9,7 @@ public class TeamContestResultRepository : GenericRepository<TeamContestResultEn
 {
     private readonly AppDBContext _dbContext;
     
-    protected TeamContestResultRepository(AppDBContext dbContext) : base(dbContext)
+    public TeamContestResultRepository(AppDBContext dbContext) : base(dbContext)
     {
         _dbContext = dbContext;
     }
