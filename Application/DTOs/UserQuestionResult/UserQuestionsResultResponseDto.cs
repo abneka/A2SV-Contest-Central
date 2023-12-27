@@ -1,9 +1,9 @@
 ﻿using Application.DTOs.Common;
 using Application.DTOs.User;
 
-namespace Application.DTOs.UserContestResult;
+namespace Application.DTOs.UserQuestionResult;
 
-public class GetUserContestResultResponseDto : ContestResultDto
+public class UserQuestionsResultResponseDto : QuestionResultResponseDto
 {
     public Guid UserId { get; set; }
     public UserResponseDto User { get; set; } = null!;

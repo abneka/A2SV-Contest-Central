@@ -28,10 +28,23 @@ namespace Persistence
             {
                 options.UseNpgsql(configuration.GetConnectionString("A2SV_Contest_Central"));
             });
-            
+
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IContestRepository, ContestRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAuth, AuthRepository>();
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IQuestionRepository, QuestionRepository>();
+            services.AddScoped<ITeamRepository, TeamRepository>();
+            services.AddScoped<ITeamQuestionResultRepository, TeamQuestionResultRepository>();
+            services.AddScoped<IUserQuestionResultRepository, UserQuestionResultRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUserTypeRepository, UserTypeRepository>();
+            services.AddScoped<ILocationRepository, LocationRepository>();
+            services.AddScoped<IA2SVGroupRepository, A2SVGroupRepository>();
+            services.AddScoped<IUserContestResultRepository, UserContestResultRepository>();
+            services.AddScoped<ITeamContestResultRepository, TeamContestResultRepository>();
+            
+            
             return services;
         }
     }
