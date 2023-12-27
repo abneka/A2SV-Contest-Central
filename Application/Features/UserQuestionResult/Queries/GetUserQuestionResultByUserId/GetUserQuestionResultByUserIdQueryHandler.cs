@@ -22,6 +22,7 @@ public class GetUserQuestionResultByUserIdQueryHandler : IRequestHandler<GetUser
     {
         var questionResult =
             await _unitOfWork.UserQuestionResultRepository.GetByUserIdAsync(request.UserId);
+        
         return _mapper.Map<List<UserQuestionsResultResponseDto>>(questionResult);
     }
 }
