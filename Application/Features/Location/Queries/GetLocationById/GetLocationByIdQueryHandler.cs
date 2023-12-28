@@ -1,5 +1,6 @@
 ﻿using Application.Contracts.Persistence;
 using Application.DTOs.Location;
+using Application.Exceptions;
 using Application.Features.Location.Queries.GetAllLocations;
 using AutoMapper;
 using MediatR;
@@ -17,9 +18,14 @@ public class GetLocationByIdQueryHandler : IRequestHandler<GetLocationByIdQuery,
         _unitOfWork = unitOfWork;
     }
 
-    public Task<LocationResponseDto> Handle(GetLocationByIdQuery request, CancellationToken cancellationToken)
+    public async Task<LocationResponseDto> Handle(GetLocationByIdQuery request, CancellationToken cancellationToken)
     {
-        var location = _unitOfWork.LocationRepository.GetByIdAsync(request.LocationId);
-        return _mapper.Map<Task<LocationResponseDto>>(location);
+        var location = await _unitOfWork.LocationRepository.GetByIdAsync(request.LocationId);
+        
+        if (location == null)
+        {
+            throw new NotFoundException(nameof(Location), request.LocationId);
+        }   
+        return _mapper.Map<LocationResponseDto>(location);
     }
 }
