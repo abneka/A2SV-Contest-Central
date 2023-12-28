@@ -14,19 +14,17 @@ namespace Application.Features.Contest.Commands.UpdateContest;
 public class UpdateContestCommandHandler : IRequestHandler<UpdateContestCommand,Unit>
 {
     private readonly IMapper _mapper;
-    private readonly IContestRepository _contestRepository;
-    private readonly IUserRepository _userRepository;
-
-    public UpdateContestCommandHandler(IContestRepository contestRepository, IUserRepository userRepository, IMapper mapper)
+    private readonly IUnitOfWork _unitOfWork;
+    
+    public UpdateContestCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _mapper = mapper;
-        _contestRepository = contestRepository;
-        _userRepository = userRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Unit> Handle(UpdateContestCommand command, CancellationToken cancellationToken)
     {
-        var validator = new UpdateContestCommandValidator(_userRepository);
+        var validator = new UpdateContestCommandValidator();
         var validationResult = await validator.ValidateAsync(command);
 
         if (!validationResult.IsValid)
@@ -34,18 +32,23 @@ public class UpdateContestCommandHandler : IRequestHandler<UpdateContestCommand,
             throw new ValidationException(validationResult.Errors);
         }
     
-        var old_contest = await _contestRepository.GetByIdAsync(command.ContestId);
+        var old_contest = await _unitOfWork.ContestRepository.GetByIdAsync(command.ContestId);
         if (old_contest == null)
         {
             throw new NotFoundException($"Contest with id {command.ContestId} does't exist!", command);
         }
-        
-        // extract questions and replace the previous questions with the new ones
-        // use transaction to make sure that all questions and the contest are updated
 
-        var update_contest = _mapper.Map<ContestEntity>(command.UpdateContest);
+        if(old_contest.status) return Unit.Value;
+
+        old_contest.Name = command.UpdateContest.Name;
+        old_contest.ContestUrl = command.UpdateContest.ContestUrl;
+
+        // await _unitOfWork.Questions.UpdateAsync(command.ContestId, command.UpdateContest.Questions);
+        // await _unitOfWork.Groups.UpdateAsync(command.ContestId, command.UpdateContest.Groups);
         
-        await _contestRepository.UpdateAsync(command.ContestId, update_contest);
+        // use transaction to make sure that all questions and the contest are updated
+        
+        await _unitOfWork.ContestRepository.UpdateAsync(command.ContestId, update_contest);
         return Unit.Value;
     }
 }

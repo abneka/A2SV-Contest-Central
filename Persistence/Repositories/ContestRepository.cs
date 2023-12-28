@@ -1,5 +1,6 @@
 using Application.Contracts.Persistence;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Persistence.Repositories.Common;
 
 
@@ -7,28 +8,18 @@ namespace Persistence.Repositories
 {
     public class ContestRepository : GenericRepository<ContestEntity>, IContestRepository
     {
+        private AppDBContext _dbContext;
         public ContestRepository(AppDBContext dbContext) : base(dbContext)
         {
+            _dbContext = dbContext;
         }
 
-        public Task<IReadOnlyList<ContestEntity>> GetContestOfTeam(Guid teamId)
+        public async Task<bool> ExistsContestGlobalIdAsync(string contest_id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<IReadOnlyList<ContestEntity>> GetContestsOfGroup(Guid groupId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IReadOnlyList<ContestEntity>> GetContestsOfLocation(Guid locationId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IReadOnlyList<ContestEntity>> GetContestsOfUser(Guid userId)
-        {
-            throw new NotImplementedException();
+            var item = await _dbContext.Contests
+            .Where(contest => contest.ContestGlobalId == contest_id).FirstOrDefaultAsync();;
+            
+            return item != null;
         }
     }
 }

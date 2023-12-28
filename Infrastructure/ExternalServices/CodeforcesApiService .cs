@@ -34,6 +34,7 @@ namespace Infrastructure.ExternalServices
             HttpResponseMessage response = await _httpClient.GetAsync(url);
 
             string responseData = await response.Content.ReadAsStringAsync();
+
             dynamic data = JsonConvert.DeserializeObject(responseData)!;
             return data; 
         }
