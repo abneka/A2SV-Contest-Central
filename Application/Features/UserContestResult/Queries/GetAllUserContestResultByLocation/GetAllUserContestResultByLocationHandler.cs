@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.Features.UserContestResult.Queries.GetAllUserContestResultByLocation;
 
-public class GetAllUserContestResultByLocationHandler : IRequestHandler<GetAllUserContestResultByLocationQuery, UserContestResultResponseDto>
+public class GetAllUserContestResultByLocationHandler : IRequestHandler<GetAllUserContestResultByLocationQuery, List<UserContestResultResponseDto>>
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
@@ -17,7 +17,7 @@ public class GetAllUserContestResultByLocationHandler : IRequestHandler<GetAllUs
         _unitOfWork = unitOfWork;
     }
     
-    public async Task<UserContestResultResponseDto> Handle(GetAllUserContestResultByLocationQuery request, CancellationToken cancellationToken)
+    public async Task<List<UserContestResultResponseDto>> Handle(GetAllUserContestResultByLocationQuery request, CancellationToken cancellationToken)
     {
         var validator = new GetAllUserContestResultsByLocationValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
@@ -29,6 +29,6 @@ public class GetAllUserContestResultByLocationHandler : IRequestHandler<GetAllUs
         
         var userContestResult = _mapper.Map<UserContestResultResponseDto>(_unitOfWork.UserContestResultRepository.GetUserContestResultByLocationIdAsync(request.LocationId));
         
-        return _mapper.Map<UserContestResultResponseDto>(userContestResult);
+        return _mapper.Map<List<UserContestResultResponseDto>>(userContestResult);
     }
 }
