@@ -10,11 +10,11 @@ namespace WebAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UserContestResult : ControllerBase
+public class UserContestResultController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public UserContestResult(IMediator mediator)
+    public UserContestResultController(IMediator mediator)
     {
         _mediator = mediator;
     }

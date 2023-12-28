@@ -16,7 +16,7 @@ public class UserContestResultRepository : GenericRepository<UserContestResultEn
 
     public async Task<UserContestResultEntity> GetUserContestResultByUserIdAsync(Guid userId)
     {
-        return await _dbContext.UserContestResults.Where(x => x.UserId == userId).FirstOrDefaultAsync();
+        return await _dbContext.UserContestResults.FirstOrDefaultAsync(x => x.UserId == userId);
     }
 
     public async Task<List<UserContestResultEntity>> GetUserContestResultByGroupIdAsync(Guid groupId)
