@@ -19,7 +19,7 @@ namespace Infrastructure.ExternalServices
             _httpClient = httpClient;
         }
 
-        public async Task<string> GetContestData(string contestId)
+        public async Task<dynamic> GetContestData(string contestId)
         {
             string apiKey = _codeforcesAPISettings.ApiKey;
             string apiSecret = _codeforcesAPISettings.ApiSecret;
@@ -32,10 +32,10 @@ namespace Infrastructure.ExternalServices
             string url = $"https://codeforces.com/api/contest.standings?contestId={contestId}&apiKey={apiKey}&time={currentTime}&apiSig={randStr}{hash}";
 
             HttpResponseMessage response = await _httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
 
             string responseData = await response.Content.ReadAsStringAsync();
-            return responseData; 
+            dynamic data = JsonConvert.DeserializeObject(responseData)!;
+            return data; 
         }
 
         private static string GenerateRandomString()

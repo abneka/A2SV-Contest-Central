@@ -14,21 +14,16 @@ namespace Application.Features.CodeforcesApi.Queries.CheckContestUrl
             _codeforcesApiService = codeforcesApiService;
         }
 
-        public async Task<bool> Handle(
-            ContestUrlCheckerRequest request,
-            CancellationToken cancellationToken
-        )
+        public async Task<bool> Handle(ContestUrlCheckerRequest request, CancellationToken cancellationToken)
         {
             string contest_id = ParseIdFromUrl(request.ContestUrl);
-            Console.WriteLine(contest_id);
             if(contest_id == "NotFound") return false;
-            // string responseData = await _codeforcesApiService.GetContestData(contest_id);
-            // dynamic data = JsonConvert.DeserializeObject(responseData)!;
 
-            // if(data.status == "Failed"){
-            //     Console.WriteLine(data.comment);
-            //     return false;
-            // }
+            dynamic data = await _codeforcesApiService.GetContestData(contest_id);
+
+            if(data.status == "FAILED" && data.comment == $"contestId: Contest with id {contest_id} not found"){
+                return false;
+            }
 
             return true;
         }
