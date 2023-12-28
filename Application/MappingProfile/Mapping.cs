@@ -1,3 +1,4 @@
+using Application.DTOs.GlobalQuestion;
 using AutoMapper;
 using Domain.Entities;
 using Application.DTOs.User;
@@ -92,6 +93,15 @@ namespace Application.MappingProfile
                 {
                     return false;
                 }
+                return srcMember != null;
+            }));
+            
+            CreateMap<GlobalQuestionEntity, GlobalQuestionDto>().ReverseMap().ForAllMembers(opts=> opts.Condition((src, dest, srcMember) => {
+                if (srcMember is int and 0)
+                {
+                    return false;
+                }
+
                 return srcMember != null;
             }));
 
