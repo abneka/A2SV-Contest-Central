@@ -41,7 +41,7 @@ public class CreateContestCommandHandler : IRequestHandler<CreateContestCommand,
          
         var new_contest = new ContestEntity();
         new_contest.ContestGlobalId = ParseIdFromUrl(command.NewContest.ContestUrl);
-        new_contest.Name = command.NewContest.Name;
+        new_contest.Name = command.NewContest.ContestName;
         new_contest.ContestUrl = command.NewContest.ContestUrl;
         var createdContest = await _unitOfWork.ContestRepository.CreateAsync(new_contest);
 

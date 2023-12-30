@@ -1,0 +1,27 @@
+{
+  "status": "OK",
+  "result": {
+    "contest": {
+      "id": 495381,
+      "name": "contest 3",
+      "type": "ICPC",
+      "phase": "CODING",
+      "frozen": false,
+      "durationSeconds": 9000,
+      "startTimeSeconds": 1703844000,
+      "relativeTimeSeconds": 2452,
+      "preparedBy": "miejejaw"
+    },
+    "problems": [
+      {
+        "contestId": 495381,
+        "index": "A",
+        "name": "Mieraf Test",
+        "type": "PROGRAMMING",
+        "rating": 800,
+        "tags": []
+      }
+    ],
+    "rows": []
+  }
+}

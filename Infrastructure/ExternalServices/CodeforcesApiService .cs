@@ -30,7 +30,6 @@ namespace Infrastructure.ExternalServices
             string hash = CalculateSHA512(apiSig);
 
             string url = $"https://codeforces.com/api/contest.standings?contestId={contestId}&apiKey={apiKey}&time={currentTime}&apiSig={randStr}{hash}";
-
             HttpResponseMessage response = await _httpClient.GetAsync(url);
 
             string responseData = await response.Content.ReadAsStringAsync();

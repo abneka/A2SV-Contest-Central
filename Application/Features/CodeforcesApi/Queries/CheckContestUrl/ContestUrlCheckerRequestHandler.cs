@@ -22,7 +22,7 @@ namespace Application.Features.CodeforcesApi.Queries.CheckContestUrl
         {
             var validator = new ContestUrlCheckerRequestValidator();
             var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        
+
             if (!validationResult.IsValid)
             {
                 throw new ValidationException(validationResult.Errors);
@@ -31,29 +31,34 @@ namespace Application.Features.CodeforcesApi.Queries.CheckContestUrl
             //parse id from contest url
             string contest_id = ParseIdFromUrl(request.ContestUrl);
 
-        try
-        {
-            //fetch data from codeforces using codeforces api
-            dynamic data = await _codeforcesApiService.GetContestData(contest_id);
+            try
+            {
+                //fetch data from codeforces using codeforces api
+                dynamic data = await _codeforcesApiService.GetContestData(contest_id);
 
-            if (data == null) return false;
-            Console.WriteLine(data);
-
-            if(data.status == "FAILED"){
-                if(data.comment == $"contestId: Contest with id {contest_id} not found")
+                if (data == null)
                     return false;
+
+                if (data.status == "FAILED")
+                {
+                    if (data.comment == $"contestId: Contest with id {contest_id} not found")
+                        return false;
+                }
+                else
+                {
+                    bool res = await _unitOfWork.ContestRepository.ExistsContestGlobalIdAsync(
+                        contest_id
+                    );
+                    if (res)
+                        return false;
+                }
+                return true;
             }
-            else{
-                bool res = await _unitOfWork.ContestRepository.ExistsContestGlobalIdAsync(contest_id);
-                if(res) return false;
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while fetching data from Codeforces: {ex.Message}");
+                return false;
             }
-            return true;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred while fetching data from Codeforces: {ex.Message}");
-            return false;
-        }
         }
 
         static string ParseIdFromUrl(string url)
