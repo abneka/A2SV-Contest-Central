@@ -39,10 +39,12 @@ public class CreateContestCommandHandler : IRequestHandler<CreateContestCommand,
         // await _unitOfWork.Questions.CreateAsync(command.UpdateContest.Questions);
         // await _unitOfWork.Groups.CreateAsync(command.UpdateContest.Groups);
          
-        var new_contest = new ContestEntity();
-        new_contest.ContestGlobalId = ParseIdFromUrl(command.NewContest.ContestUrl);
-        new_contest.Name = command.NewContest.ContestName;
-        new_contest.ContestUrl = command.NewContest.ContestUrl;
+        var new_contest = new ContestEntity{
+            ContestGlobalId = ParseIdFromUrl(command.NewContest.ContestUrl),
+            Name = command.NewContest.ContestName,
+            ContestUrl = command.NewContest.ContestUrl
+        };
+
         var createdContest = await _unitOfWork.ContestRepository.CreateAsync(new_contest);
 
         return _mapper.Map<ContestResponseDto>(createdContest);

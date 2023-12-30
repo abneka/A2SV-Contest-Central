@@ -1,14 +1,13 @@
 using Application.Contracts.Infrastructure.ExternalServices;
 using Application.Contracts.Persistence;
-using Application.Models;
 using Domain.Entities;
+using FluentValidation;
 using MediatR;
-using Newtonsoft.Json;
 
 namespace Application.Features.CodeforcesApi.Commands
 {
     public class FetchContestDataFromApiCommandHandler
-        : IRequestHandler<FetchContestDataFromApiCommand, Unit>
+        : IRequestHandler<FetchContestDataFromApiCommand, bool>
     {
         private readonly ICodeforcesApiService _codeforcesApiService;
         private readonly IUnitOfWork _unitOfWork;
@@ -22,67 +21,70 @@ namespace Application.Features.CodeforcesApi.Commands
             _codeforcesApiService = codeforcesApiService;
         }
 
-        public async Task<Unit> Handle(
+        public async Task<bool> Handle(
             FetchContestDataFromApiCommand command,
             CancellationToken cancellationToken
         )
         {
-            string contest_id = command.ContestId;
-
             try
             {
-                var old_contest = await _unitOfWork.ContestRepository.GetContestByGlobalIdAsync(contest_id);
-                //first create contest
-                if(old_contest == null)
-                    return Unit.Value;
+                var validator = new FetchContestDataFromApiCommandValidator(
+                    _unitOfWork,
+                    _codeforcesApiService
+                );
+                var validationResult = await validator.ValidateAsync(command, cancellationToken);
+                if (!validationResult.IsValid)
+                {
+                    throw new ValidationException(validationResult.Errors);
+                }
+
+                string contest_id = command.ContestId;
 
                 //fetch data from codeforces using codeforces api
                 dynamic data = await _codeforcesApiService.GetContestData(contest_id);
-                
+
                 //status and phase
                 if (data.status == "FAILED")
-                    return Unit.Value;
-                
-                //if contest already fetched
-                if(old_contest.Status == "FINISHED"){
-                    return Unit.Value;
-                }
+                    return false;
 
-                var contestData = data.result.contest;
-                var update_contest = new ContestEntity
+                var updated_contest = new ContestEntity
                 {
-                    Type = contestData.type,
-                    DurationSeconds = contestData.durationSeconds,
-                    StartTimeSeconds = contestData.startTimeSeconds,
-                    RelativeTimeSeconds = contestData.relativeTimeSeconds,
-                    PreparedBy = contestData.preparedBy,
-                    WebsiteUrl = contestData.websiteUrl,
-                    Description = contestData.description ?? "",
-                    Difficulty = contestData.difficulty,
-                    Kind = contestData.kind,
-                    Status = contestData.phase,
-                    Season = contestData.season
+                    Type = data.result.contest.type,
+                    DurationSeconds = data.result.contest.durationSeconds,
+                    StartTimeSeconds = data.result.contest.startTimeSeconds,
+                    RelativeTimeSeconds = data.result.contest.relativeTimeSeconds,
+                    PreparedBy = data.result.contest.preparedBy,
+                    WebsiteUrl = data.result.contest.websiteUrl,
+                    Description = data.result.contest.description ?? "",
+                    Difficulty = data.result.contest.difficulty,
+                    Kind = data.result.contest.kind,
+                    Status = data.result.contest.phase,
+                    Season = data.result.contest.season
                 };
 
-                await _unitOfWork.ContestRepository.UpdateContestByGlobalIdAsync(contest_id, update_contest);
+                await _unitOfWork.ContestRepository.UpdateContestByGlobalIdAsync(
+                    contest_id,
+                    updated_contest
+                );
 
                 // if contest hasn't completed yet
-                if(data.result.contest.phase != "FINISHED"){
-                    return Unit.Value;
+                if (data.result.contest.phase == "CODING")
+                {
+                    return false;
                 }
 
-                // contest info
                 // questions info
                 // contest result
                 // standing
+                return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(
-                    $"An error occurred while fetching data from Codeforces: {ex.Message}"
-                );
+                Console.WriteLine("An error occurred while fetching data from Codeforces", ex);
+                throw new Exception("An error occurred while fetching data from Codeforces");
             }
-            return Unit.Value;
+            
         }
     }
 }
+
