@@ -8,9 +8,9 @@ namespace Application.Features.Contest.Commands.CreateContest;
 
 public class CreateContestCommandValidator : AbstractValidator<CreateContestCommand>
 {
-    public CreateContestCommandValidator(IUserRepository userRepository)
+    public CreateContestCommandValidator()
     {
-    
+    //groups  questions url  name
         
     }
 }

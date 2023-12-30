@@ -5,13 +5,10 @@ using Microsoft.AspNetCore.Http;
 namespace Application.Features.Contest.Commands.UpdateContest;
 
 public class UpdateContestCommandValidator : AbstractValidator<UpdateContestCommand>
-{
-    public IUserRepository _userRepository {get; set;}
-    
-    public UpdateContestCommandValidator(IUserRepository userRepository)
+{    
+    public UpdateContestCommandValidator()
     {
-        _userRepository = userRepository;
+        //groups  questions url  name
       
     }
-
 }

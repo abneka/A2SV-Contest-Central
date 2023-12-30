@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Application.Features.Contest.Queries.GetAll;
 using Application.Features.Contest.Command.Create;
+using Application.DTOs.Common;
 
 namespace WebApi.Controllers
 {
@@ -22,12 +23,14 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("GetAll")]
-        public async Task<ActionResult<IReadOnlyList<ContestResponseDto>>> GetAll()
+        [Route("GetContests")]
+        public async Task<ActionResult<PaginatedResult<ContestResponseDto>>> GetContests([FromQuery] int page = 1, [FromQuery] int page_size = 10)
         {
-            var contests = await _mediator.Send(new GetAllContestsRequest());
-            return Ok(contests);
+            var paginatedContests = await _mediator.Send(new GetAllContestsRequest{Page=page, PageSize = page_size});
+            
+            return Ok(paginatedContests);
         }
+
 
         [HttpGet]
         [Route("GetSingleContest/{contestId:int}")]

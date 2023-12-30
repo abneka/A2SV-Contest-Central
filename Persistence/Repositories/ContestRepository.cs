@@ -1,5 +1,7 @@
 using Application.Contracts.Persistence;
 using Domain.Entities;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence.Repositories.Common;
 
 
@@ -7,26 +9,26 @@ namespace Persistence.Repositories
 {
     public class ContestRepository : GenericRepository<ContestEntity>, IContestRepository
     {
+        private AppDBContext _dbContext;
         public ContestRepository(AppDBContext dbContext) : base(dbContext)
         {
+            _dbContext = dbContext;
         }
 
-        public Task<IReadOnlyList<ContestEntity>> GetContestOfTeam(Guid teamId)
+        public async Task<bool> ExistsContestGlobalIdAsync(string contest_id)
         {
-            throw new NotImplementedException();
+            var item = await GetContestByGlobalIdAsync(contest_id);
+            return item != null;
         }
 
-        public Task<IReadOnlyList<ContestEntity>> GetContestsOfGroup(Guid groupId)
+        public async Task<ContestEntity> GetContestByGlobalIdAsync(string contest_id)
         {
-            throw new NotImplementedException();
+            var item = await _dbContext.Contests
+            .Where(contest => contest.ContestGlobalId == contest_id).FirstOrDefaultAsync();
+            return item;
         }
 
-        public Task<IReadOnlyList<ContestEntity>> GetContestsOfLocation(Guid locationId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IReadOnlyList<ContestEntity>> GetContestsOfUser(Guid userId)
+        public Task<Unit> UpdateContestByGlobalIdAsync(string contest_id, ContestEntity update_contest)
         {
             throw new NotImplementedException();
         }
