@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Threading.Tasks;
-using Application.Contracts.Persistence;
+﻿using Application.Contracts.Persistence;
 using Application.DTOs.Contest;
-using Application.Exceptions;
 using Application.Features.Contest.Command.Create;
 using AutoMapper;
 using Domain.Entities;
@@ -27,8 +21,8 @@ public class CreateContestCommandHandler : IRequestHandler<CreateContestCommand,
 
     public async Task<ContestResponseDto> Handle(CreateContestCommand command, CancellationToken cancellationToken)
     {
-        var validator = new CreateContestCommandValidator();
-        var validationResult = await validator.ValidateAsync(command, cancellationToken);
+        var validator = new CreateContestCommandValidator(_unitOfWork);
+        var validationResult = await validator.ValidateAsync(command.NewContest, cancellationToken);
         if (!validationResult.IsValid)
         {
             throw new ValidationException(validationResult.Errors);

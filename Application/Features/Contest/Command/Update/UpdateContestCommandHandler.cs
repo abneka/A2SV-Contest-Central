@@ -24,7 +24,7 @@ public class UpdateContestCommandHandler : IRequestHandler<UpdateContestCommand,
 
     public async Task<Unit> Handle(UpdateContestCommand command, CancellationToken cancellationToken)
     {
-        var validator = new UpdateContestCommandValidator();
+        var validator = new UpdateContestCommandValidator(_unitOfWork);
         var validationResult = await validator.ValidateAsync(command);
 
         if (!validationResult.IsValid)
