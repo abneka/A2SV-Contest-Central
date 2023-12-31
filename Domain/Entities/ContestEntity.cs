@@ -8,18 +8,16 @@ namespace Domain.Entities
         public string ContestUrl { get; set; } = null!;
         public string Name { get; set; } = string.Empty;
         public string Type { get; set; } = string.Empty;
-        public TimeSpan Duration { get; set; }
-        public DateTime StartTime { get; set; }
-        public TimeSpan RelativeTime { get; set; }
+        public int DurationSeconds { get; set; }
+        public int StartTimeSeconds { get; set; }
+        public int RelativeTimeSeconds { get; set; }
         public string PreparedBy { get; set; } = string.Empty;
         public string WebsiteUrl { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Difficulty { get; set; } = string.Empty;
         public string Kind { get; set; } = string.Empty;
-        public string Country { get; set; } = string.Empty;
-        public string City { get; set; } = string.Empty;
         public string Season { get; set; } = string.Empty;
-        public bool Status { get; set; }
+        public string Status { get; set; } = "Upcoming";
         
         public List<QuestionEntity> Questions { get; set; } = new List<QuestionEntity>();
         public List<ContestGroupEntity> ContestGroups { get; set; } = new List<ContestGroupEntity>();
