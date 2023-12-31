@@ -14,9 +14,12 @@ public class UserContestResultRepository : GenericRepository<UserContestResultEn
         _dbContext = dbContext;
     }
 
-    public async Task<UserContestResultEntity> GetUserContestResultByUserIdAsync(Guid userId)
+    // get a user's all contest results
+    public async Task<List<UserContestResultEntity>> GetUserContestResultsByUserIdAsync(Guid userId)
     {
-        return await _dbContext.UserContestResults.FirstOrDefaultAsync(x => x.UserId == userId);
+        var res = await _dbContext.UserContestResults.Where(ucr => ucr.UserId == userId).ToListAsync();
+
+        return res;
     }
 
     public async Task<List<UserContestResultEntity>> GetUserContestResultByGroupIdAsync(Guid groupId)
@@ -29,9 +32,10 @@ public class UserContestResultRepository : GenericRepository<UserContestResultEn
         throw new NotImplementedException();
     }
 
-    public async Task<List<UserContestResultEntity>> GetUserContestResultByUserIdAndContestIdAsync(Guid userId, Guid contestId)
+    public async Task<UserContestResultEntity> GetUserContestResultByUserIdAndContestIdAsync(Guid userId, Guid contestId)
     {
-        return await _dbContext.UserContestResults.Where(x => x.UserId == userId && x.ContestId == contestId)
-            .ToListAsync();
+        var res = await _dbContext.UserContestResults.FirstOrDefaultAsync(ucr => ucr.UserId == userId && ucr.ContestId == contestId);
+
+        return res;
     }
 }
