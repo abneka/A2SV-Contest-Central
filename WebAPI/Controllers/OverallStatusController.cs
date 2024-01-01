@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Persistence.Repositories;
 
 namespace WebAPI.Controllers;
 
@@ -6,10 +7,10 @@ namespace WebAPI.Controllers;
 public class OverallStatusController : ControllerBase
 {
     [HttpGet]
-    [Route("api/overall-status")]
+    [Route("overall-status")]
     // object of totalContest, totalGroups, totalQuestions, totalMembers, totalHours for the current year
-    public async Task<IActionResult> GetOverallStatus()
+    public async Task<IActionResult> OverallStatus()
     {
-        return Ok(await GetOverallStatus());
+        return Ok(new {temp=20});
     }
 }

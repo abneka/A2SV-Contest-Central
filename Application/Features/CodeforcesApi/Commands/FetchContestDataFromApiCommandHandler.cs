@@ -47,25 +47,25 @@ namespace Application.Features.CodeforcesApi.Commands
                 if (data.status == "FAILED")
                     return false;
 
-                var updated_contest = new ContestEntity
-                {
-                    Type = data.result.contest.type,
-                    DurationSeconds = data.result.contest.durationSeconds,
-                    StartTimeSeconds = data.result.contest.startTimeSeconds,
-                    RelativeTimeSeconds = data.result.contest.relativeTimeSeconds,
-                    PreparedBy = data.result.contest.preparedBy,
-                    WebsiteUrl = data.result.contest.websiteUrl,
-                    Description = data.result.contest.description ?? "",
-                    Difficulty = data.result.contest.difficulty,
-                    Kind = data.result.contest.kind,
-                    Status = data.result.contest.phase,
-                    Season = data.result.contest.season
-                };
+                // var updated_contest = new ContestEntity
+                // {
+                //     Type = data.result.contest.type,
+                //     DurationSeconds = data.result.contest.durationSeconds,
+                //     StartTimeSeconds = data.result.contest.startTimeSeconds,
+                //     RelativeTimeSeconds = data.result.contest.relativeTimeSeconds,
+                //     PreparedBy = data.result.contest.preparedBy,
+                //     WebsiteUrl = data.result.contest.websiteUrl  ?? "",
+                //     Description = data.result.contest.description ?? "",
+                //     Difficulty = data.result.contest.difficulty ?? "",
+                //     Kind = data.result.contest.kind ?? "",
+                //     Status = data.result.contest.phase ?? "",
+                //     Season = data.result.contest.season ?? ""
+                // };
 
-                await _unitOfWork.ContestRepository.UpdateContestByGlobalIdAsync(
-                    contest_id,
-                    updated_contest
-                );
+                // await _unitOfWork.ContestRepository.UpdateContestByGlobalIdAsync(
+                //     contest_id,
+                //     updated_contest
+                // );
 
                 // if contest hasn't completed yet
                 if (data.result.contest.phase == "CODING")

@@ -1,6 +1,9 @@
-﻿namespace Application.DTOs.ContestGroup;
+﻿using Application.DTOs.Common;
 
-public class ContestGroupRequestDto
+namespace Application.DTOs.ContestGroup;
+
+public class ContestGroupRequestDto : BaseDto
 {
-    
+    public Guid ContestId { get; set; }
+    public Guid GroupId { get; set; }
 }

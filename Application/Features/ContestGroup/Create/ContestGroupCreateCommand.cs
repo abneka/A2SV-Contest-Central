@@ -1,6 +1,11 @@
-﻿namespace Application.Features.ContestGroup.Create;
+﻿using Application.Contracts.Persistence;
+using Application.DTOs.ContestGroup;
+using AutoMapper;
+using MediatR;
 
-public class ContestGroupCreateCommand
-{
-    
+namespace Application.Features.ContestGroup.Create;
+
+public class ContestGroupCreateCommand : IRequest<ContestGroupResponseDto>
+{ 
+    public ContestGroupRequestDto ContestGroupRequestDto { get; set; } = null!;
 }
