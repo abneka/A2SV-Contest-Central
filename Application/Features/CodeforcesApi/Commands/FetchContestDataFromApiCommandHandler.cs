@@ -94,7 +94,7 @@ namespace Application.Features.CodeforcesApi.Commands
                 Console.WriteLine("before contestQuestions");
                 Console.WriteLine(contestQuestions[0].Name);
                 
-                // todo: update question names from the contest api
+                // update question names from the contest api
                 for (int i = 0; i < contestQuestions.Count; i++)
                 {
                     var questionFromDb = _unitOfWork.QuestionRepository.GetByIdAsync(contestQuestions[i].Id).Result;
@@ -130,7 +130,7 @@ namespace Application.Features.CodeforcesApi.Commands
                     for (int i=0; i<userQuestions.Count; i++)
                     {
                         
-                        // todo: update question info into database
+                        // update question info into database
                         var userQuestion = userQuestions[i];
                         Guid questionId = contestQuestions[i].Id;
                         
