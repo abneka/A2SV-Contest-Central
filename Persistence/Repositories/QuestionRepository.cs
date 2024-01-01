@@ -14,10 +14,36 @@ public class QuestionRepository : GenericRepository<QuestionEntity>, IQuestionRe
         _dbContext = dbContext;
     }
 
-    public async Task<bool> ExistsByGlobalQuestionUrl(string globalQuestionUrl)
+    public async Task<GlobalQuestionEntity> ExistsByGlobalQuestionUrl(string globalQuestionUrl)
     {
-        return await _dbContext.Questions.AnyAsync(q => q.GlobalQuestionUrl == globalQuestionUrl);
+        //first check if the global question exists
+        //then return all the values found in the global question
+        
+        bool globalQuestionExists = await _dbContext.Questions.AnyAsync(gq => gq.GlobalQuestionUrl == globalQuestionUrl);
+        
+        if (globalQuestionExists)
+        {
+            var question = await _dbContext.Questions
+                .Where(question => question.GlobalQuestionUrl == globalQuestionUrl)
+                .Include(question => question.Contest.ContestGroups)
+                .ThenInclude(contestGroupEntity => contestGroupEntity.Group).ToListAsync();
+            
+            var globalQuestion = new GlobalQuestionEntity
+            {
+                Status = await _dbContext.Questions.AnyAsync(gq => gq.GlobalQuestionUrl == globalQuestionUrl),
+                // get distinct groups from users who have used the question
+                Group = question[0].Contest.ContestGroups.Select(group => group.Group.Name).Distinct().ToList(),
+                NumberOfTimesUsed = question.Count  
+            };
+            return globalQuestion;
+        }
+        else
+        {
+            return null;
+        }
     }
+    
+
     
     public async Task<IReadOnlyList<QuestionEntity>> GetQuestionsFromContestAsync(Guid contestId)
     {

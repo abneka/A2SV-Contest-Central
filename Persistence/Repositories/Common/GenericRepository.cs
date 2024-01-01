@@ -57,6 +57,14 @@ namespace Persistence.Repositories.Common
             return Unit.Value;
         }
 
+        //create new entity by list
+        public async Task<Unit> CreateListAsync(IReadOnlyList<T> entities)
+        {
+            await _dbContext.Set<T>().AddRangeAsync(entities);
+            await _dbContext.SaveChangesAsync();
+            
+            return Unit.Value;
+        }
         public async Task<IReadOnlyList<T>> GetPagedEntitiesAsync(int skip, int take)
         {
             return await _dbContext
