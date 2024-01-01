@@ -47,7 +47,13 @@ public class QuestionRepository : GenericRepository<QuestionEntity>, IQuestionRe
     
     public async Task<IReadOnlyList<QuestionEntity>> GetQuestionsFromContestAsync(Guid contestId)
     {
-        return await _dbContext.Questions.Where(q => q.ContestId == contestId).ToListAsync();
+        // sort by q.Index
+        var questions = await _dbContext.Questions
+            .Where(q => q.ContestId == contestId)
+            .OrderBy(q => q.Index)
+            .ToListAsync();
+
+        return questions;
     }
     
 

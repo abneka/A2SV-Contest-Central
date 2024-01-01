@@ -31,6 +31,21 @@ namespace Persistence
             modelBuilder.Entity<UserEntity>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
+
+            modelBuilder.Entity<UserContestResultEntity>()
+                .HasOne(u => u.User)
+                .WithMany(u => u.UserContestResults)
+                .HasForeignKey(u => u.UserId);
+
+            modelBuilder.Entity<UserQuestionResultEntity>()
+                .HasOne(u => u.Question)
+                .WithMany(u => u.UserQuestionResults)
+                .HasForeignKey(u => u.QuestionId);
+
+            modelBuilder.Entity<UserQuestionResultEntity>()
+                .HasOne(u => u.User)
+                .WithMany(u => u.UserQuestionResults)
+                .HasForeignKey(u => u.UserId);
         }
         
     }
