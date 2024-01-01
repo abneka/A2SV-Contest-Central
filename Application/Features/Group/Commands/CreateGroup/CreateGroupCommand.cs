@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Group;
+﻿using Application.DTOs.ContestGroup;
+using Application.DTOs.Group;
 using MediatR;
 
 namespace Application.Features.Group.Commands.CreateGroup;

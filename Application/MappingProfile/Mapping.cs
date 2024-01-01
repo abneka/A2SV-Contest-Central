@@ -1,4 +1,4 @@
-using Application.DTOs.GlobalQuestion;
+using Application.DTOs.Contest;
 using AutoMapper;
 using Domain.Entities;
 using Application.DTOs.User;
@@ -14,115 +14,152 @@ namespace Application.MappingProfile
 {
     public class MappingProfile : Profile
     {
-        public MappingProfile() 
+        public MappingProfile()
         {
-            CreateMap<UserEntity, UserRequestDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int and 0)
+            CreateMap<UserEntity, UserRequestDto>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
                 {
-                    return false;
-                }
-                return srcMember != null;
-            }));
-            
-            CreateMap<UserEntity, UserResponseDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int and 0)
-                {
-                    return false;
-                }
-                return srcMember != null;
-            }));
+                    if (srcMember is int and 0)
+                    {
+                        return false;
+                    }
 
-            
-            CreateMap<GroupEntity, GroupDto>().ReverseMap().ForAllMembers(opts=> opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int and 0)
-                {
-                    return false;
-                }
-                return srcMember != null;
-            })); 
-            
-            CreateMap<GroupEntity, GroupResponseDto>().ReverseMap().ForAllMembers(opts=> opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int and 0)
-                {
-                    return false;
-                }
-                return srcMember != null;
-            }));
-            
-            CreateMap<LocationEntity, LocationDto>().ReverseMap().ForAllMembers(opts=> opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int and 0)
-                {
-                    return false;
-                }
-                return srcMember != null;
-            }));
-            
-            CreateMap<LocationEntity, LocationResponseDto>().ReverseMap().ForAllMembers(opts=> opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int and 0)
-                {
-                    return false;
-                }
-                return srcMember != null;
-            }));
-            
-            CreateMap<UserQuestionsResultResponseDto, UserQuestionResultEntity>().ReverseMap().ForAllMembers(opts=> opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int and 0)
-                {
-                    return false;
-                }
-                return srcMember != null;
-            }));
-            
-            CreateMap<TeamQuestionResultResponseDto, TeamQuestionResultEntity>().ReverseMap().ForAllMembers(opts=> opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int and 0)
-                {
-                    return false;
-                }
-                return srcMember != null;
-            }));
-            
-            CreateMap<TeamContestResultEntity, TeamContestResultResponseDto>().ReverseMap().ForAllMembers(opts=> opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int and 0)
-                {
-                    return false;
-                }
-                return srcMember != null;
-            }));
-            
-            CreateMap<UserContestResultEntity, UserContestResultResponseDto>().ReverseMap().ForAllMembers(opts=> opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int and 0)
-                {
-                    return false;
-                }
-                return srcMember != null;
-            }));
-            
-            CreateMap<GlobalQuestionEntity, GlobalQuestionDto>().ReverseMap().ForAllMembers(opts=> opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int and 0 || srcMember is string and "")
-                {
-                    return false;
-                }
-                return srcMember != null;
-            }));
-                
-            CreateMap<UserTypeEntity, UserTypeDto>().ReverseMap().ForAllMembers(opts=> opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int and 0)
-                {
-                    return false;
-                }
-                return srcMember != null;
-            }));
-            
-            CreateMap<UserTypeEntity, UserTypeResponseDto>().ReverseMap().ForAllMembers(opts=> opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int and 0)
-                {
-                    return false;
-                }
+                    return srcMember != null;
+                }));
 
-                return srcMember != null;
-            }));
+            CreateMap<UserEntity, UserResponseDto>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is int and 0)
+                    {
+                        return false;
+                    }
 
+                    return srcMember != null;
+                }));
+
+
+            CreateMap<GroupEntity, GroupDto>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is int and 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
+
+            CreateMap<GroupEntity, GroupResponseDto>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is int and 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
+
+            CreateMap<LocationEntity, LocationDto>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is int and 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
+
+            CreateMap<LocationEntity, LocationResponseDto>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is int and 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
+
+            CreateMap<UserQuestionsResultResponseDto, UserQuestionResultEntity>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is int and 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
+
+            CreateMap<TeamQuestionResultResponseDto, TeamQuestionResultEntity>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is int and 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
+
+            CreateMap<TeamContestResultEntity, TeamContestResultResponseDto>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is int and 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
+
+            CreateMap<UserContestResultEntity, UserContestResultResponseDto>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is int and 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
+
+            CreateMap<UserTypeEntity, UserTypeDto>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is int and 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
+
+            CreateMap<UserTypeEntity, UserTypeResponseDto>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is int and 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
+
+            CreateMap<ContestEntity, ContestResponseDto>()
+                .ReverseMap()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is int && (int)srcMember == 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
         }
-
     }
 }

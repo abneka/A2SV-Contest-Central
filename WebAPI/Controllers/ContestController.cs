@@ -33,7 +33,7 @@ namespace WebApi.Controllers
 
 
         [HttpGet]
-        [Route("GetSingleContest/{contestId:int}")]
+        [Route("GetSingleContest/{contestId:guid}")]
         public async Task<ActionResult<ContestResponseDto>> GetSingleContest(Guid contestId)
         {
             var contest = await _mediator.Send(new GetSingleContestRequest{ContestId = contestId});
