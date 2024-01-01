@@ -16,7 +16,7 @@ namespace Persistence.Repositories.Common
         public async Task<T> CreateAsync(T entity)
         {
             var item = await _dbContext.Set<T>().AddAsync(entity);
-        
+
             await _dbContext.SaveChangesAsync();
             return item.Entity;
         }
@@ -32,7 +32,7 @@ namespace Persistence.Repositories.Common
         public async Task<bool> Exists(Guid id)
         {
             var item = await _dbContext.Set<T>().FindAsync(id);
-            
+
             return item != null;
         }
 
@@ -53,7 +53,16 @@ namespace Persistence.Repositories.Common
             // _dbContext.Entry(item).State = EntityState.Modified;
             _dbContext.Entry(item).CurrentValues.SetValues(entity);
             await _dbContext.SaveChangesAsync();
-            return Unit.Value;  
+            return Unit.Value;
+        }
+
+        //create new entity by list
+        public async Task<Unit> CreateListAsync(IReadOnlyList<T> entities)
+        {
+            await _dbContext.Set<T>().AddRangeAsync(entities);
+            await _dbContext.SaveChangesAsync();
+            
+            return Unit.Value;
         }
     }
 }
