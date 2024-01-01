@@ -7,6 +7,7 @@ using Application.DTOs.TeamContestResult;
 using Application.DTOs.TeamQuestionResult;
 using Application.DTOs.UserContestResult;
 using Application.DTOs.UserQuestionResult;
+using Application.DTOs.UserType;
 
 namespace Application.MappingProfile
 {
@@ -88,6 +89,22 @@ namespace Application.MappingProfile
             }));
             
             CreateMap<UserContestResultEntity, UserContestResultResponseDto>().ReverseMap().ForAllMembers(opts=> opts.Condition((src, dest, srcMember) => {
+                if (srcMember is int and 0)
+                {
+                    return false;
+                }
+                return srcMember != null;
+            }));
+            
+            CreateMap<UserTypeEntity, UserTypeDto>().ReverseMap().ForAllMembers(opts=> opts.Condition((src, dest, srcMember) => {
+                if (srcMember is int and 0)
+                {
+                    return false;
+                }
+                return srcMember != null;
+            }));
+            
+            CreateMap<UserTypeEntity, UserTypeResponseDto>().ReverseMap().ForAllMembers(opts=> opts.Condition((src, dest, srcMember) => {
                 if (srcMember is int and 0)
                 {
                     return false;
