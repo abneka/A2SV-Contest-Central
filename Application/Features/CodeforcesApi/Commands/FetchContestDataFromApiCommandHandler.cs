@@ -26,18 +26,18 @@ namespace Application.Features.CodeforcesApi.Commands
             CancellationToken cancellationToken
         )
         {
+            var validator = new FetchContestDataFromApiCommandValidator(
+                _unitOfWork,
+                _codeforcesApiService
+            );
+            var validationResult = await validator.ValidateAsync(command, cancellationToken);
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
             try
             {
-                var validator = new FetchContestDataFromApiCommandValidator(
-                    _unitOfWork,
-                    _codeforcesApiService
-                );
-                var validationResult = await validator.ValidateAsync(command, cancellationToken);
-                if (!validationResult.IsValid)
-                {
-                    throw new ValidationException(validationResult.Errors);
-                }
-
                 string contest_id = command.ContestId;
 
                 //fetch data from codeforces using codeforces api
@@ -49,17 +49,17 @@ namespace Application.Features.CodeforcesApi.Commands
 
                 var updated_contest = new ContestEntity
                 {
-                    Type = data.result.contest.type,
+                    Type = data.result.contest.type ?? "",
                     DurationSeconds = data.result.contest.durationSeconds,
                     StartTimeSeconds = data.result.contest.startTimeSeconds,
                     RelativeTimeSeconds = data.result.contest.relativeTimeSeconds,
                     PreparedBy = data.result.contest.preparedBy,
-                    WebsiteUrl = data.result.contest.websiteUrl,
+                    WebsiteUrl = data.result.contest.websiteUrl ?? "",
                     Description = data.result.contest.description ?? "",
                     Difficulty = data.result.contest.difficulty,
-                    Kind = data.result.contest.kind,
+                    Kind = data.result.contest.kind ?? "",
                     Status = data.result.contest.phase,
-                    Season = data.result.contest.season
+                    Season = data.result.contest.season ?? ""
                 };
 
                 await _unitOfWork.ContestRepository.UpdateContestByGlobalIdAsync(
@@ -68,10 +68,10 @@ namespace Application.Features.CodeforcesApi.Commands
                 );
 
                 // if contest hasn't completed yet
-                if (data.result.contest.phase == "CODING")
-                {
-                    return false;
-                }
+                // if (data.result.contest.phase == "CODING")
+                // {
+                //     return false;
+                // }
 
                 // questions info
                 // contest result
@@ -83,8 +83,6 @@ namespace Application.Features.CodeforcesApi.Commands
                 Console.WriteLine("An error occurred while fetching data from Codeforces", ex);
                 throw new Exception("An error occurred while fetching data from Codeforces");
             }
-            
         }
     }
 }
-
