@@ -1,10 +1,11 @@
 ﻿using Application.Contracts.Persistence;
+using Application.DTOs.GlobalQuestion;
 using MediatR;
 using AutoMapper;
 
 namespace Application.Features.Question.Queries.CheckDuplicate;
 
-public class CheckDuplicateQuestionHandler : IRequestHandler<CheckDuplicateQuestionRequest, bool>
+public class CheckDuplicateQuestionHandler : IRequestHandler<CheckDuplicateQuestionRequest, GlobalQuestionDto>
 {
     private readonly IQuestionRepository _questionRepository;
     private readonly IMapper _mapper;
@@ -15,11 +16,11 @@ public class CheckDuplicateQuestionHandler : IRequestHandler<CheckDuplicateQuest
         _mapper = mapper;
     }
     
-    public async Task<bool> Handle(CheckDuplicateQuestionRequest request, CancellationToken cancellationToken)
+    public async Task<GlobalQuestionDto> Handle(CheckDuplicateQuestionRequest request, CancellationToken cancellationToken)
     {
         var question = await _questionRepository.ExistsByGlobalQuestionUrl(request.GlobalQuestionUrl);
         
-        return question;
+        return _mapper.Map<GlobalQuestionDto>(question);
     }
     
     

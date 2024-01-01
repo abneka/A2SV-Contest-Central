@@ -11,6 +11,7 @@ public class QuestionEntity : BaseDomainEntity
     public string Index { get; set; } = string.Empty;
     
     public Guid ContestId { get; set; }
+    
     public ContestEntity Contest { get; set; } = null!;
     
     public List<UserQuestionResultEntity> UserQuestionResults { get; set; } = new List<UserQuestionResultEntity>();
