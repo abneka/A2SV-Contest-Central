@@ -24,4 +24,10 @@ public interface IGenericRepository<T> where T : class
     
     // check if exists
     public Task<bool> Exists(Guid id);
+
+    // get paginated data based on page and page_size
+    public Task<IReadOnlyList<T>> GetPagedEntitiesAsync(int skip, int take);
+
+    // get total count of any entity
+    public Task<int> GetTotalEntitiesCount();
 }

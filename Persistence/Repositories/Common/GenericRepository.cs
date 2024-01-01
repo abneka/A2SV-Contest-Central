@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repositories.Common
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T>
+        where T : class
     {
         private readonly AppDBContext _dbContext;
 
@@ -63,6 +64,20 @@ namespace Persistence.Repositories.Common
             await _dbContext.SaveChangesAsync();
             
             return Unit.Value;
+        }
+        public async Task<IReadOnlyList<T>> GetPagedEntitiesAsync(int skip, int take)
+        {
+            return await _dbContext
+                .Set<T>()
+                .OrderBy(c => c.GetType().GetProperty("Id").GetValue(c)) 
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetTotalEntitiesCount()
+        {
+            return await _dbContext.Set<T>().CountAsync();
         }
     }
 }

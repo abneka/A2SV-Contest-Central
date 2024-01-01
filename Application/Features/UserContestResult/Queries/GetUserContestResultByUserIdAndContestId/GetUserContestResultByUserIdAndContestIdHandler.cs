@@ -20,7 +20,7 @@ public class GetUserContestResultByUserIdAndContestIdHandler : IRequestHandler<G
     public async Task<UserContestResultResponseDto> Handle(GetUserContestResultByUserIdAndContestId request, CancellationToken cancellationToken)
     {
         var validator = new GetUserContestResultByUserIdAndContestIdValidator();
-        var validationResult = validator.Validate(request);
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
         {

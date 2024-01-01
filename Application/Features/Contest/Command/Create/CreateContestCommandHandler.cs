@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Threading.Tasks;
-using Application.Contracts.Persistence;
+﻿using Application.Contracts.Persistence;
 using Application.DTOs.Contest;
-using Application.Exceptions;
 using Application.Features.Contest.Command.Create;
 using AutoMapper;
 using Domain.Entities;
@@ -17,33 +11,45 @@ namespace Application.Features.Contest.Commands.CreateContest;
 public class CreateContestCommandHandler : IRequestHandler<CreateContestCommand,ContestResponseDto>
 {
     private readonly IMapper _mapper;
-    private readonly IContestRepository _contestRepository;
-    private readonly IUserRepository _userRepository;
+    private readonly IUnitOfWork _unitOfWork;
     
-    public CreateContestCommandHandler(IContestRepository contestRepository, IUserRepository userRepository, IMapper mapper)
+    public CreateContestCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _mapper = mapper;
-        _contestRepository = contestRepository;
-        _userRepository = userRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<ContestResponseDto> Handle(CreateContestCommand command, CancellationToken cancellationToken)
     {
-        var validator = new CreateContestCommandValidator(_userRepository);
-        var validationResult = await validator.ValidateAsync(command, cancellationToken);
+        var validator = new CreateContestCommandValidator(_unitOfWork);
+        var validationResult = await validator.ValidateAsync(command.NewContest, cancellationToken);
         if (!validationResult.IsValid)
         {
             throw new ValidationException(validationResult.Errors);
         }
 
-        // extract questions
-        // user transaction to make sure all questions and the contest are created
-        // we need another handler for fetching contest standing using the api  
-        var new_contest = _mapper.Map<ContestEntity>(command.NewContest);
-        // contest.UserId = ;
+        // insert Universities
+        // insert Countries
+        // await _unitOfWork.Questions.CreateAsync(command.UpdateContest.Questions);
+        // await _unitOfWork.Groups.CreateAsync(command.UpdateContest.Groups);
+         
+        var new_contest = new ContestEntity{
+            ContestGlobalId = ParseIdFromUrl(command.NewContest.ContestUrl),
+            Name = command.NewContest.ContestName,
+            ContestUrl = command.NewContest.ContestUrl
+        };
 
-        var createdContest = await _contestRepository.CreateAsync(new_contest);
+        var createdContest = await _unitOfWork.ContestRepository.CreateAsync(new_contest);
 
         return _mapper.Map<ContestResponseDto>(createdContest);
+    }
+
+    public static string ParseIdFromUrl(string url)
+    {
+        url = Uri.UnescapeDataString(url);
+        int index = url.LastIndexOf('/');
+        string id = url.Substring(index + 1);
+
+        return id;
     }
 }

@@ -27,7 +27,7 @@ public class GetUserContestResultsByUserIdHandler : IRequestHandler<GetUserConte
             throw new ValidationException(validationResult.Errors);
         }
         
-        var userContestResults = await _unitOfWork.UserContestResultRepository.GetUserContestResultByUserIdAsync(request.UserId);
+        var userContestResults = await _unitOfWork.UserContestResultRepository.GetUserContestResultsByUserIdAsync(request.UserId);
         
         return _mapper.Map<List<UserContestResultResponseDto>>(userContestResults);
     }

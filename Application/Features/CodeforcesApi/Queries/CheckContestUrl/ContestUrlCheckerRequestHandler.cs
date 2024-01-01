@@ -1,50 +1,36 @@
 using System.Net.Http.Json;
 using Application.Contracts.Infrastructure.ExternalServices;
+using Application.Contracts.Persistence;
+using FluentValidation;
 using MediatR;
-using Newtonsoft.Json;
 
 namespace Application.Features.CodeforcesApi.Queries.CheckContestUrl
 {
     public class ContestUrlCheckerRequestHandler : IRequestHandler<ContestUrlCheckerRequest, bool>
     {
+        private IUnitOfWork _unitOfWork;
         private ICodeforcesApiService _codeforcesApiService;
 
-        public ContestUrlCheckerRequestHandler(ICodeforcesApiService codeforcesApiService)
+        public ContestUrlCheckerRequestHandler(
+            ICodeforcesApiService codeforcesApiService,
+            IUnitOfWork unitOfWork
+        )
         {
+            _unitOfWork = unitOfWork;
             _codeforcesApiService = codeforcesApiService;
         }
 
-        public async Task<bool> Handle(
-            ContestUrlCheckerRequest request,
-            CancellationToken cancellationToken
-        )
+        public async Task<bool> Handle(ContestUrlCheckerRequest request, CancellationToken cancellationToken)
         {
-            string contest_id = ParseIdFromUrl(request.ContestUrl);
-            Console.WriteLine(contest_id);
-            if(contest_id == "NotFound") return false;
-            // string responseData = await _codeforcesApiService.GetContestData(contest_id);
-            // dynamic data = JsonConvert.DeserializeObject(responseData)!;
+            var validator = new ContestUrlCheckerRequestValidator(_unitOfWork, _codeforcesApiService);
+            var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
-            // if(data.status == "Failed"){
-            //     Console.WriteLine(data.comment);
-            //     return false;
-            // }
-
-            return true;
-        }
-
-        static string ParseIdFromUrl(string url)
-        {
-            url = Uri.UnescapeDataString(url);
-            int index = url.LastIndexOf('/');
-
-            if (index >= 0 && index < url.Length - 1)
+            if (!validationResult.IsValid)
             {
-                string id = url.Substring(index + 1);
-                return id;
+                throw new ValidationException(validationResult.Errors);
             }
 
-            return "NotFound";
+            return true;
         }
     }
 }
