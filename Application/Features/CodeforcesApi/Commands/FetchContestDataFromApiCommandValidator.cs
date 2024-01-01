@@ -30,8 +30,8 @@ namespace Application.Features.CodeforcesApi.Commands
 
         private async Task<bool> BeValidContestId(string contest_id, CancellationToken cancellationToken)
         {
-            var contest = await _unitOfWork.ContestRepository.GetContestByGlobalIdAsync(contest_id);
-            return contest != null;
+            var contest = await _unitOfWork.ContestRepository.ExistsContestGlobalIdAsync(contest_id);
+            return !contest;
         }
 
         private async Task<bool> IsContestFetched(string contest_id, CancellationToken cancellationToken)
