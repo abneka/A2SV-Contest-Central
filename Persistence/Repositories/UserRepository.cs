@@ -29,5 +29,6 @@ namespace Persistence.Repositories
         {
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.CodeforcesHandle == codeforcesHandle);
         }
+        
     }
 }
