@@ -17,7 +17,7 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         [Route("fetch/{contest_id}")]
-        public async Task<IActionResult> FetchContest(string contest_id)
+        public async Task<IActionResult> FetchContest(Guid contest_id)
         {
             await _mediator.Send(new FetchContestDataFromApiCommand { ContestId = contest_id });
             return Ok();

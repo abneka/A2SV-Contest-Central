@@ -25,10 +25,12 @@ namespace Persistence.Repositories
             return _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public async Task<UserEntity?> GetUserIdByCodeforcesHandle(string codeforcesHandle)
+        public async Task<Guid> GetUserIdByCodeforcesHandle(string codeforcesHandle)
         {
-            return await _dbContext.Users.FirstOrDefaultAsync(u => u.CodeforcesHandle == codeforcesHandle);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.CodeforcesHandle == codeforcesHandle);
+            return user.Id;
         }
+        
         
     }
 }
