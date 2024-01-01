@@ -3,6 +3,8 @@ using Application.Contracts.Persistence;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Application.Features.CodeforcesApi.Commands
 {
@@ -46,32 +48,59 @@ namespace Application.Features.CodeforcesApi.Commands
                 //status and phase
                 if (data.status == "FAILED")
                     return false;
+                
+                // JObject? contestObject = data.result.contest as JObject;
+                //
+                // var updated_contest = contestObject?.ToObject<ContestEntity>();
+                JObject contestObject = data.result.contest;
+                Console.WriteLine("here: ");
+                Console.WriteLine(data.GetType());
+                Console.WriteLine(data.result.contest);
 
                 var updated_contest = new ContestEntity
                 {
-                    Type = data.result.contest.type ?? "",
-                    DurationSeconds = data.result.contest.durationSeconds,
-                    StartTimeSeconds = data.result.contest.startTimeSeconds,
-                    RelativeTimeSeconds = data.result.contest.relativeTimeSeconds,
-                    PreparedBy = data.result.contest.preparedBy,
-                    WebsiteUrl = data.result.contest.websiteUrl ?? "",
-                    Description = data.result.contest.description ?? "",
-                    Difficulty = data.result.contest.difficulty,
-                    Kind = data.result.contest.kind ?? "",
-                    Status = data.result.contest.phase,
-                    Season = data.result.contest.season ?? ""
+                    Type = contestObject["type"]?.ToString() ?? "",
+                    DurationSeconds = contestObject["durationSeconds"]?.ToObject<int>() ?? default(int),
+                    StartTimeSeconds = contestObject["startTimeSeconds"]?.ToObject<int>() ?? default(int),
+                    RelativeTimeSeconds = contestObject["relativeTimeSeconds"]?.ToObject<int>() ?? default(int),
+                    PreparedBy = contestObject["preparedBy"]?.ToString() ?? "",
+                    WebsiteUrl = contestObject["websiteUrl"]?.ToString() ?? "",
+                    // Description = contestObject["description"]?.ToString() ?? "",
+                    Difficulty = contestObject["difficulty"]?.ToObject<string>() ?? "",
+                    Kind = contestObject["kind"]?.ToString() ?? "",
+                    Status = contestObject["phase"]?.ToString() ?? "",
+                    Season = contestObject["season"]?.ToString() ?? ""
                 };
+                
+                Console.WriteLine("new UPDATED!!!!");
+                Console.WriteLine(updated_contest);
+                
+                // var updated_contest = new ContestEntity
+                // {
+                //     Type = data.result.contest.type ?? "",
+                //     DurationSeconds = data.result.contest.durationSeconds ?? default(int),
+                //     StartTimeSeconds = data.result.contest.startTimeSeconds ?? default(int),
+                //     RelativeTimeSeconds = data.result.contest.relativeTimeSeconds ?? default(int),
+                //     PreparedBy = data.result.contest.preparedBy ?? "",
+                //     WebsiteUrl = data.result.contest.websiteUrl ?? "",
+                //     // Description = data.result.contest.description ?? "",
+                //     Difficulty = data.result.contest.difficulty ?? default(int),
+                //     Kind = data.result.contest.kind ?? "",
+                //     Status = data.result.contest.phase ?? "",
+                //     Season = data.result.contest.season ?? ""
+                // };
 
-                await _unitOfWork.ContestRepository.UpdateContestByGlobalIdAsync(
-                    contest_id,
-                    updated_contest
+                if (updated_contest != null)
+                    await _unitOfWork.ContestRepository.UpdateContestByGlobalIdAsync(
+                        contest_id,
+                        updated_contest
                 );
 
                 // if contest hasn't completed yet
-                // if (data.result.contest.phase == "CODING")
-                // {
-                //     return false;
-                // }
+                if (data.result.contest.phase == "CODING")
+                {
+                    return false;
+                }
 
                 // questions info
                 // contest result
