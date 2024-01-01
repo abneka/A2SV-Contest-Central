@@ -30,6 +30,11 @@ namespace Persistence.Repositories
             return item;
         }
 
+        public async Task<Unit> UpdateContestByGlobalIdAsync(string contest_id, ContestEntity update_contest)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Unit> UpdateContestByGlobalIdAsync(Guid contest_id, ContestEntity update_contest)
         {
             // find contest using contest id and update it using a new ContestEntity object
