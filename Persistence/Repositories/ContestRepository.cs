@@ -30,11 +30,11 @@ namespace Persistence.Repositories
             return item;
         }
 
-        public async Task<Unit> UpdateContestByGlobalIdAsync(string contest_id, ContestEntity update_contest)
+        public async Task<Unit> UpdateContestByGlobalIdAsync(Guid contest_id, ContestEntity update_contest)
         {
             // find contest using contest id and update it using a new ContestEntity object
             var existingContest = await _dbContext.Contests
-                .FirstOrDefaultAsync(c => c.ContestGlobalId == contest_id);
+                .FirstOrDefaultAsync(c => c.Id == contest_id);
 
             if (existingContest != null)
             {
@@ -57,6 +57,13 @@ namespace Persistence.Repositories
 
             // Return Unit.Value or any appropriate result
             return Unit.Value;
+        }
+        
+        public async Task<string> GetGlobalIdByContestGuid(Guid contest_id)
+        {
+            var item = await _dbContext.Contests
+                .Where(contest => contest.Id == contest_id).FirstOrDefaultAsync();
+            return item.ContestGlobalId;
         }
     }
 }
