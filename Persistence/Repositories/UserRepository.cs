@@ -29,8 +29,10 @@ namespace Persistence.Repositories
 
         public async Task<UserEntity?> GetUserIdByCodeforcesHandle(string codeforcesHandle)
         {
-            return await _dbContext.Users.FirstOrDefaultAsync(u => u.CodeforcesHandle == codeforcesHandle);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.CodeforcesHandle == codeforcesHandle);
+            return user.Id;
         }
+        
         
     }
 }
