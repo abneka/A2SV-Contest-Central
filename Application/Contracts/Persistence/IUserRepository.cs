@@ -1,4 +1,5 @@
 ﻿using Application.Contracts.Persistence.Common;
+using Application.DTOs.User;
 using Domain.Entities;
 
 namespace Application.Contracts.Persistence;

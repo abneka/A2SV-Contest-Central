@@ -32,6 +32,5 @@
       <Folder Include="Features\Location\" />
       <Folder Include="Features\UserType\Commands\UpdateUserType\" />
     </ItemGroup>
-
-
+    
 </Project>

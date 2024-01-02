@@ -5,8 +5,9 @@ namespace Application.DTOs.Group;
 
 public class GroupResponseDto : BaseDto
 {
-    public string Name { get; set; } = string.Empty;
-    public string Abbreviation { get; set; } = string.Empty;
+    public string Name { get; set; } = null!;
+    public string Abbreviation { get; set; } = null!;
+    public string Generation { get; set; } = null!;
     public Guid LocationId { get; set; }
     public LocationResponseDto Location { get; set; } = null!;
 }
