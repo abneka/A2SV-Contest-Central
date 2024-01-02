@@ -7,7 +7,7 @@
         public string? Generation { get; set; }
         public string? Location { get; set; }
         public string? Group { get; set; }
-        public int PageNumber { get; set; }
-        public int PageSize { get; set; }
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 10;
     }
 }

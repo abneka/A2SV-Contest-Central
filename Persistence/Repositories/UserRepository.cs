@@ -20,6 +20,14 @@ namespace Persistence.Repositories
             _dbContext = dbContext;
         }
 
+        public override async Task<IReadOnlyList<UserEntity>> GetAllAsync()
+        {
+            var query = await _dbContext.Users.Include(u => u.Group).ThenInclude(g => g.Location)
+                .Include(u => u.UserQuestionResults).ToListAsync();
+
+            return query;
+        }
+
         public Task<UserEntity?> GetUserByEmail(string email)
         {
             return _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
