@@ -28,15 +28,15 @@ namespace Application.Features.CodeforcesApi.Commands
                 .WithMessage("Contest already fetched.");
         }
 
-        private async Task<bool> BeValidContestId(string contest_id, CancellationToken cancellationToken)
+        private async Task<bool> BeValidContestId(Guid contest_id, CancellationToken cancellationToken)
         {
-            var contest = await _unitOfWork.ContestRepository.ExistsContestGlobalIdAsync(contest_id);
+            var contest = await _unitOfWork.ContestRepository.Exists(contest_id);
             return contest;
         }
 
-        private async Task<bool> IsContestFetched(string contest_id, CancellationToken cancellationToken)
+        private async Task<bool> IsContestFetched(Guid contest_id, CancellationToken cancellationToken)
         {
-            var contest = await _unitOfWork.ContestRepository.GetContestByGlobalIdAsync(contest_id);
+            var contest = await _unitOfWork.ContestRepository.GetByIdAsync(contest_id);
             return contest.Status != "FINISHED";
         }
     }

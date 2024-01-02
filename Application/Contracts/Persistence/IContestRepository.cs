@@ -9,6 +9,7 @@ namespace Application.Contracts.Persistence
 
         Task<bool> ExistsContestGlobalIdAsync(string contest_id);
         Task<ContestEntity> GetContestByGlobalIdAsync(string contest_id);
-        Task<Unit> UpdateContestByGlobalIdAsync(string contest_id, ContestEntity update_contest);
+        Task<Unit> UpdateContestByGlobalIdAsync(Guid contest_id, ContestEntity update_contest);
+        Task<string> GetGlobalIdByContestGuid(Guid contest_id);
     }
 }

@@ -1,6 +1,11 @@
-﻿using Domain.Entities;
+﻿using Application.Contracts;
+using Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Application.Contracts.Persistence;
-using Application.DTOs.User;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Repositories.Common;
 
@@ -20,17 +25,12 @@ namespace Persistence.Repositories
             return _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public override async Task<IReadOnlyList<UserEntity>> GetAllAsync()
+        public async Task<Guid> GetUserIdByCodeforcesHandle(string codeforcesHandle)
         {
-            var query = _dbContext.Users.Include(u => u.Group).ThenInclude(g => g.Location).Include(u => u.UserQuestionResults).AsQueryable();
-            
-            return await query.ToListAsync();
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.CodeforcesHandle == codeforcesHandle);
+            return user.Id;
         }
-
-        public async Task<UserEntity?> GetUserIdByCodeforcesHandle(string codeforcesHandle)
-        {
-            return await _dbContext.Users.FirstOrDefaultAsync(u => u.CodeforcesHandle == codeforcesHandle);
-        }
+        
         
     }
 }

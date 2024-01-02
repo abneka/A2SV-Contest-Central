@@ -40,7 +40,9 @@ namespace Application.Features.CodeforcesApi.Commands
 
             try
             {
-                string contest_id = command.ContestId;
+                Guid contest_id_guid = command.ContestId;
+                string contest_id = await _unitOfWork.ContestRepository.GetGlobalIdByContestGuid(contest_id_guid);
+                // string contest_id = "abcd";
 
                 //fetch data from codeforces using codeforces api
                 dynamic data = await _codeforcesApiService.GetContestData(contest_id);
@@ -65,7 +67,7 @@ namespace Application.Features.CodeforcesApi.Commands
                     RelativeTimeSeconds = contestObject["relativeTimeSeconds"]?.ToObject<int>() ?? default(int),
                     PreparedBy = contestObject["preparedBy"]?.ToString() ?? "",
                     WebsiteUrl = contestObject["websiteUrl"]?.ToString() ?? "",
-                    // Description = contestObject["description"]?.ToString() ?? "",
+                    Description = contestObject["description"]?.ToString() ?? "",
                     Difficulty = contestObject["difficulty"]?.ToObject<string>() ?? "",
                     Kind = contestObject["kind"]?.ToString() ?? "",
                     Status = contestObject["phase"]?.ToString() ?? "",
@@ -74,34 +76,79 @@ namespace Application.Features.CodeforcesApi.Commands
                 
                 Console.WriteLine("new UPDATED!!!!");
                 Console.WriteLine(updated_contest);
+                // update contest
+                await _unitOfWork.ContestRepository.UpdateContestByGlobalIdAsync(contest_id_guid, updated_contest);
                 
-                // var updated_contest = new ContestEntity
-                // {
-                //     Type = data.result.contest.type ?? "",
-                //     DurationSeconds = data.result.contest.durationSeconds ?? default(int),
-                //     StartTimeSeconds = data.result.contest.startTimeSeconds ?? default(int),
-                //     RelativeTimeSeconds = data.result.contest.relativeTimeSeconds ?? default(int),
-                //     PreparedBy = data.result.contest.preparedBy ?? "",
-                //     WebsiteUrl = data.result.contest.websiteUrl ?? "",
-                //     // Description = data.result.contest.description ?? "",
-                //     Difficulty = data.result.contest.difficulty ?? default(int),
-                //     Kind = data.result.contest.kind ?? "",
-                //     Status = data.result.contest.phase ?? "",
-                //     Season = data.result.contest.season ?? ""
-                // };
-
-                if (updated_contest != null)
-                    await _unitOfWork.ContestRepository.UpdateContestByGlobalIdAsync(
-                        contest_id,
-                        updated_contest
-                );
-
                 // if contest hasn't completed yet
-                if (data.result.contest.phase == "CODING")
+                if (data.result.contest.phase != "FINISHED")
                 {
                     return false;
                 }
 
+                
+                // fetch list of question_id from database using contest_id and index
+                // JArray problems = data.result.problems;
+                Console.WriteLine(contest_id_guid);
+                IReadOnlyList<QuestionEntity> contestQuestions =
+                    await _unitOfWork.QuestionRepository.GetQuestionsFromContestAsync(contest_id_guid);
+                Console.WriteLine("before contestQuestions");
+                Console.WriteLine(contestQuestions[0].Name);
+                
+                // update question names from the contest api
+                for (int i = 0; i < contestQuestions.Count; i++)
+                {
+                    var questionFromDb = _unitOfWork.QuestionRepository.GetByIdAsync(contestQuestions[i].Id).Result;
+                    questionFromDb.Name = data.result.problems[i].name;
+                    await _unitOfWork.QuestionRepository.UpdateAsync(contestQuestions[i].Id, questionFromDb);
+                }
+                
+                // todo: check if the contest is team or individual
+                // iterate through "rows" of the api response to get all the information regarding user performance in the contest
+                var rows = data.result.rows;
+
+                foreach (var singleUser in rows)
+                {
+                    string userCodeforcesHandle = singleUser.party.members[0].handle.ToString();
+                    Guid userId =
+                        await _unitOfWork.UserRepository.GetUserIdByCodeforcesHandle(userCodeforcesHandle);
+                    
+                    // create new UserContestResultEntity and add it to database
+                    var userContestResult = new UserContestResultEntity
+                    {
+                        ContestId = contest_id_guid,
+                        UserId = userId,
+                        Rank = (int)singleUser.rank,
+                        Penalty = (int)singleUser.penalty,
+                        SuccessfulHackCount = (int)singleUser.successfulHackCount,
+                        UnsuccessfulHackCount = (int)singleUser.unsuccessfulHackCount,
+                    };
+                    
+                    // create userContestResult
+                    await _unitOfWork.UserContestResultRepository.CreateAsync(userContestResult);
+                    
+                    var userQuestions = singleUser.problemResults;
+                    for (int i=0; i<userQuestions.Count; i++)
+                    {
+                        
+                        // update question info into database
+                        var userQuestion = userQuestions[i];
+                        Guid questionId = contestQuestions[i].Id;
+                        
+                        // create new UserQuestionResultEntity and add it to database
+                        var userQuestionResult = new UserQuestionResultEntity
+                        {
+                            QuestionId = questionId,
+                            UserId = userId,
+                            Points = (double)userQuestion.points,
+                            RejectedAttemptCount = (int)userQuestion.rejectedAttemptCount,
+                            BestSubmissionTimeSeconds = userQuestion.bestSubmissionTimeSeconds.ToString()
+                        };
+                        
+                        // create userQuestionResult
+                        await _unitOfWork.UserQuestionResultRepository.CreateAsync(userQuestionResult);
+                    }
+                }
+                
                 // questions info
                 // contest result
                 // standing
