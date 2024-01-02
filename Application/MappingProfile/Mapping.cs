@@ -4,11 +4,14 @@ using Domain.Entities;
 using Application.DTOs.User;
 using Application.DTOs.Group;
 using Application.DTOs.Location;
+using Application.DTOs.Question;
 using Application.DTOs.TeamContestResult;
 using Application.DTOs.TeamQuestionResult;
 using Application.DTOs.UserContestResult;
 using Application.DTOs.UserQuestionResult;
 using Application.DTOs.UserType;
+using AutoMapper.Execution;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Application.MappingProfile
 {
@@ -160,6 +163,48 @@ namespace Application.MappingProfile
 
                     return srcMember != null;
                 }));
+
+            CreateMap<QuestionEntity, QuestionResponseDto>()
+                .ReverseMap()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is int && (int)srcMember == 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
+
+            CreateMap<UserEntity, UserDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.CodeforcesHandle, opt => opt.MapFrom(src => src.CodeforcesHandle))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.NumberOfProblemsTaken, opt => opt.MapFrom(src => src.UserQuestionResults.Count))
+                .ForMember(dest => dest.NumberOfProblemsSolved,
+                    opt => opt.MapFrom(src => src.UserQuestionResults.Count(x => x.Points != 0)))
+                .ForMember(dest => dest.ContestConversionRate,
+                    opt => opt.MapFrom((src, dest, member, context) => dest.NumberOfProblemsTaken != 0
+                        ? (double)dest.NumberOfProblemsSolved / dest.NumberOfProblemsTaken
+                        : 0))
+                .ForMember(dest => dest.Group, opt => opt.MapFrom(src => src.Group))
+                // map createdat date
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+                .ForMember(dest => dest.ModifiedAt, opt => opt.MapFrom(src => src.ModifiedAt));
+
+            CreateMap<UserEntity, UserDto>().ReverseMap().ForAllMembers(opt => opt.Condition((src, dest, srcMember,
+                context) =>
+            {
+                if (srcMember is int and 0)
+                {
+                    return false;
+                }
+
+                return srcMember != null;
+            }));
         }
     }
 }

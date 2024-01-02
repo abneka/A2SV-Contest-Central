@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Domain.Common;
+﻿using Domain.Common;
 
 namespace Domain.Entities;
 
@@ -10,4 +9,5 @@ public class GroupEntity : BaseDomainEntity
     public Guid LocationId { get; set; }
     public LocationEntity Location { get; set; } = null!;
     public List<ContestGroupEntity> Contests { get; set; } = new List<ContestGroupEntity>();
+    public string Generation { get; set; } = null!;
 }

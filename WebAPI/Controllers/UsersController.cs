@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using Application.DTOs.Auth;
+using Application.DTOs.Common;
 using Application.DTOs.User;
 using Application.Features.User.Commands.CreateUser;
 using Application.Features.User.Commands.DeleteUser;
@@ -8,6 +9,7 @@ using Application.Features.User.Commands.UpdateUserPassword;
 using Application.Features.User.Commands.VerifyUser;
 using Application.Features.User.Queries.GetAllUsers;
 using Application.Features.User.Queries.GetSingleUser;
+using Application.Features.User.Queries.GetUsersByFiltration;
 // using Application.Features.User.Queries.Login;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -89,6 +91,13 @@ namespace WebApi.Controllers
             {
                 UserID = id
             });
+        }
+        
+        [HttpGet]
+        [Route("GetUsersByFiltration")]
+        public async Task<ActionResult<PaginatedUserResponseDto>> GetUsersByFiltration([FromQuery] FilterRequestDto query)
+        {
+            return await _mediator.Send(new GetUsersByFiltrationQuery{Filter = query});
         }
 
     }
