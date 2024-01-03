@@ -194,17 +194,7 @@ namespace Application.MappingProfile
                 // map createdat date
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
                 .ForMember(dest => dest.ModifiedAt, opt => opt.MapFrom(src => src.ModifiedAt));
-
-            CreateMap<UserEntity, UserDto>().ReverseMap().ForAllMembers(opt => opt.Condition((src, dest, srcMember,
-                context) =>
-            {
-                if (srcMember is int and 0)
-                {
-                    return false;
-                }
-
-                return srcMember != null;
-            }));
+            
         }
     }
 }

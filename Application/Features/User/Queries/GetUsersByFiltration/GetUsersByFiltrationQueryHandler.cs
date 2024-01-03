@@ -29,13 +29,12 @@ public class GetUsersByFiltrationQueryHandler : IRequestHandler<GetUsersByFiltra
             orderedUsers[i - 1].Rank = i;
         }
         
-        Console.WriteLine(orderedUsers.Count());
         var query = FilterByAny(orderedUsers.AsQueryable(), request.Filter.SearchString);
         query = FilterByCountry(query, request.Filter.Country);
         query = FilterByGroup(query, request.Filter.Group);
         query = FilterByGeneration(query, request.Filter.Generation);
         query = FilterByLocation(query, request.Filter.Location);
-        
+
         query = query.Skip(skip).Take(request.Filter.PageSize);
         
         
