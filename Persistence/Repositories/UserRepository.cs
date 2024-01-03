@@ -23,7 +23,7 @@ namespace Persistence.Repositories
         public override async Task<IReadOnlyList<UserEntity>> GetAllAsync()
         {
             var query = await _dbContext.Users.Include(u => u.Group).ThenInclude(g => g.Location)
-                .Include(u => u.UserQuestionResults).ToListAsync();
+                .Include(u => u.UserQuestionResults).Include(u => u.UserType).ToListAsync();
 
             return query;
         }

@@ -1,8 +1,8 @@
 ﻿using Domain.Common;
 
-namespace Domain.Entities;
+namespace Application.DTOs.Question;
 
-public class GlobalQuestionEntity : BaseDomainEntity
+public class QuestionDuplicateCheckResponseDto
 {
     public bool Status { get; set; }
     public List<string> Group { get; set; } = new List<string>();

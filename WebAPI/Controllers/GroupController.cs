@@ -1,8 +1,10 @@
-﻿using Application.DTOs.Group;
+﻿using Application.DTOs.Common;
+using Application.DTOs.Group;
 using Application.Features.Group.Commands.CreateGroup;
 using Application.Features.Group.Commands.DeleteGroup;
 using Application.Features.Group.Commands.UpdateGroup;
 using Application.Features.Group.Queries.GetAllGroups;
+using Application.Features.Group.Queries.GetFilteredGroupRanking;
 using Application.Features.Group.Queries.GetOneGroup;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +21,7 @@ public class GroupController : ControllerBase
     {
         _mediator = mediator;
     }
-    
+
     [HttpGet]
     [Route("GetAllGroups")]
     public async Task<ActionResult<List<GroupResponseDto>>> GetAll()
@@ -27,7 +29,7 @@ public class GroupController : ControllerBase
         var result = await _mediator.Send(new GetAllGroupsQuery());
         return Ok(result);
     }
-    
+
     [HttpGet]
     [Route("GetGroupById/{id:guid}")]
     public async Task<ActionResult<GroupResponseDto>> GetGroupById(Guid id)
@@ -35,6 +37,17 @@ public class GroupController : ControllerBase
         var result = await _mediator.Send(new GetOneGroupQuery
         {
             Id = id
+        });
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("GetRankedGroups")]
+    public async Task<ActionResult<List<GroupRankingDto>>> GetRankedGroups([FromQuery] FilterRequestDto filterRequestDto)
+    {
+        var result = await _mediator.Send(new GetFilteredGroupRankingQuery
+        {
+            FilterRequestDto = filterRequestDto
         });
         return Ok(result);
     }

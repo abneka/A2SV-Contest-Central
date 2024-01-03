@@ -95,7 +95,7 @@ namespace WebApi.Controllers
         
         [HttpGet]
         [Route("GetUsersByFiltration")]
-        public async Task<ActionResult<PaginatedUserResponseDto>> GetUsersByFiltration([FromQuery] FilterRequestDto query)
+        public async Task<ActionResult<PaginatedUserResponseDto>> GetUsersByFiltration([FromQuery] FilterUserRequestDto query)
         {
             return await _mediator.Send(new GetUsersByFiltrationQuery{Filter = query});
         }

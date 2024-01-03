@@ -15,6 +15,9 @@ public class UserEntity : BaseDomainEntity
     public string? ConfirmationCode { get; set; }
     public DateTime? ConfirmationCodeExpiration { get; set; }
     
+    public int NumberOfProblemsSolved { get; set; }
+    public int NumberOfProblemsTaken { get; set; }
+    
     public Guid UserTypeId { get; set; }
     public UserTypeEntity UserType { get; set; } = null!;
     
