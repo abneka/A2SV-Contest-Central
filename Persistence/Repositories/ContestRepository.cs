@@ -1,4 +1,5 @@
 using Application.Contracts.Persistence;
+using Application.DTOs.Contest;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -69,6 +70,16 @@ namespace Persistence.Repositories
             var item = await _dbContext.Contests
                 .Where(contest => contest.Id == contest_id).FirstOrDefaultAsync();
             return item.ContestGlobalId;
+        }
+
+        public async Task<List<ContestEntity>> GetContestsWithGroups()
+        {
+            var contests = await _dbContext.Contests
+                .Include(c => c.ContestGroups)
+                .ThenInclude(c => c.Group)
+                .ToListAsync();
+
+            return contests;
         }
     }
 }
