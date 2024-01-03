@@ -22,6 +22,6 @@ namespace Application.DTOs.Contest
         public string Status { get; set; } = string.Empty;
         // public int ParticipantNumber { get; set; }
         // public int QuestionNumber { get; set; }
-        public List<GroupEntity> ContestGroup { get; set; } = null!;
+        public List<ContestGroupEntity> ContestGroups { get; set; }
     }
 }
