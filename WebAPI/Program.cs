@@ -87,7 +87,7 @@ var app = builder.Build();
 // }
 
 app.UseHttpsRedirection();
-app.UseMiddleware<ExceptionMiddleware>();
+// app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthentication();;
 app.UseAuthorization();

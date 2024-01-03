@@ -18,6 +18,11 @@ public class UserQuestionResultRepository : GenericRepository<UserQuestionResult
         return await _dbContext.UserQuestionResults.Where(x => x.UserId == userId).ToListAsync();
     }
 
+    public Task<List<Guid>> GetQuestionIdByUserIdAsync(Guid userId)
+    {
+        return _dbContext.UserQuestionResults.Where(x => x.UserId == userId && x.Points > 0).Select(x => x.QuestionId).Distinct().ToListAsync();
+    }
+
     public Task<UserQuestionResultEntity> GetUserQuestionResultByQuestionIdUserId(Guid questionId, Guid userId)
     {
         return _dbContext.UserQuestionResults.FirstOrDefaultAsync(x => x.QuestionId == questionId && x.UserId == userId)!;

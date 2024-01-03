@@ -6,5 +6,5 @@ namespace Application.Features.User.Queries.GetUsersByFiltration;
 
 public class GetUsersByFiltrationQuery : IRequest<PaginatedUserResponseDto>
 {
-    public FilterRequestDto Filter { get; set; } = null!;
+    public FilterUserRequestDto Filter { get; set; } = null!;
 }
