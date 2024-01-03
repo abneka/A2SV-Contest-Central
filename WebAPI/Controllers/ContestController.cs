@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Application.Features.Contest.Queries.GetAll;
 using Application.Features.Contest.Command.Create;
 using Application.DTOs.Common;
+using Application.Features.Contest.Queries.GetContestsByFiltration;
 
 namespace WebApi.Controllers
 {
@@ -74,6 +75,14 @@ namespace WebApi.Controllers
         {
             await _mediator.Send(new DeleteContestCommand { ContestId = id });
             return NoContent();
+        }
+
+        [HttpGet]
+        [Route("filter")]
+        public async Task<ActionResult<PaginatedContestResponseDto>> GetContestsByFiltration(
+            [FromQuery] FilterRequestDto query)
+        {
+            return await _mediator.Send(new GetContestsByFiltrationQuery { Filter = query });
         }
 
         // [HttpGet]

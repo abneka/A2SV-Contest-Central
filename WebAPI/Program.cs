@@ -4,6 +4,7 @@ using Application;
 using Persistence;
 // using Persistence.Repositories.Jwt;
 using System.Text;
+using System.Text.Json.Serialization;
 // using Application.Features.Auth.Requirement;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -45,7 +46,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 //     });
 // });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(opt =>
+{
+    opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+});
 builder.Services.AddHttpContextAccessor();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

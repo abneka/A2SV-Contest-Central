@@ -46,6 +46,20 @@ namespace Persistence
                 .HasOne(u => u.User)
                 .WithMany(u => u.UserQuestionResults)
                 .HasForeignKey(u => u.UserId);
+            
+            // ContestGroup Entity
+            modelBuilder.Entity<ContestGroupEntity>()
+                .HasKey(cg => new { cg.ContestId, cg.GroupId });
+            
+            modelBuilder.Entity<ContestGroupEntity>()
+                .HasOne(cgm => cgm.Contest)
+                .WithMany(c => c.ContestGroups)
+                .HasForeignKey(cgm => cgm.ContestId);
+
+            modelBuilder.Entity<ContestGroupEntity>()
+                .HasOne(cgm => cgm.Group)
+                .WithMany(g => g.Contests)
+                .HasForeignKey(cgm => cgm.GroupId);
         }
         
     }
