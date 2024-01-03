@@ -5,7 +5,7 @@ namespace Application.Contracts.Persistence;
 
 public interface IQuestionRepository :  IGenericRepository<QuestionEntity>
 {
-    public Task<GlobalQuestionEntity> ExistsByGlobalQuestionUrl(string globalQuestionUrl);
+    public Task<List<QuestionEntity>> GetQuestionsByGlobalQuestionUrl(string globalQuestionUrl);
     
     public Task<IReadOnlyList<QuestionEntity>> GetQuestionsFromContestAsync(Guid contestId);
 }

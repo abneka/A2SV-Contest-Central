@@ -176,7 +176,7 @@ namespace Application.MappingProfile
                     return srcMember != null;
                 }));
 
-            CreateMap<UserEntity, UserDto>()
+            CreateMap<UserEntity, FilteredUserDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
@@ -194,17 +194,24 @@ namespace Application.MappingProfile
                 // map createdat date
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
                 .ForMember(dest => dest.ModifiedAt, opt => opt.MapFrom(src => src.ModifiedAt));
-
-            CreateMap<UserEntity, UserDto>().ReverseMap().ForAllMembers(opt => opt.Condition((src, dest, srcMember,
-                context) =>
-            {
-                if (srcMember is int and 0)
-                {
-                    return false;
-                }
-
-                return srcMember != null;
-            }));
+            
+            CreateMap<GroupEntity, GroupRankingDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Abbreviation, opt => opt.MapFrom(src => src.Abbreviation))
+                .ForMember(dest => dest.Generation, opt => opt.MapFrom(src => src.Generation))
+                .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location))
+                .ForMember(dest => dest.Members, opt => opt.MapFrom(src => src.Members))
+                .ForMember(dest => dest.NumberOfProblemsTaken, opt => opt.MapFrom(src => src.Members.Count > 0 ? src.Members[0].NumberOfProblemsTaken : 0))
+                .ForMember(dest => dest.AverageNumberOfProblemsSolved,
+                    opt => opt.MapFrom(src => src.Members.Count == 0 ? 0 : src.Members.Sum(m => m.NumberOfProblemsSolved) / src.Members.Count))
+                .ForMember(dest => dest.ContestConversionRate,
+                    opt => opt.MapFrom((src, dest, member, context) => dest.NumberOfProblemsTaken != 0
+                        ? (double)dest.NumberOfProblemsSolved / dest.NumberOfProblemsTaken
+                        : 0))
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+                .ForMember(dest => dest.ModifiedAt, opt => opt.MapFrom(src => src.ModifiedAt));
+            
         }
     }
 }
