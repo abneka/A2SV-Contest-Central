@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Seed;
 
 namespace Persistence
 {
@@ -60,6 +61,9 @@ namespace Persistence
                 .HasOne(cgm => cgm.Group)
                 .WithMany(g => g.Contests)
                 .HasForeignKey(cgm => cgm.GroupId);
+            
+            // Seed Database
+            SeedData.Seed(modelBuilder);
         }
         
     }
