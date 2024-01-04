@@ -82,11 +82,6 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.AddHttpsRedirection(opt =>
-{
-    opt.HttpsPort = 443;
-});
-
 var app = builder.Build();
 
 // // Configure the HTTP request pipeline.
