@@ -16,7 +16,6 @@ namespace Persistence
         {
             // var renderConnectionString = Environment.GetEnvironmentVariable("A2SV_Contest_Central_Render_External");
             var connectionString = configuration["Local:Connection_String"];
-            Console.WriteLine($"Connection String: {connectionString}");
             
             services.AddDbContext<AppDBContext>(options =>
             {
