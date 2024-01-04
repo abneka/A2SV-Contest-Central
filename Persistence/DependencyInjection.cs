@@ -17,9 +17,9 @@ namespace Persistence
             // var connectionString = configuration["Render:External_Connection_String"];
             // var connectionString = configuration["Local:Connection_String"];
             // var connectionString = Environment.GetEnvironmentVariable("Render_Internal_Connection_String");
-            // Console.Out.WriteLine($"Conn String{connectionString}");
             var connectionString =
-                "jdbc:postgresql://dpg-cmaoef6n7f5s7394tugg-a.oregon-postgres.render.com:5432/a2sv_contest_central?password=rAmkuC91omPXCchAylW6L5HXAYpfGXA4&user=a2sv_contest_central_user";
+                "User Id=a2sv_contest_central_user;Password=rAmkuC91omPXCchAylW6L5HXAYpfGXA4;Database=a2sv_contest_central;Server=dpg-cmaoef6n7f5s7394tugg-a.oregon-postgres.render.com;Port=5432";
+            Console.Out.WriteLine($"Conn String{connectionString}");
             services.AddDbContext<AppDBContext>(options =>
             {
                 options.UseNpgsql(connectionString);
