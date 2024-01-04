@@ -47,7 +47,7 @@ public class GetContestsByFiltrationHandler : IRequestHandler<GetContestsByFiltr
         //     })
         //
         // };
-        
+
         var contests = _mapper.Map<List<ContestResponseDto>>(result);
         // sort by createdDate in descending order
         var orderedContests = contests.OrderByDescending(c => c.CreatedAt);
@@ -71,7 +71,7 @@ public class GetContestsByFiltrationHandler : IRequestHandler<GetContestsByFiltr
     {
         if (!string.IsNullOrEmpty(filterLocation))
         {
-            return query.Where(x => 
+            return query.Where(x =>
                 x.ContestGroups.Any(cg => cg.Group.Location.Location.ToLower().ToString() == filterLocation.ToLower())
             );
         }
@@ -94,9 +94,9 @@ public class GetContestsByFiltrationHandler : IRequestHandler<GetContestsByFiltr
 
     private IQueryable<ContestResponseDto> FilterByGroup(IQueryable<ContestResponseDto> query, string? filterGroup)
     {
-        filterGroup = filterGroup.ToLower();
         if (!string.IsNullOrEmpty(filterGroup))
         {
+            filterGroup = filterGroup.ToLower();
             return query.Where(x =>
                 x.ContestGroups.Any(cg => cg.Group.Name.ToLower() == filterGroup) ||
                 x.ContestGroups.Any(cg => cg.Group.Abbreviation.ToLower() == filterGroup)
@@ -122,6 +122,7 @@ public class GetContestsByFiltrationHandler : IRequestHandler<GetContestsByFiltr
     {
         if (!string.IsNullOrEmpty(searchString))
         {
+            searchString = searchString.ToLower();
             return query.Where(x =>
                 x.Name.ToLower().Contains(searchString) ||
                 x.Description.ToLower().Contains(searchString) ||
