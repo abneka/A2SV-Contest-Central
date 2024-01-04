@@ -14,9 +14,10 @@ namespace Persistence
     {
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
-            // var renderConnectionString = Environment.GetEnvironmentVariable("A2SV_Contest_Central_Render_External");
-            var connectionString = configuration["Local:Connection_String"];
-            
+            // var connectionString = configuration["Render:External_Connection_String"];
+            // var connectionString = configuration["Local:Connection_String"];
+            var connectionString = Environment.GetEnvironmentVariable("Render_Internal_Connection_String");
+            // Console.Out.WriteLine($"Conn String{connectionString}");
             services.AddDbContext<AppDBContext>(options =>
             {
                 options.UseNpgsql(connectionString);
