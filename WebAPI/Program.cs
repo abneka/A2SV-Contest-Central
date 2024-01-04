@@ -53,6 +53,14 @@ builder.Services.AddControllers().AddJsonOptions(opt =>
 });
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("AllowAnyOrigin", policy =>
+    {
+        policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+    });
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
