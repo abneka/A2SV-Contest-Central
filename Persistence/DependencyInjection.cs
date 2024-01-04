@@ -14,9 +14,12 @@ namespace Persistence
     {
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
+            // var renderConnectionString = Environment.GetEnvironmentVariable("A2SV_Contest_Central_Render_External");
+            var connectionString = configuration["Local:Connection_String"];
+            
             services.AddDbContext<AppDBContext>(options =>
             {
-                options.UseNpgsql(configuration.GetConnectionString("A2SV_Contest_Central"));
+                options.UseNpgsql(connectionString);
             });
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -34,7 +37,7 @@ namespace Persistence
             services.AddScoped<IUserContestResultRepository, UserContestResultRepository>();
             services.AddScoped<ITeamContestResultRepository, TeamContestResultRepository>();
             services.AddScoped<IContestGroupRepository, ContestGroupRepository>();
-            
+
             return services;
         }
     }
