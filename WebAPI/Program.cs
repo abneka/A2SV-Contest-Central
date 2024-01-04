@@ -9,6 +9,7 @@ using System.Text.Json.Serialization;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WebApi.Middleware;
@@ -79,6 +80,11 @@ builder.Services.AddSwaggerGen(options =>
             new List<string>()
         }
     });
+});
+
+builder.Services.AddHttpsRedirection(opt =>
+{
+    opt.HttpsPort = 443;
 });
 
 var app = builder.Build();
