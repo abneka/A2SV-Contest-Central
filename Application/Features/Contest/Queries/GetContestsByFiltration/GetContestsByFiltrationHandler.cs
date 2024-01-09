@@ -24,30 +24,6 @@ public class GetContestsByFiltrationHandler : IRequestHandler<GetContestsByFiltr
         var skip = (request.Filter.PageNumber - 1) * request.Filter.PageSize;
         var result = await _unitOfWork.ContestRepository.GetContestsWithGroups();
 
-        // result = result.Select(c => new ContestResponseDto
-        // {
-        //     ContestGlobalId = c.ContestGlobalId,
-        //     ContestUrl = c.ContestUrl,
-        //     Name = c.Name,
-        //     Type = c.Type,
-        //     DurationSeconds = c.DurationSeconds,
-        //     StartTimeSeconds = c.StartTimeSeconds,
-        //     RelativeTimeSeconds = c.RelativeTimeSeconds,
-        //     PreparedBy = c.PreparedBy,
-        //     WebsiteUrl = c.WebsiteUrl,
-        //     Description = c.Description,
-        //     Difficulty = c.Difficulty,
-        //     Kind = c.Kind,
-        //     Season = c.Season,
-        //     Status = c.Status,
-        //     ContestGroups = c.ContestGroups.Select(cg => new GroupEntity
-        //     {
-        //         Name = cg.Group.Name,
-        //         
-        //     })
-        //
-        // };
-
         var contests = _mapper.Map<List<ContestResponseDto>>(result);
         // sort by createdDate in descending order
         var orderedContests = contests.OrderByDescending(c => c.CreatedAt);

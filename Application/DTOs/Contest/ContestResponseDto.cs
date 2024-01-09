@@ -1,5 +1,7 @@
 
 using Application.DTOs.Common;
+using Application.DTOs.ContestGroup;
+using Application.DTOs.Group;
 using Domain.Entities;
 
 namespace Application.DTOs.Contest
@@ -22,6 +24,6 @@ namespace Application.DTOs.Contest
         public string Status { get; set; } = string.Empty;
         // public int ParticipantNumber { get; set; }
         // public int QuestionNumber { get; set; }
-        public List<ContestGroupEntity> ContestGroups { get; set; }
+        public List<ContestGroupWithoutContestDto> ContestGroups { get; set; } = null!;
     }
 }

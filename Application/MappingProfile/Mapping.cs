@@ -1,4 +1,5 @@
 using Application.DTOs.Contest;
+using Application.DTOs.ContestGroup;
 using AutoMapper;
 using Domain.Entities;
 using Application.DTOs.User;
@@ -152,6 +153,10 @@ namespace Application.MappingProfile
                     return srcMember != null;
                 }));
 
+            CreateMap<ContestGroupEntity, ContestGroupWithoutContestDto>()
+                .ForMember(dest => dest.GroupId, opt => opt.MapFrom(src => src.GroupId))
+                .ForMember(dest => dest.Group, opt => opt.MapFrom(src => src.Group));
+                
             CreateMap<ContestEntity, ContestResponseDto>()
                 .ReverseMap()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) =>

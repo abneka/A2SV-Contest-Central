@@ -77,6 +77,7 @@ namespace Persistence.Repositories
             var contests = await _dbContext.Contests
                 .Include(c => c.ContestGroups)
                 .ThenInclude(c => c.Group)
+                .ThenInclude(c => c.Location)
                 .ToListAsync();
 
             return contests;
