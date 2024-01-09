@@ -47,10 +47,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 //     });
 // });
 
-builder.Services.AddControllers().AddJsonOptions(opt =>
-{
-    opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-});
+builder.Services.AddControllers();
+
+// builder.Services.AddControllers().AddJsonOptions(opt =>
+// {
+//     opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+// });
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddCors(opt =>

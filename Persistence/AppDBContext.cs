@@ -33,6 +33,10 @@ namespace Persistence
                 .HasIndex(u => u.Email)
                 .IsUnique();
 
+            modelBuilder.Entity<LocationEntity>()
+                .HasIndex(u => u.Id)
+                .IsUnique();
+
             modelBuilder.Entity<UserContestResultEntity>()
                 .HasOne(u => u.User)
                 .WithMany(u => u.UserContestResults)
@@ -47,6 +51,30 @@ namespace Persistence
                 .HasOne(u => u.User)
                 .WithMany(u => u.UserQuestionResults)
                 .HasForeignKey(u => u.UserId);
+            
+            // UserContestResult Entity with User
+            modelBuilder.Entity<UserContestResultEntity>()
+                .HasOne(u => u.User)
+                .WithMany(u => u.UserContestResults)
+                .HasForeignKey(u => u.UserId);
+            
+            // Contest Entity with Questions
+            modelBuilder.Entity<ContestEntity>()
+                .HasMany(c => c.Questions)
+                .WithOne(q => q.Contest)
+                .HasForeignKey(q => q.ContestId);
+            
+            // Contest Entity with UserContestResult
+            modelBuilder.Entity<ContestEntity>()
+                .HasMany(c => c.UserContestResults)
+                .WithOne(u => u.Contest)
+                .HasForeignKey(u => u.ContestId);
+            
+            // Group Entity with Location
+            modelBuilder.Entity<GroupEntity>()
+                .HasOne(g => g.Location)
+                .WithMany(l => l.Groups)
+                .HasForeignKey(g => g.LocationId);
             
             // ContestGroup Entity
             modelBuilder.Entity<ContestGroupEntity>()
