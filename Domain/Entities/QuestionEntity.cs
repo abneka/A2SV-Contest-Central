@@ -14,6 +14,7 @@ public class QuestionEntity : BaseDomainEntity
     
     public ContestEntity Contest { get; set; } = null!;
     
+    public List<UserContestResultEntity> UserContestResult { get; set; } = new List<UserContestResultEntity>();
     public List<UserQuestionResultEntity> UserQuestionResults { get; set; } = new List<UserQuestionResultEntity>();
 
     public List<TeamQuestionResultEntity> TeamQuestionResults { get; set; } = new List<TeamQuestionResultEntity>();

@@ -9,6 +9,7 @@ using System.Text.Json.Serialization;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WebApi.Middleware;
@@ -19,7 +20,7 @@ builder.Services.AddSignalR();
 
 // Add services to the container.
 builder.Services.AddApplication();
-builder.Services.AddPersistence(builder.Configuration);
+builder.Services.AddPersistence(builder.Configuration, builder.Environment);
 builder.Services.ConfigureInfrastructureServices(builder.Configuration);
 // builder.Services.AddSingleton<IAuthorizationHandler, ResourceOwnerAuthorizationHandler>();
 var secret = builder.Configuration["JwtSettings:Secret"];
@@ -46,11 +47,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 //     });
 // });
 
-builder.Services.AddControllers().AddJsonOptions(opt =>
-{
-    opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-});
+builder.Services.AddControllers();
+
+// builder.Services.AddControllers().AddJsonOptions(opt =>
+// {
+//     opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+// });
+
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("AllowAnyOrigin", policy =>
+    {
+        policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+    });
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -6,17 +6,23 @@ using Microsoft.Extensions.DependencyInjection;
 using Persistence.Repositories.Common;
 using Persistence.Repositories;
 using Application.Contracts.Persistence.Auth;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Persistence.Repositories.Auth;
 
 namespace Persistence
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
+            var connectionString = webHostEnvironment.IsDevelopment()
+                ? configuration["Local:Connection_String"]
+                : Environment.GetEnvironmentVariable("Render_Internal_Connection_String");
+            
             services.AddDbContext<AppDBContext>(options =>
             {
-                options.UseNpgsql(configuration.GetConnectionString("A2SV_Contest_Central"));
+                options.UseNpgsql(connectionString);
             });
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -34,7 +40,7 @@ namespace Persistence
             services.AddScoped<IUserContestResultRepository, UserContestResultRepository>();
             services.AddScoped<ITeamContestResultRepository, TeamContestResultRepository>();
             services.AddScoped<IContestGroupRepository, ContestGroupRepository>();
-            
+
             return services;
         }
     }

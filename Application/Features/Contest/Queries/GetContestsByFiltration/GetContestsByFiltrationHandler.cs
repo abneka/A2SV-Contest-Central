@@ -24,31 +24,8 @@ public class GetContestsByFiltrationHandler : IRequestHandler<GetContestsByFiltr
         var skip = (request.Filter.PageNumber - 1) * request.Filter.PageSize;
         var result = await _unitOfWork.ContestRepository.GetContestsWithGroups();
 
-        // result = result.Select(c => new ContestResponseDto
-        // {
-        //     ContestGlobalId = c.ContestGlobalId,
-        //     ContestUrl = c.ContestUrl,
-        //     Name = c.Name,
-        //     Type = c.Type,
-        //     DurationSeconds = c.DurationSeconds,
-        //     StartTimeSeconds = c.StartTimeSeconds,
-        //     RelativeTimeSeconds = c.RelativeTimeSeconds,
-        //     PreparedBy = c.PreparedBy,
-        //     WebsiteUrl = c.WebsiteUrl,
-        //     Description = c.Description,
-        //     Difficulty = c.Difficulty,
-        //     Kind = c.Kind,
-        //     Season = c.Season,
-        //     Status = c.Status,
-        //     ContestGroups = c.ContestGroups.Select(cg => new GroupEntity
-        //     {
-        //         Name = cg.Group.Name,
-        //         
-        //     })
-        //
-        // };
-        
         var contests = _mapper.Map<List<ContestResponseDto>>(result);
+        
         // sort by createdDate in descending order
         var orderedContests = contests.OrderByDescending(c => c.CreatedAt);
 
@@ -59,6 +36,13 @@ public class GetContestsByFiltrationHandler : IRequestHandler<GetContestsByFiltr
         query = FilterByLocation(query, request.Filter.Location);
 
         query = query.Skip(skip).Take(request.Filter.PageSize);
+        
+        // update each contest with participants and questions number
+        foreach (var contest in query)
+        {
+            contest.ParticipantsNumber = contest.UserContestResults.Count;
+            contest.QuestionsNumber = contest.Questions.Count;
+        }
 
         return new PaginatedContestResponseDto
         {
@@ -71,7 +55,7 @@ public class GetContestsByFiltrationHandler : IRequestHandler<GetContestsByFiltr
     {
         if (!string.IsNullOrEmpty(filterLocation))
         {
-            return query.Where(x => 
+            return query.Where(x =>
                 x.ContestGroups.Any(cg => cg.Group.Location.Location.ToLower().ToString() == filterLocation.ToLower())
             );
         }
@@ -94,9 +78,9 @@ public class GetContestsByFiltrationHandler : IRequestHandler<GetContestsByFiltr
 
     private IQueryable<ContestResponseDto> FilterByGroup(IQueryable<ContestResponseDto> query, string? filterGroup)
     {
-        filterGroup = filterGroup.ToLower();
         if (!string.IsNullOrEmpty(filterGroup))
         {
+            filterGroup = filterGroup.ToLower();
             return query.Where(x =>
                 x.ContestGroups.Any(cg => cg.Group.Name.ToLower() == filterGroup) ||
                 x.ContestGroups.Any(cg => cg.Group.Abbreviation.ToLower() == filterGroup)
@@ -122,6 +106,7 @@ public class GetContestsByFiltrationHandler : IRequestHandler<GetContestsByFiltr
     {
         if (!string.IsNullOrEmpty(searchString))
         {
+            searchString = searchString.ToLower();
             return query.Where(x =>
                 x.Name.ToLower().Contains(searchString) ||
                 x.Description.ToLower().Contains(searchString) ||

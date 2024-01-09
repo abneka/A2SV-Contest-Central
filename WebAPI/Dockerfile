@@ -1,20 +1,21 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
-WORKDIR /app
+﻿ARG ARCH=amd64
+ARG TAG=7.0-bullseye-slim-$ARCH
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+WORKDIR /App
+
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /src
-COPY ["A2SV Contest Central/A2SV Contest Central.csproj", "A2SV Contest Central/"]
-RUN dotnet restore "A2SV Contest Central/A2SV Contest Central.csproj"
-COPY . .
-WORKDIR "/src/A2SV Contest Central"
-RUN dotnet build "A2SV Contest Central.csproj" -c Release -o /app/build
+# Copy everything
+COPY . ./
+# Restore as distinct layers
+RUN dotnet restore
+# Build and publish a release
+RUN dotnet publish -c Release -o out
 
-FROM build AS publish
-RUN dotnet publish "A2SV Contest Central.csproj" -c Release -o /app/publish /p:UseAppHost=false
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:$TAG
+WORKDIR /App
 
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "A2SV Contest Central.dll"]
+COPY --from=build-env /App/out .
+ENTRYPOINT ["dotnet", "WebAPI.dll"]

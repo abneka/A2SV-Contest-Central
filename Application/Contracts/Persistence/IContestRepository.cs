@@ -1,4 +1,5 @@
 using Application.Contracts.Persistence.Common;
+using Application.DTOs.Contest;
 using Domain.Entities;
 using MediatR;
 
@@ -12,5 +13,6 @@ namespace Application.Contracts.Persistence
         Task<Unit> UpdateContestByGlobalIdAsync(Guid contest_id, ContestEntity update_contest);
         Task<string> GetGlobalIdByContestGuid(Guid contest_id);
         public Task<List<ContestEntity>> GetContestsWithGroups();
+        public Task<List<UserContestAndQuestionDto>> GetContestLeaderboard(Guid contest_id);
     }
 }
