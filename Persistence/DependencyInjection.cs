@@ -6,20 +6,20 @@ using Microsoft.Extensions.DependencyInjection;
 using Persistence.Repositories.Common;
 using Persistence.Repositories;
 using Application.Contracts.Persistence.Auth;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Persistence.Repositories.Auth;
 
 namespace Persistence
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
-            // var connectionString = configuration["Render:External_Connection_String"];
-            // var connectionString = configuration["Local:Connection_String"];
-            // var connectionString = Environment.GetEnvironmentVariable("Render_Internal_Connection_String");
-            var connectionString =
-                "User Id=a2sv_contest_central_user;Password=rAmkuC91omPXCchAylW6L5HXAYpfGXA4;Database=a2sv_contest_central;Server=dpg-cmaoef6n7f5s7394tugg-a.oregon-postgres.render.com;Port=5432";
-            Console.Out.WriteLine($"Conn String{connectionString}");
+            var connectionString = webHostEnvironment.IsDevelopment()
+                ? configuration["Local:Connection_String"]
+                : Environment.GetEnvironmentVariable("Render_Internal_Connection_String");
+            
             services.AddDbContext<AppDBContext>(options =>
             {
                 options.UseNpgsql(connectionString);

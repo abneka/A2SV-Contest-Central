@@ -1,4 +1,5 @@
 using Application.DTOs.Contest;
+using Application.DTOs.ContestGroup;
 using AutoMapper;
 using Domain.Entities;
 using Application.DTOs.User;
@@ -152,17 +153,32 @@ namespace Application.MappingProfile
                     return srcMember != null;
                 }));
 
+            CreateMap<ContestGroupEntity, ContestGroupWithoutContestDto>()
+                .ForMember(dest => dest.GroupId, opt => opt.MapFrom(src => src.GroupId))
+                .ForMember(dest => dest.Group, opt => opt.MapFrom(src => src.Group));
+                
+            // map ContestEntity for members [ContestGlobalId, ContestUrl, Name, Type, DurationSeconds, StartTimeSeconds, RelativeTimeSeconds, PreparedBy, WebsiteUrl, Description, Difficulty, Kind, Season, Status, ContestGroups]
             CreateMap<ContestEntity, ContestResponseDto>()
                 .ReverseMap()
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) =>
-                {
-                    if (srcMember is int && (int)srcMember == 0)
-                    {
-                        return false;
-                    }
-
-                    return srcMember != null;
-                }));
+                .ForMember(dest => dest.ContestGlobalId, opt => opt.MapFrom(src => src.ContestGlobalId))
+                .ForMember(dest => dest.ContestUrl, opt => opt.MapFrom(src => src.ContestUrl))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
+                .ForMember(dest => dest.DurationSeconds, opt => opt.MapFrom(src => src.DurationSeconds))
+                .ForMember(dest => dest.StartTimeSeconds, opt => opt.MapFrom(src => src.StartTimeSeconds))
+                .ForMember(dest => dest.RelativeTimeSeconds, opt => opt.MapFrom(src => src.RelativeTimeSeconds))
+                .ForMember(dest => dest.PreparedBy, opt => opt.MapFrom(src => src.PreparedBy))
+                .ForMember(dest => dest.WebsiteUrl, opt => opt.MapFrom(src => src.WebsiteUrl))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+                .ForMember(dest => dest.Difficulty, opt => opt.MapFrom(src => src.Difficulty))
+                .ForMember(dest => dest.Kind, opt => opt.MapFrom(src => src.Kind))
+                .ForMember(dest => dest.Season, opt => opt.MapFrom(src => src.Season))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+                .ForMember(dest => dest.ContestGroups, opt => opt.MapFrom(src => src.ContestGroups))
+                .ForMember(dest => dest.Questions, opt => opt.MapFrom(src => src.Questions))
+                .ForMember(dest => dest.UserContestResults, opt => opt.MapFrom(src => src.UserContestResults))
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+                .ForMember(dest => dest.ModifiedAt, opt => opt.MapFrom(src => src.ModifiedAt));
 
             CreateMap<QuestionEntity, QuestionResponseDto>()
                 .ReverseMap()

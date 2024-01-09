@@ -1,5 +1,9 @@
 
 using Application.DTOs.Common;
+using Application.DTOs.ContestGroup;
+using Application.DTOs.Group;
+using Application.DTOs.Question;
+using Application.DTOs.UserContestResult;
 using Domain.Entities;
 
 namespace Application.DTOs.Contest
@@ -20,8 +24,10 @@ namespace Application.DTOs.Contest
         public string Kind { get; set; } = string.Empty;
         public string Season { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
-        // public int ParticipantNumber { get; set; }
-        // public int QuestionNumber { get; set; }
-        public List<ContestGroupEntity> ContestGroups { get; set; }
+        public int ParticipantsNumber { get; set; }
+        public int QuestionsNumber { get; set; }
+        public List<ContestGroupWithoutContestDto> ContestGroups { get; set; } = null!;
+        public List<QuestionResponseDto> Questions { get; set; } = null!;
+        public List<UserContestResultResponseDto> UserContestResults { get; set; } = null!;
     }
 }
