@@ -20,7 +20,7 @@ builder.Services.AddSignalR();
 
 // Add services to the container.
 builder.Services.AddApplication();
-builder.Services.AddPersistence(builder.Configuration);
+builder.Services.AddPersistence(builder.Configuration, builder.Environment);
 builder.Services.ConfigureInfrastructureServices(builder.Configuration);
 // builder.Services.AddSingleton<IAuthorizationHandler, ResourceOwnerAuthorizationHandler>();
 var secret = builder.Configuration["JwtSettings:Secret"];
