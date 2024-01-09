@@ -2,7 +2,7 @@ using Application.Contracts.Persistence;
 using Domain.Entities;
 using MediatR;
 
-namespace Application.Features.Question.Commands.Create
+namespace Application.Features.Question.Commands.CreateOrUpdate
 {
     public class CreateQuestionCommandHandler : IRequestHandler<CreateOrUpdateQuestionCommand, bool>
     {

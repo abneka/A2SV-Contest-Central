@@ -5,7 +5,7 @@ using Application.Features.Question.Queries.GetQuestionsFromContest;
 using Application.Features.Question.Queries.GetSingle;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
-using Application.Features.Question.Commands.Create;
+using Application.Features.Question.Commands.CreateOrUpdate;
 namespace WebAPI.Controllers;
 
 [ApiController]

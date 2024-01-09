@@ -1,7 +1,7 @@
 using Application.DTOs.Question;
 using MediatR;
 
-namespace Application.Features.Question.Commands.Create
+namespace Application.Features.Question.Commands.CreateOrUpdate
 {
     public class CreateOrUpdateQuestionCommand : IRequest<bool>
     {
