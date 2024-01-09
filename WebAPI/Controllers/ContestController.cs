@@ -8,6 +8,8 @@ using Application.Features.Contest.Queries.GetAll;
 using Application.Features.Contest.Command.Create;
 using Application.DTOs.Common;
 using Application.Features.Contest.Queries.GetContestsByFiltration;
+using Application.DTOs.Contest.CodeforcesExtension;
+using Application.Features.Contest.Command.CreateOrUpdateContestByExtension;
 
 namespace WebApi.Controllers
 {
@@ -53,6 +55,20 @@ namespace WebApi.Controllers
 
             return Ok("created");
             // return CreatedAtAction(nameof(GetSingleContest), new{Id = contest.Id}, contest);
+        }
+
+        [HttpPost]
+        [Route("CreateContestByExtension")]
+        public async Task<ActionResult<ContestExtResponseDto>> CreateContestByExtension(ContestExtRequestDto contestRequest)
+        {
+            
+            var command = new CreateOrUpdateContestByExtensionCommand
+            {
+                NewContest = contestRequest
+            };
+            var contest = await _mediator.Send(command);
+
+            return Ok(contest);
         }
 
         [HttpPut]
