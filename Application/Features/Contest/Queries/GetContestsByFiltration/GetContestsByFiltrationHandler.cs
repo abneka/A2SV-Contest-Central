@@ -25,6 +25,7 @@ public class GetContestsByFiltrationHandler : IRequestHandler<GetContestsByFiltr
         var result = await _unitOfWork.ContestRepository.GetContestsWithGroups();
 
         var contests = _mapper.Map<List<ContestResponseDto>>(result);
+        
         // sort by createdDate in descending order
         var orderedContests = contests.OrderByDescending(c => c.CreatedAt);
 
@@ -35,6 +36,13 @@ public class GetContestsByFiltrationHandler : IRequestHandler<GetContestsByFiltr
         query = FilterByLocation(query, request.Filter.Location);
 
         query = query.Skip(skip).Take(request.Filter.PageSize);
+        
+        // update each contest with participants and questions number
+        foreach (var contest in query)
+        {
+            contest.ParticipantsNumber = contest.UserContestResults.Count;
+            contest.QuestionsNumber = contest.Questions.Count;
+        }
 
         return new PaginatedContestResponseDto
         {

@@ -1,5 +1,7 @@
 using Application.Contracts.Persistence;
 using Application.DTOs.Contest;
+using Application.DTOs.Question;
+using Application.DTOs.User;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -75,12 +77,75 @@ namespace Persistence.Repositories
         public async Task<List<ContestEntity>> GetContestsWithGroups()
         {
             var contests = await _dbContext.Contests
+                .Include(c => c.UserContestResults)
+                .Include(c => c.Questions)
                 .Include(c => c.ContestGroups)
                 .ThenInclude(c => c.Group)
                 .ThenInclude(c => c.Location)
                 .ToListAsync();
 
             return contests;
+        }
+        
+        public async Task<List<UserContestAndQuestionDto>> GetContestLeaderboard(Guid contest_id)
+        {
+            var contest = await _dbContext.UserContestResults
+                .Where(u => u.ContestId == contest_id)
+                .Include(u => u.User)
+                .Include(u => u.User.UserQuestionResults)
+                .ThenInclude(u => u.Question)
+                .ToListAsync();
+            
+            Console.WriteLine("Contest Id: " + contest_id);
+            Console.WriteLine("Nahom: " + contest.Count);
+            
+            // contest leaderboard should contain student_name, codeforces_handle, username, total_submission, wrong_submission, problem_solved, conversion_rate, rank
+            var contestLeaderboard = new List<UserContestAndQuestionDto>();
+
+            foreach (var userContestResult in contest)
+            {
+                var userContestAndQuestionDto = new UserContestAndQuestionDto
+                {
+                    UserId = userContestResult.UserId,
+                    User = new ContestUserDto
+                    {
+                        UserName = userContestResult.User.UserName,
+                        CodeforcesHandle = userContestResult.User.CodeforcesHandle,
+                        FullName = userContestResult.User.FirstName + " " + userContestResult.User.LastName,
+                        Email = userContestResult.User.Email
+                    },
+                    SuccessfulHackCount = userContestResult.SuccessfulHackCount,
+                    UnsuccessfulHackCount = userContestResult.UnsuccessfulHackCount,
+                    Points = userContestResult.Points,
+                    Penalty = userContestResult.Penalty,
+                    Rank = userContestResult.Rank,
+                    ContestId = userContestResult.ContestId,
+                    // TODO: calculate the total submissions
+                    TotalSubmissions = 0,
+                    // wrong submission is the sum of the property "rejectedAttemptCount" in Question 
+                    WrongSubmissions = userContestResult.User.UserQuestionResults.Sum(uqr => uqr.RejectedAttemptCount),
+                    ProblemSolved = userContestResult.User.UserQuestionResults.Count(uqr => uqr.Points > 0),
+                    ConversionRatePercent = (userContestResult.User.UserQuestionResults.Count(uqr => uqr.Points > 0) /
+                                      userContestResult.User.UserQuestionResults.Count) * 100,
+                    Id = userContestResult.Id,
+                    CreatedAt = userContestResult.CreatedAt,
+                    ModifiedAt = userContestResult.ModifiedAt,
+                    Questions = userContestResult.User.UserQuestionResults.Select(uqr => new QuestionForUserDto
+                    {
+                        Points = uqr.Points,
+                        RejectedAttemptCount = uqr.RejectedAttemptCount,
+                        BestSubmissionTimeSeconds = uqr.BestSubmissionTimeSeconds,
+                        GlobalQuestionUrl = uqr.Question.GlobalQuestionUrl,
+                        Name = uqr.Question.Name,
+                        Index = uqr.Question.Index,
+                        Solved = uqr.Points > 0
+                    }).ToList()
+                };
+                
+                contestLeaderboard.Add(userContestAndQuestionDto);
+            }
+
+            return contestLeaderboard;
         }
     }
 }

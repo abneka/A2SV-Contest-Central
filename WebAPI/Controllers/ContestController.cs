@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Application.Features.Contest.Queries.GetAll;
 using Application.Features.Contest.Command.Create;
 using Application.DTOs.Common;
+using Application.Features.Contest.Queries;
 using Application.Features.Contest.Queries.GetContestsByFiltration;
 
 namespace WebApi.Controllers
@@ -83,6 +84,14 @@ namespace WebApi.Controllers
             [FromQuery] FilterRequestDto query)
         {
             return await _mediator.Send(new GetContestsByFiltrationQuery { Filter = query });
+        }
+        
+        [HttpGet]
+        [Route("GetContestLeaderboard/{contestId:guid}")]
+        public async Task<ActionResult<IReadOnlyList<ContestResultDto>>> GetContestLeaderboard(Guid contestId)
+        {
+            var contestLeaderboard = await _mediator.Send(new GetContestLeaderboardRequest{ ContestId = contestId});
+            return Ok(contestLeaderboard);
         }
 
         // [HttpGet]
