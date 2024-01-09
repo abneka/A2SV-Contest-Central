@@ -5,6 +5,7 @@ using Application.Features.Question.Queries.GetQuestionsFromContest;
 using Application.Features.Question.Queries.GetSingle;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
+using Application.Features.Question.Commands.CreateOrUpdate;
 namespace WebAPI.Controllers;
 
 [ApiController]
@@ -52,5 +53,14 @@ public class QuestionController : ControllerBase
 
         return Ok(questions);
 
+    }
+
+    [HttpPost]
+    [Route("CreateOrUpdateQuestions")]
+    public async Task<ActionResult<bool>> ReceiveArray(QuestionRequestDto questions)
+    {
+       bool res = await _mediator.Send(new CreateOrUpdateQuestionCommand {  NewQuestions = questions });
+
+        return Ok(new { status = res });
     }
 }
