@@ -13,7 +13,7 @@ using Application.Features.Contest.Queries.GetContestsByFiltration;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class ContestsController : ControllerBase
     {
 

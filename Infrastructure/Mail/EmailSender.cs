@@ -9,7 +9,7 @@ public class EmailSender : IEmailSender
 {
     private const string SenderEmail = "nekahiwota@gmail.com";
     private const string SenderPassword = "qmbkhyqbhgvvfinl";
-    private const string DisplayName = "Social Media App";
+    private const string DisplayName = "A2SV Contest Central";
     
     public async Task SendEmail(Email email)
     {

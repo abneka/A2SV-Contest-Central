@@ -28,6 +28,16 @@ namespace Persistence.Repositories
             return query;
         }
 
+        public override async Task<UserEntity?> GetByIdAsync(Guid id)
+        {
+            var user = await _dbContext.Users
+                .Include(u => u.Group)
+                .Include(u => u.UserType)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            return user;
+        }
+
         public Task<UserEntity?> GetUserByEmail(string email)
         {
             return _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);

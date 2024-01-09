@@ -36,6 +36,17 @@ namespace Persistence
             modelBuilder.Entity<LocationEntity>()
                 .HasIndex(u => u.Id)
                 .IsUnique();
+            
+            // User Entity
+            modelBuilder.Entity<UserEntity>()
+                .HasOne(u => u.Group)
+                .WithMany(g => g.Members)
+                .HasForeignKey(u => u.GroupId);
+
+            modelBuilder.Entity<UserEntity>()
+                .HasOne(u => u.UserType)
+                .WithMany(ut => ut.Users)
+                .HasForeignKey(u => u.UserTypeId);
 
             modelBuilder.Entity<UserContestResultEntity>()
                 .HasOne(u => u.User)

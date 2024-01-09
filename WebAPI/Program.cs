@@ -10,6 +10,7 @@ using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WebApi.Middleware;
@@ -34,7 +35,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
         ValidAudience = builder.Configuration["JwtSettings:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Secret"]!))
+        IssuerSigningKey =
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Secret"]!))
     };
 });
 
@@ -58,10 +60,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddCors(opt =>
 {
-    opt.AddPolicy("AllowAnyOrigin", policy =>
-    {
-        policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
-    });
+    opt.AddPolicy("AllowAnyOrigin", policy => { policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin(); });
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -98,14 +97,15 @@ var app = builder.Build();
 // // Configure the HTTP request pipeline.
 // if (app.Environment.IsDevelopment())
 // {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+app.UseSwagger();
+app.UseSwaggerUI();
 // }
 
 app.UseHttpsRedirection();
-// app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<ExceptionMiddleware>();
 
-app.UseAuthentication();;
+app.UseAuthentication();
+;
 app.UseAuthorization();
 
 app.MapControllers();
