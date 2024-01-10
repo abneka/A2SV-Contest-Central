@@ -1,5 +1,6 @@
 ﻿using Application.Contracts.Persistence;
 using Domain.Entities;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Repositories.Common;
 
@@ -20,8 +21,6 @@ public class QuestionRepository : GenericRepository<QuestionEntity>, IQuestionRe
             .ThenInclude(contestGroupEntity => contestGroupEntity.Group).ToListAsync();
     }
     
-
-    
     public async Task<IReadOnlyList<QuestionEntity>> GetQuestionsFromContestAsync(Guid contestId)
     {
         // sort by q.Index
@@ -31,6 +30,21 @@ public class QuestionRepository : GenericRepository<QuestionEntity>, IQuestionRe
             .ToListAsync();
 
         return questions;
+    }
+
+    public async new Task<Unit> CreateListAsync(IReadOnlyList<QuestionEntity> entities)
+    {
+        Guid contest_id = entities[0].ContestId;
+
+        // Remove existing questions for the specified contest
+        var existingQuestions = _dbContext.Questions.Where(q => q.ContestId == contest_id);
+        _dbContext.Questions.RemoveRange(existingQuestions);
+
+        // Add new questions
+        await _dbContext.Questions.AddRangeAsync(entities);
+        await _dbContext.SaveChangesAsync();
+        
+        return Unit.Value;
     }
     
 
