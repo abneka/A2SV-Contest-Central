@@ -98,6 +98,9 @@ namespace Application.Features.CodeforcesApi.Commands
                 for (int i = 0; i < contestQuestions.Count; i++)
                 {
                     var questionFromDb = _unitOfWork.QuestionRepository.GetByIdAsync(contestQuestions[i].Id).Result;
+                    
+                    if (questionFromDb == null) continue;
+                    
                     questionFromDb.Name = data.result.problems[i].name;
                     await _unitOfWork.QuestionRepository.UpdateAsync(contestQuestions[i].Id, questionFromDb);
                 }
@@ -109,14 +112,17 @@ namespace Application.Features.CodeforcesApi.Commands
                 foreach (var singleUser in rows)
                 {
                     string userCodeforcesHandle = singleUser.party.members[0].handle.ToString();
-                    Guid userId =
+                    Guid? userId =
                         await _unitOfWork.UserRepository.GetUserIdByCodeforcesHandle(userCodeforcesHandle);
+                    
+                    // if user doesn't exist in our database, skip this user
+                    if (userId == null) continue;
                     
                     // create new UserContestResultEntity and add it to database
                     var userContestResult = new UserContestResultEntity
                     {
                         ContestId = contest_id_guid,
-                        UserId = userId,
+                        UserId = (Guid)userId,
                         Rank = (int)singleUser.rank,
                         Penalty = (int)singleUser.penalty,
                         SuccessfulHackCount = (int)singleUser.successfulHackCount,
@@ -138,10 +144,12 @@ namespace Application.Features.CodeforcesApi.Commands
                         var userQuestionResult = new UserQuestionResultEntity
                         {
                             QuestionId = questionId,
-                            UserId = userId,
+                            UserId = (Guid)userId,
                             Points = (double)userQuestion.points,
                             RejectedAttemptCount = (int)userQuestion.rejectedAttemptCount,
-                            BestSubmissionTimeSeconds = userQuestion.bestSubmissionTimeSeconds.ToString()
+                            BestSubmissionTimeSeconds = userQuestion.bestSubmissionTimeSeconds.ToString(),
+                            CreatedAt = DateTime.Now,
+                            ModifiedAt = DateTime.Now
                         };
                         
                         // create userQuestionResult

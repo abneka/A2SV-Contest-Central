@@ -10,6 +10,7 @@ public class GroupResponseDto : BaseDto
     public string Name { get; set; } = null!;
     public string Abbreviation { get; set; } = null!;
     public string Generation { get; set; } = null!;
+    public string Year { get; set; } = null!;
     [JsonIgnore]
     public List<UserResponseDto> Members { get; set; } = new List<UserResponseDto>();
     public Guid LocationId { get; set; }

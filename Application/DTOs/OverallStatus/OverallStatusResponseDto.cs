@@ -6,4 +6,5 @@ public class OverallStatusResponseDto
     public int TotalContest { get; set; }
     public int TotalGroup { get; set; }
     public int TotalMembers { get; set; }
+    public int TotalMinutes { get; set; }
 }
