@@ -14,9 +14,7 @@ public class UserEntity : BaseDomainEntity
     public string Gender { get; set; } = null!;
     public DateOnly BirthDate { get; set; }
     public string Phone { get; set; } = null!;
-    public string Password { get; set; } = null!; 
-    public string Phone { get; set; } = null!; 
-    public string Gender { get; set; } = null!; 
+    public string Password { get; set; } = null!;
     public string? Token { get; set; } = "";
     public bool IsVerified { get; set; } = false;
     public string? ConfirmationCode { get; set; }
