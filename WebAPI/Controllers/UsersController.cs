@@ -14,6 +14,7 @@ using Application.Features.User.Queries.GetUsersByFiltration;
 // using Application.Features.User.Queries.Login;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Service;
@@ -23,7 +24,8 @@ using WebApi.Service;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [EnableCors("AllowAnyOrigin")]
+    [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;

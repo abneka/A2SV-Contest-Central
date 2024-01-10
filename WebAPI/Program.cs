@@ -40,21 +40,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
-// builder.Services.AddAuthorization(options =>
-// {
-//     options.AddPolicy("ResourceOwnerPolicy", policy =>
-//     {
-//         policy.RequireAuthenticatedUser(); // Users must be authenticated
-//         policy.Requirements.Add(new ResourceOwnerRequirement());
-//     });
-// });
-
 builder.Services.AddControllers();
-
-// builder.Services.AddControllers().AddJsonOptions(opt =>
-// {
-//     opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-// });
 
 builder.Services.AddHttpContextAccessor();
 

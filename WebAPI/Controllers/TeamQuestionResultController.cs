@@ -3,12 +3,14 @@ using Application.Features.TeamQuestionResult.Queries.GetAllTeamQuestionResult;
 using Application.Features.TeamQuestionResult.Queries.GetTeamQuestionResultByQuestionIdTeamId;
 using Application.Features.TeamQuestionResult.Queries.GetTeamQuestionResultByTeamId;
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[EnableCors("AllowAnyOrigin")]
+[Route("api/[controller]")]
 public class TeamQuestionResultController : ControllerBase
 {
     private readonly IMediator _mediator;
