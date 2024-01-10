@@ -44,7 +44,7 @@ public class ForgetPasswordCommandHandler : IRequestHandler<ForgetPasswordComman
         await _emailSender.SendEmail(new Email()
         {
             To = request.Email,
-            Subject = "Social Media App Reset Password",
+            Subject = "A2SV Contest Central Reset Password",
             Body =
                 $"This User requested to reset password, if you are not the one who requested this, please ignore this email. <br/> Please reset your password by using the confirmation code below: <br/> {user.ConfirmationCode} <br/> this code will expire in 30 minutes."
         });

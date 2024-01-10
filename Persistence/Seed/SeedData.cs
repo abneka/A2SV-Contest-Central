@@ -40,6 +40,7 @@ public static class SeedData
                     Name = "Group 46",
                     Abbreviation = "G-46",
                     Generation = "4",
+                    Year = "2023/24",
                     LocationId = new Guid("a1cc8e72-a754-4f8c-b2ef-a9b770315aa3"),
                     CreatedAt = ConvertStringToDateTime("2024-01-01 18:19:28.530000 +00:00"),
                     ModifiedAt = ConvertStringToDateTime("2024-01-01 18:19:28.530000 +00:00")
@@ -50,6 +51,7 @@ public static class SeedData
                     Name = "Group 45",
                     Abbreviation = "G-45",
                     Generation = "4",
+                    Year = "2023/24",
                     LocationId = new Guid("a1cc8e72-a754-4f8c-b2ef-a9b770315aa3"),
                     CreatedAt = ConvertStringToDateTime("2024-01-01 18:19:28.530000 +00:00"),
                     ModifiedAt = ConvertStringToDateTime("2024-01-01 18:19:28.530000 +00:00")
@@ -77,26 +79,6 @@ public static class SeedData
                     Status = "Upcoming",
                     CreatedAt = ConvertStringToDateTime("2024-01-01 12:17:09.186746 +00:00"),
                     ModifiedAt = ConvertStringToDateTime("2024-01-01 12:17:09.186750 +00:00")
-                },
-                new ContestEntity
-                {
-                    Id = new Guid("d3b35dd0-76e7-4cd2-b221-28eaff720186"),
-                    ContestGlobalId = "455525",
-                    ContestUrl = "https://codeforces.com/gym/455525",
-                    Name = "A2SV UCL",
-                    Type = "ICPC",
-                    DurationSeconds = 7200,
-                    StartTimeSeconds = 1689400800,
-                    RelativeTimeSeconds = 14713721,
-                    PreparedBy = "mars_guy",
-                    WebsiteUrl = "https://a2sv.org",
-                    Description = "",
-                    Difficulty = "2",
-                    Kind = "Training Camp Contest",
-                    Season = "2023-2024",
-                    Status = "Upcoming",
-                    CreatedAt = ConvertStringToDateTime("2024-01-01 12:31:23.576100 +00:00"),
-                    ModifiedAt = ConvertStringToDateTime("2024-01-01 12:31:23.576102 +00:00")
                 },
                 new ContestEntity
                 {
@@ -132,14 +114,6 @@ public static class SeedData
                 },
                 new ContestGroupEntity
                 {
-                    Id = new Guid("4c338661-e61a-49f4-be2f-1b66f5045c8f"),
-                    ContestId = new Guid("d3b35dd0-76e7-4cd2-b221-28eaff720186"),
-                    GroupId = new Guid("f178d571-b1a3-4ee3-88b2-c06e4a85ed66"),
-                    CreatedAt = ConvertStringToDateTime("2024-01-01 12:31:23.848645 +00:00"),
-                    ModifiedAt = ConvertStringToDateTime("2024-01-01 12:31:23.848645 +00:00")
-                },
-                new ContestGroupEntity
-                {
                     Id = new Guid("112084e2-f424-49eb-9e8d-8bd30b2ef9ec"),
                     ContestId = new Guid("451fed4c-889d-4c74-945b-e0659701caac"),
                     GroupId = new Guid("f178d571-b1a3-4ee3-88b2-c06e4a85ed66"),
@@ -150,26 +124,6 @@ public static class SeedData
 
         modelBuilder.Entity<QuestionEntity>()
             .HasData(
-                new QuestionEntity
-                {
-                    Id = new Guid("5619141e-23f4-4cfb-8930-4e120abd775b"),
-                    GlobalQuestionUrl = "string",
-                    Name = "Question 2",
-                    Index = "B",
-                    ContestId = new Guid("d3b35dd0-76e7-4cd2-b221-28eaff720186"),
-                    CreatedAt = ConvertStringToDateTime("2024-01-01 12:31:23.847810 +00:00"),
-                    ModifiedAt = ConvertStringToDateTime("2024-01-01 12:31:23.847811 +00:00")
-                },
-                new QuestionEntity
-                {
-                    Id = new Guid("9c2bbb82-2873-406e-b60b-eb95da35a73f"),
-                    GlobalQuestionUrl = "string",
-                    Name = "Question 1",
-                    Index = "A",
-                    ContestId = new Guid("d3b35dd0-76e7-4cd2-b221-28eaff720186"),
-                    CreatedAt = ConvertStringToDateTime("2024-01-01 12:17:09.491723 +00:00"),
-                    ModifiedAt = ConvertStringToDateTime("2024-01-01 12:17:09.491724 +00:00")
-                },
                 new QuestionEntity
                 {
                     Id = new Guid("18a52ddc-8848-4e34-8d16-6dfc84561129"),
@@ -204,6 +158,11 @@ public static class SeedData
                     CodeforcesHandle = "haymanotdemis",
                     Password = "$2a$11$hxEy3.5H4dv6T2syP3Gtn.DO5qVsgeA19T2Kg0MyIDM7a4/Dj44J2",
                     Token = "57167dc2-295b-4041-8d82-60b508cff699",
+                    CoverPicture = null,
+                    ProfilePicture = null,
+                    Gender = "Male",
+                    BirthDate = new DateOnly(2001, 5, 9),
+                    Phone = "+251939656144",
                     IsVerified = false,
                     ConfirmationCode = null,
                     ConfirmationCodeExpiration = null,
@@ -224,6 +183,11 @@ public static class SeedData
                     CodeforcesHandle = "Mikeyas",
                     Password = "$2a$11$XVk0kWjTjER9S/6ggkvOmu6FPrdH0Sm6sghYaBQZwNWz/s.XoGXXu",
                     Token = "aa5fdd09-c155-4b15-81e6-707aa393673f",
+                    CoverPicture = null,
+                    ProfilePicture = null,
+                    Gender = "Male",
+                    BirthDate = new DateOnly(2001, 5, 9),
+                    Phone = "+251939656144",
                     IsVerified = false,
                     ConfirmationCode = null,
                     ConfirmationCodeExpiration = null,
