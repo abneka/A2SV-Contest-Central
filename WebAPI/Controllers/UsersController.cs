@@ -101,18 +101,6 @@ namespace WebApi.Controllers
             return await _mediator.Send(new GetUsersByFiltrationQuery{Filter = query});
         }
 
-        [HttpPost]
-        [Route("UploadCsvFile")]
-        public async Task<IActionResult> UploadCsvFile(IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-            {
-                return BadRequest("Invalid file");
-            }
 
-            await _mediator.Send(new AddUserUsingCsvFileCommand { UserFile = file });
-
-            return Ok("File uploaded successfully");
-        }
     }
 }
