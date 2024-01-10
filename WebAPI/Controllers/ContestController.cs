@@ -25,16 +25,6 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("GetContests")]
-        public async Task<ActionResult<PaginatedResult<ContestResponseDto>>> GetContests([FromQuery] int page = 1, [FromQuery] int page_size = 10)
-        {
-            var paginatedContests = await _mediator.Send(new GetAllContestsRequest{Page=page, PageSize = page_size});
-            
-            return Ok(paginatedContests);
-        }
-
-
-        [HttpGet]
         [Route("GetSingleContest/{contestId:guid}")]
         public async Task<ActionResult<ContestResponseDto>> GetSingleContest(Guid contestId)
         {
@@ -79,7 +69,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("filter")]
+        [Route("GetContestsByFilter")]
         public async Task<ActionResult<PaginatedContestResponseDto>> GetContestsByFiltration(
             [FromQuery] FilterRequestDto query)
         {
