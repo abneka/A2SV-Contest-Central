@@ -39,7 +39,7 @@ namespace Application.Features.User.Commands.AddUserUsingCsvFile
                 user.UserTypeId = await _unitOfWork.UserTypeRepository.GetUserTypeIdByUserTypeName(user_type);
 
                 string group_name = csvReader.GetField<string>("Group") ?? string.Empty;
-                user.GroupId = await _unitOfWork.A2SVGroupRepository.GetGroupIdByGroupName(group_name);
+                user.GroupId = await _unitOfWork.A2SVGroupRepository.GetGroupIdByGroupName("Group-" + group_name);
 
                 users.Add(user);
             }
