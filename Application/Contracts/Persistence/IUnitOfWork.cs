@@ -17,4 +17,5 @@ public interface IUnitOfWork
     IUserQuestionResultRepository UserQuestionResultRepository { get; }
     ITeamQuestionResultRepository TeamQuestionResultRepository { get; }
     IContestGroupRepository ContestGroupRepository {get; }
+    IGroupRepository GroupRepository {get; }
 }

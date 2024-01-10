@@ -10,6 +10,8 @@ public class UserEntity : BaseDomainEntity
     public string UserName { get; set; } = null!;
     public string CodeforcesHandle { get; set; } = null!;
     public string Password { get; set; } = null!; 
+    public string Phone { get; set; } = null!; 
+    public string Gender { get; set; } = null!; 
     public string? Token { get; set; } = "";
     public bool IsVerified { get; set; } = false;
     public string? ConfirmationCode { get; set; }
