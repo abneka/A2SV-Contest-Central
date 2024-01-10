@@ -11,4 +11,5 @@ public class GroupDto
     public Guid LocationId { get; set; }
     public LocationResponseDto? Location { get; set; }
     public string Generation { get; set; } = null!;
+    public string Year { get; set; } = "2023/24";
 }
