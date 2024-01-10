@@ -6,9 +6,12 @@ using Application.Features.Question.Queries.GetSingle;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Application.Features.Question.Commands.CreateOrUpdate;
+using Microsoft.AspNetCore.Cors;
+
 namespace WebAPI.Controllers;
 
 [ApiController]
+[EnableCors("AllowAnyOrigin")]
 [Route("api/[controller]")]
 public class QuestionController : ControllerBase
 {

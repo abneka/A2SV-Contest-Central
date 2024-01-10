@@ -4,12 +4,14 @@ using Application.Features.UserContestResult.Queries.GetUserContestResultByGroup
 using Application.Features.UserContestResult.Queries.GetUserContestResultByUserId;
 using Application.Features.UserContestResult.Queries.GetUserContestResultsByUserId;
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[EnableCors("AllowAnyOrigin")]
+[Route("api/[controller]")]
 public class UserContestResultController : ControllerBase
 {
     private readonly IMediator _mediator;

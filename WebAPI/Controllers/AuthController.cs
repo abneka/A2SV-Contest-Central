@@ -5,12 +5,14 @@ using Application.Features.Auth.LogIn;
 using Application.Features.Auth.ResetPassword;
 using Application.Features.User.Commands.CreateUser;
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[EnableCors("AllowAnyOrigin")]
+[Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
     private readonly IMediator _mediator;

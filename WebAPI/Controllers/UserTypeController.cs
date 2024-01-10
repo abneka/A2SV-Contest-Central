@@ -3,12 +3,14 @@ using Application.Features.UserType.Commands.CreateUserType;
 using Application.Features.UserType.Queries.GetAllUserType;
 using Application.Features.UserType.Queries.GetUserTypeById;
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[EnableCors("AllowAnyOrigin")]
+[Route("api/[controller]")]
 public class UserTypeController : ControllerBase
 {
     private readonly IMediator _mediator;

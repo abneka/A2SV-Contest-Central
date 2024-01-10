@@ -1,11 +1,13 @@
 using Application.Features.User.Commands.AddUserUsingCsvFile;
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [EnableCors("AllowAnyOrigin")]
+    [Route("api/[controller]")]
     public class AddUserByCsvFileController : ControllerBase
     {
 

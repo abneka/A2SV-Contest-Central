@@ -1,11 +1,13 @@
 using Application.Features.CodeforcesApi.Commands;
 using Application.Features.CodeforcesApi.Queries.CheckContestUrl;
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("[controller]")]
+    [EnableCors("AllowAnyOrigin")]
+    [Route("api/[controller]")]
     public class CodeforcesApiController : Controller
     {
         private readonly IMediator _mediator;

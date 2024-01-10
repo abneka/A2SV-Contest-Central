@@ -11,11 +11,13 @@ using Application.Features.Contest.Queries;
 using Application.Features.Contest.Queries.GetContestsByFiltration;
 using Application.DTOs.Contest.CodeforcesExtension;
 using Application.Features.Contest.Command.CreateOrUpdateContestByExtension;
+using Microsoft.AspNetCore.Cors;
 
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [EnableCors("AllowAnyOrigin")]
+    [Route("api/[controller]")]
     public class ContestsController : ControllerBase
     {
 

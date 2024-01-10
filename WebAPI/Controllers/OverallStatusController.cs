@@ -1,12 +1,15 @@
 ﻿using Application.DTOs.OverallStatus;
 using Application.Features.OverallStatus.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Persistence.Repositories;
 
 namespace WebAPI.Controllers;
 
 [ApiController]
+[EnableCors("AllowAnyOrigin")]
+[Route("api/[controller]")]
 public class OverallStatusController : ControllerBase
 {
     private readonly IMediator _mediator;
