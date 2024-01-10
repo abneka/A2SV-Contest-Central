@@ -10,6 +10,11 @@ public class UserResponseDto : BaseDto
     public string Email { get; set; } = null!;
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;
+    public string? ProfilePicture { get; set; } = null!;
+    public string? CoverPicture { get; set; } = null!;
+    public string Gender { get; set; } = null!;
+    public DateOnly BirthDate { get; set; }
+    public string Phone { get; set; } = null!;
     public Guid UserTypeId { get; set; }
     public UserTypeResponseDto UserType { get; set; } = null!;
     public Guid GroupId { get; set; }
