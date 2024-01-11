@@ -87,6 +87,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 // }
 
+app.UseCors("AllowAnyOrigin");
+
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionMiddleware>();
 
