@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebAPI.Controllers;
 
 [ApiController]
-[EnableCors("AllowAnyOrigin")]
 [Route("api/[controller]")]
 public class TeamQuestionResultController : ControllerBase
 {

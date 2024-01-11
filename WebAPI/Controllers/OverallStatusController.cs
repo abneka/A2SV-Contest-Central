@@ -8,7 +8,6 @@ using Persistence.Repositories;
 namespace WebAPI.Controllers;
 
 [ApiController]
-[EnableCors("AllowAnyOrigin")]
 [Route("api/[controller]")]
 public class OverallStatusController : ControllerBase
 {

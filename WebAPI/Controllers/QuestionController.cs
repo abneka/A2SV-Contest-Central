@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Cors;
 namespace WebAPI.Controllers;
 
 [ApiController]
-[EnableCors("AllowAnyOrigin")]
 [Route("api/[controller]")]
 public class QuestionController : ControllerBase
 {

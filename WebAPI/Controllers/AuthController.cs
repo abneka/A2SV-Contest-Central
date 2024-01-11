@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers;
 
 [ApiController]
-[EnableCors("AllowAnyOrigin")]
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
