@@ -1,14 +1,21 @@
-﻿using FluentValidation;
+﻿using Application.Contracts.Persistence;
+using FluentValidation;
 
 namespace Application.Features.Auth.LogIn;
 
 public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
 {
-    public LoginUserCommandValidator()
+    public LoginUserCommandValidator(IUserRepository userRepository)
     {
         RuleFor(p => p.AuthRequest.Email)
-            .NotEmpty().WithMessage("{PropertyName} is required.")
-            .EmailAddress().WithMessage("{PropertyName} is not valid.");
+            .NotEmpty().WithMessage("Email is required.")
+            .EmailAddress().WithMessage("Email is not valid.")
+            .MustAsync(async (email, token) =>
+            {
+                var userExists = await userRepository.GetUserByEmail(email);
+                return userExists != null;
+            })
+            .WithMessage("No user found with this email.");
 
         RuleFor(p => p.AuthRequest.Password)
             .NotEmpty().WithMessage("{PropertyName} is required.")

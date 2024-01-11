@@ -5,12 +5,13 @@ using Application.Features.Location.Commands.UpdateLocation;
 using Application.Features.Location.Queries.GetAllLocations;
 using Application.Features.Location.Queries.GetLocationById;
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class LocationController : ControllerBase
 {
     private readonly IMediator _mediator;

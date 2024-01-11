@@ -15,17 +15,19 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly IEmailSender _emailSender;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateUserCommandHandler(IUserRepository userRepository, IEmailSender emailSender, IMapper mapper)
+    public CreateUserCommandHandler(IUserRepository userRepository, IEmailSender emailSender, IMapper mapper, IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _mapper = mapper;
         _emailSender = emailSender;
+        _unitOfWork = unitOfWork;
     }
     
     public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var validator = new CreateUserCommandValidator();
+        var validator = new CreateUserCommandValidator(_unitOfWork);
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         
         if (!validationResult.IsValid)

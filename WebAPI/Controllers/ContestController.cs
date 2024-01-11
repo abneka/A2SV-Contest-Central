@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ContestsController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -39,7 +39,9 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [Route("CreateContest")]
-        public async Task<ActionResult<ContestResponseDto>> CreateContest( ContestRequestDto contestRequest)
+
+
+        public async Task<ActionResult<ContestResponseDto>> CreateContest(ContestRequestDto contestRequest)
         {
 
             var new_contest = new ContestInfoRequestDto{

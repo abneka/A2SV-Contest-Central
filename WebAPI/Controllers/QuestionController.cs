@@ -6,6 +6,8 @@ using Application.Features.Question.Queries.GetSingle;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Application.Features.Question.Commands.CreateOrUpdate;
+using Microsoft.AspNetCore.Cors;
+
 namespace WebAPI.Controllers;
 
 [ApiController]
@@ -38,7 +40,7 @@ public class QuestionController : ControllerBase
     
     [HttpGet]
     [Route("CheckDuplicate")]
-    public async Task<ActionResult<bool>> CheckDuplicate(string questionUrl)
+    public async Task<ActionResult<QuestionDuplicateCheckResponseDto>> CheckDuplicate(string questionUrl)
     {
         var question = await _mediator.Send(new CheckDuplicateQuestionRequest { GlobalQuestionUrl = questionUrl });
         

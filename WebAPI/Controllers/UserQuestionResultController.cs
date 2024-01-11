@@ -3,12 +3,13 @@ using Application.Features.UserQuestionResult.Queries.GetAllUserQuestionResult;
 using Application.Features.UserQuestionResult.Queries.GetUserQuestionResultByQuestionIdUserId;
 using Application.Features.UserQuestionResult.Queries.GetUserQuestionResultByUserId;
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class UserQuestionResultController : ControllerBase
 {
     private readonly IMediator _mediator;

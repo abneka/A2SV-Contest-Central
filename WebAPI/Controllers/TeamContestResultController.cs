@@ -1,12 +1,13 @@
 ﻿using Application.DTOs.TeamContestResult;
 using Application.Features.TeamContestResult.Queries.GetAllTeamContestResults;
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class TeamContestResultController : ControllerBase
 {
     private readonly IMediator _mediator;

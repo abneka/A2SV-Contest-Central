@@ -1,10 +1,12 @@
 using Application.Features.CodeforcesApi.Commands;
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("[controller]")]
+    [ApiController]
+    [Route("api/[controller]")]
     public class CodeforcesApiController : Controller
     {
         private readonly IMediator _mediator;
