@@ -13,6 +13,11 @@ public class A2SVGroupRepository : GenericRepository<GroupEntity>, IA2SVGroupRep
         _dbContext = dbContext;
     }
 
+    public override async Task<IReadOnlyList<GroupEntity>> GetAllAsync()
+    {
+        return await _dbContext.Groups.Include(g => g.Location).ToListAsync();
+    }
+
     public async Task<List<GroupEntity>> GetAllGroupsWithMembers()
     {
         return await _dbContext.Groups.Include(g => g.Members).Include(g => g.Location).ToListAsync();
@@ -29,5 +34,10 @@ public class A2SVGroupRepository : GenericRepository<GroupEntity>, IA2SVGroupRep
             return group.Id;
         }
         return Guid.Empty;
+    }
+    
+    public async Task<List<GroupEntity>> GetGroupsByLocation(Guid id)
+    {
+        return await _dbContext.Groups.Where(g => g.LocationId == id).ToListAsync();
     }
 }

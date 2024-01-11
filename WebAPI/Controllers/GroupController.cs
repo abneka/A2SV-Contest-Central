@@ -5,6 +5,7 @@ using Application.Features.Group.Commands.DeleteGroup;
 using Application.Features.Group.Commands.UpdateGroup;
 using Application.Features.Group.Queries.GetAllGroups;
 using Application.Features.Group.Queries.GetFilteredGroupRanking;
+using Application.Features.Group.Queries.GetGroupsByLocation;
 using Application.Features.Group.Queries.GetOneGroup;
 using MediatR;
 using Microsoft.AspNetCore.Cors;
@@ -40,6 +41,16 @@ public class GroupController : ControllerBase
             Id = id
         });
         return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("GetGroupByLocation/{locationId:guid}")]
+    public async Task<ActionResult<List<GroupResponseDto>>> GetGroupsByLocation(Guid locationId)
+    {
+        return await _mediator.Send(new GetGroupsByLocationQuery
+        {
+            LocationId = locationId
+        });
     }
 
     [HttpGet]
