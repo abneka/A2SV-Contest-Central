@@ -7,4 +7,5 @@ public interface IA2SVGroupRepository : IGenericRepository<GroupEntity>
 {
     Task<List<GroupEntity>> GetAllGroupsWithMembers();
     public Task<Guid> GetGroupIdByGroupName(string group_name);
+    Task<List<GroupEntity>> GetGroupsByLocation(Guid id);
 }
