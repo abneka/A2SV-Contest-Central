@@ -13,8 +13,9 @@ public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
             .MustAsync(async (email, token) =>
             {
                 var userExists = await userRepository.GetUserByEmail(email);
-                return userExists is { IsVerified: false };
-            }).WithMessage("User is already verified.");
+                return userExists != null;
+            })
+            .WithMessage("No user found with this email.");
 
         RuleFor(p => p.AuthRequest.Password)
             .NotEmpty().WithMessage("{PropertyName} is required.")
