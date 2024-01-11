@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using Application.Contracts.Persistence.Auth;
 using Application.DTOs.Auth;
+using Application.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -32,7 +33,7 @@ public class AuthRepository : IAuth
 
         if (!BCrypt.Net.BCrypt.Verify(authRequest.Password, user.Password))
         {
-            throw new Exception("Password doesn't match");
+            throw new PasswordMismatch("User name or password does not match");
         }
 
         var token = JwtTokenGenerator.GenerateToken(user.Email, user.UserName, user.Id, user.FirstName, user.LastName,

@@ -1,10 +1,11 @@
-﻿using FluentValidation;
+﻿using Application.Contracts.Persistence;
+using FluentValidation;
 
 namespace Application.Features.User.Commands.CreateUser;
 
 public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {
-    public CreateUserCommandValidator()
+    public CreateUserCommandValidator(IUnitOfWork unitOfWork)
     {
         // Rule For UserName. 
         RuleFor(u => u.UserDto.UserName)
@@ -38,5 +39,25 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
             .Length(min:2, max:20).WithMessage("{PropertyName} must be between 2 and 20 characters.")
             .Matches("^[a-zA-Z0-9_]+$").WithMessage("{PropertyName} must contain only alphanumeric characters and underscores.");
         
+        // Rule for GroupId.
+        RuleFor(u => u.UserDto.GroupId)
+            .NotEmpty().WithMessage("{PropertyName} is required.")
+            .MustAsync(async (id, token) =>
+            {
+                var groupExists = await unitOfWork.A2SVGroupRepository.Exists(id);
+                return groupExists;
+            })
+            .WithMessage("{PropertyName} is not valid.");
+        
+        // Rule for UserTypeId.
+        RuleFor(u => u.UserDto.UserTypeId)
+            .NotEmpty().WithMessage("{PropertyName} is required.")
+            .MustAsync(async (id, token) =>
+            {
+                var userTypeExists = await unitOfWork.UserTypeRepository.Exists(id);
+                return userTypeExists;
+            })
+            .WithMessage("{PropertyName} is not valid.");
+
     }
 }
