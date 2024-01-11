@@ -52,3 +52,13 @@ namespace Application.Features.User.Commands.AddUserUsingCsvFile
 }
 
 
+// FirstName
+// LastName
+// Email
+// Username
+// CodeforcesHandle
+// Phone
+// Gender
+// Password
+// Role
+// Group

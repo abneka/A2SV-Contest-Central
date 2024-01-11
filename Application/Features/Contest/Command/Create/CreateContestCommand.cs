@@ -5,5 +5,5 @@ namespace Application.Features.Contest.Command.Create;
 
 public class CreateContestCommand : IRequest<ContestResponseDto>
 {
-    public ContestRequestDto NewContest {get; set;} = null!;
+    public ContestInfoRequestDto NewContest { get; set; } = null!;
 }
