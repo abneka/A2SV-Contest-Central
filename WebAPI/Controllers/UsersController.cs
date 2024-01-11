@@ -2,6 +2,8 @@
 using Application.DTOs.Auth;
 using Application.DTOs.Common;
 using Application.DTOs.User;
+using Application.Features.User.Commands.AddCoverPicture;
+using Application.Features.User.Commands.AddProfilePicture;
 using Application.Features.User.Commands.AddUserUsingCsvFile;
 using Application.Features.User.Commands.CreateUser;
 using Application.Features.User.Commands.DeleteUser;
@@ -82,6 +84,28 @@ namespace WebApi.Controllers
                 UserDto = userDto
             });
             return response;
+        }
+
+        [HttpPut]
+        [Route("UploadProfilePicture/{userId:guid}")]
+        public async Task<UserResponseDto> UploadProfilePicture(Guid userId, [FromForm]ProfilePicDto profilePicDto)
+        {
+            return await _mediator.Send(new AddProfilePictureCommand
+            {
+                UserId = userId,
+                ImageFile = profilePicDto.ImageFile
+            });
+        }
+        
+        [HttpPut]
+        [Route("UploadCoverPicture/{userId:guid}")]
+        public async Task<UserResponseDto> UploadCoverPicture(Guid userId, [FromForm]ProfilePicDto profilePicDto)
+        {
+            return await _mediator.Send(new AddCoverPictureCommand
+            {
+                UserId = userId,
+                ImageFile = profilePicDto.ImageFile
+            });
         }
         
         [HttpDelete("{id:guid}")]
