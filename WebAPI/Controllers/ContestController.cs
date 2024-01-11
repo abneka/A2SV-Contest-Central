@@ -37,7 +37,7 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [Route("CreateContest")]
-        public async Task<ActionResult<ContestResponseDto>> CreateContest([FromForm]  ContestRequestDto contestRequest)
+        public async Task<ActionResult<ContestResponseDto>> CreateContest(ContestRequestDto contestRequest)
         {
             var command = new CreateContestCommand
             {
