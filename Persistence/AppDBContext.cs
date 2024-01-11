@@ -17,7 +17,7 @@ namespace Persistence
         public DbSet<ContestGroupEntity> ContestGroups { get; set; }
         public DbSet<TeamContestResultEntity> TeamContestResults { get; set; }
         public DbSet<UserContestResultEntity> UserContestResults { get; set; }
-        public DbSet<UserTypeEntity> UserTypeEntities { get; set; }
+        public DbSet<UserTypeEntity> UserTypeEntity { get; set; }
         
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {

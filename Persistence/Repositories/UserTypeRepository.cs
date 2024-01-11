@@ -15,7 +15,7 @@ public class UserTypeRepository : GenericRepository<UserTypeEntity>, IUserTypeRe
 
     public async Task<Guid> GetUserTypeIdByUserTypeName(string user_type_name)
     {
-        var role = await _dbContext.UserTypeEntities
+        var role = await _dbContext.UserTypeEntity
                 .Where(type => type.Name == user_type_name)
                 .FirstOrDefaultAsync();
 
