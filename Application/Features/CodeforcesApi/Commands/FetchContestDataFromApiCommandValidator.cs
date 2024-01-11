@@ -37,6 +37,9 @@ namespace Application.Features.CodeforcesApi.Commands
         private async Task<bool> IsContestFetched(Guid contest_id, CancellationToken cancellationToken)
         {
             var contest = await _unitOfWork.ContestRepository.GetByIdAsync(contest_id);
+            if(contest == null){
+                return false;
+            }
             return contest.Status != "FINISHED";
         }
     }

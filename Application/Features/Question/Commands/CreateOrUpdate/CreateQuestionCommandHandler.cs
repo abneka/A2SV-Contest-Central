@@ -15,18 +15,14 @@ namespace Application.Features.Question.Commands.CreateOrUpdate
         public async Task<bool> Handle(CreateOrUpdateQuestionCommand command, CancellationToken cancellationToken)
         {
 
-            var contest = await _unitOfWork.ContestRepository.GetContestByGlobalIdAsync(command.NewQuestions.ContestId);
-            if(contest == null){
-                return false;
-            }
 
-            List<QuestionEntity> questionList = command.NewQuestions.Questions.Select((question, index)=>
+            List<QuestionEntity> questionList = command.NewQuestions.Questions.Select((question)=>
             {
                 var questionEntity = new QuestionEntity
                 {
-                    GlobalQuestionUrl = question,
-                    Index = ((char)(65+index)).ToString(),
-                    ContestId = contest.Id
+                    GlobalQuestionUrl = question.Url,
+                    Index = question.Index,
+                    ContestId = command.NewQuestions.ContestId
                 };
                 return questionEntity;
             })
@@ -37,3 +33,9 @@ namespace Application.Features.Question.Commands.CreateOrUpdate
         }
     }
 }
+
+        // RuleFor(dto => dto.Questions)
+        //     .NotNull()
+        //     .WithMessage("Questions list cannot be null.")
+        //     .NotEmpty()
+        //     .WithMessage("At least one question is required.");
