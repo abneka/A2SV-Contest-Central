@@ -24,7 +24,6 @@ using WebApi.Service;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [EnableCors("AllowAnyOrigin")]
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {

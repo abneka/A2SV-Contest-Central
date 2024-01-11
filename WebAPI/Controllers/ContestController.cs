@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Cors;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [EnableCors("AllowAnyOrigin")]
     [Route("api/[controller]")]
     public class ContestsController : ControllerBase
     {

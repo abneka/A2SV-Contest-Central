@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [EnableCors("AllowAnyOrigin")]
+    [ApiController]
     [Route("api/[controller]")]
     public class CodeforcesApiController : Controller
     {
