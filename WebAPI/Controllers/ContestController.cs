@@ -55,8 +55,8 @@ namespace WebApi.Controllers
             };
             await _mediator.Send(new CreateOrUpdateQuestionCommand{ NewQuestions = new_questions});
 
-            // return Ok("created");
-            return CreatedAtAction(nameof(GetSingleContest), new{Id = contest.Id}, contest);
+            return Ok("created");
+            // return CreatedAtAction(nameof(GetSingleContest), new{Id = contest.Id}, contest);
         }
 
         [HttpPost]
