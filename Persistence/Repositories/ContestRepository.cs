@@ -77,7 +77,6 @@ namespace Persistence.Repositories
         {
             var contests = await _dbContext.Contests
                 .Include(c => c.Questions)
-                .ThenInclude(q => q.UserQuestionResults)
                 .Include(c => c.UserContestResults)
                 .Include(c => c.ContestGroups)
                 .ThenInclude(c => c.Group)
