@@ -4,9 +4,8 @@ namespace Application.DTOs.Contest
     {
         public string ContestName { get; set; } = null!;
         public string ContestUrl { get; set; } = null!;
-        public string Duration { get; set; } = string.Empty;
-        public string StartDay { get; set; } = string.Empty;
-        public string StartTime { get; set; } = string.Empty;
+        public int DurationSeconds { get; set; }
+        public int StartTimeSeconds { get; set; }
         public string PreparedBy { get; set; } = string.Empty;
     }
 }

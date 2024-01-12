@@ -8,3 +8,4 @@ public class GetSingleContestRequest : IRequest<ContestResponseDto>
 {
     public Guid ContestId { get; set; }
 }
+
