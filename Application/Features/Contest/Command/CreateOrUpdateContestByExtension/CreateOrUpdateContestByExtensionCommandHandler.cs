@@ -29,12 +29,7 @@ namespace Application.Features.Contest.Command.CreateOrUpdateContestByExtension
             string contest_id = ParseIdFromUrl(command.NewContest.ContestUrl);
             var old_contest = await _unitOfWork.ContestRepository.GetContestByGlobalIdAsync(contest_id);
 
-            var new_contest = new ContestEntity
-            {
-                ContestGlobalId = contest_id,
-                Name = command.NewContest.ContestName,
-                ContestUrl = command.NewContest.ContestUrl
-            };
+            var new_contest = _mapper.Map<ContestEntity>(command.NewContest);
 
             var res = new ContestExtResponseDto();
 

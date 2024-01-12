@@ -7,7 +7,6 @@ using Application.Features.Contest.Command.CreateOrUpdateContestByExtension;
 using Application.Features.Contest.Commands.DeleteContest;
 using Application.Features.Contest.Commands.UpdateContest;
 using Application.Features.Contest.Queries;
-using Application.Features.Contest.Queries.GetAll;
 using Application.Features.Contest.Queries.GetContestsByFiltration;
 using Application.Features.Contest.Queries.GetSingleContest;
 using Application.Features.Question.Commands.CreateOrUpdate;
@@ -39,8 +38,6 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [Route("CreateContest")]
-
-
         public async Task<ActionResult<ContestResponseDto>> CreateContest(ContestRequestDto contestRequest)
         {
 
@@ -137,3 +134,4 @@ namespace WebApi.Controllers
         // }
     }
 }
+
