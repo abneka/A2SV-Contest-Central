@@ -126,8 +126,7 @@ namespace Persistence.Repositories
                     Penalty = userContestResult.Penalty,
                     Rank = userContestResult.Rank,
                     ContestId = userContestResult.ContestId,
-                    // TODO: calculate the total submissions of a single user, check each question if Point > 0
-                    TotalSubmissions = userContestResult.User.UserQuestionResults.Count(uqr => uqr.Points > 0 && uqr.UserId == userContestResult.UserId),
+                    TotalSubmissions = userContestResult.User.UserQuestionResults.Where(uqr => uqr.UserId == userContestResult.UserId).Sum(uqr => uqr.RejectedAttemptCount) + userContestResult.User.UserQuestionResults.Where(uqr => uqr.UserId == userContestResult.UserId).Count(uqr => uqr.Points > 0),
                     // wrong submission is the sum of the property "rejectedAttemptCount" in Question 
                     WrongSubmissions = userContestResult.User.UserQuestionResults.Sum(uqr => uqr.RejectedAttemptCount),
                     ProblemSolved = userContestResult.User.UserQuestionResults.Count(uqr => uqr.Points > 0),

@@ -21,7 +21,6 @@ public class GetContestLeaderboardHandler : IRequestHandler<GetContestLeaderboar
     {
         var skip = (request.Filter.PageNumber - 1) * request.Filter.PageSize;
         
-        // todo: filter the leaderboard using the request.filter provided
         var contestLeaderboard = await _unitOfWork.ContestRepository.GetContestLeaderboard(request.ContestId);
         var contestLeaderboardDto = _mapper.Map<List<UserContestAndQuestionDto>>(contestLeaderboard);
         
@@ -35,7 +34,6 @@ public class GetContestLeaderboardHandler : IRequestHandler<GetContestLeaderboar
             .Take(request.Filter.PageSize)
             .ToList();
         
-        // todo: get the bar graph data from contestLeaderboard
         var barGraphData = new List<GraphDataPointsDto>();
         
         // get questions from contestLeaderboard
