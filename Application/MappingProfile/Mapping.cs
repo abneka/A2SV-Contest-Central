@@ -30,6 +30,17 @@ namespace Application.MappingProfile
 
                     return srcMember != null;
                 }));
+            
+            CreateMap<UserEntity, UserResponseWithoutUserQuestionsDto>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is int and 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
 
             CreateMap<UserEntity, UserResponseDto>().ReverseMap().ForAllMembers(opts =>
                 opts.Condition((src, dest, srcMember) =>

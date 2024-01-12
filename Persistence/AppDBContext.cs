@@ -39,37 +39,58 @@ namespace Persistence
                 .IsUnique();
             
             // User Entity
+            // User Entity with Group
             modelBuilder.Entity<UserEntity>()
                 .HasOne(u => u.Group)
                 .WithMany(g => g.Members)
                 .HasForeignKey(u => u.GroupId);
 
+            // User Entity with UserType
             modelBuilder.Entity<UserEntity>()
                 .HasOne(u => u.UserType)
                 .WithMany(ut => ut.Users)
                 .HasForeignKey(u => u.UserTypeId);
 
-            modelBuilder.Entity<UserContestResultEntity>()
-                .HasOne(u => u.User)
-                .WithMany(u => u.UserContestResults)
-                .HasForeignKey(u => u.UserId);
-
+            // UserQuestionResult Entity
+            // UserQuestionResult Entity with Question
             modelBuilder.Entity<UserQuestionResultEntity>()
                 .HasOne(u => u.Question)
                 .WithMany(u => u.UserQuestionResults)
                 .HasForeignKey(u => u.QuestionId);
 
+            // UserQuestionResult Entity with User
             modelBuilder.Entity<UserQuestionResultEntity>()
                 .HasOne(u => u.User)
                 .WithMany(u => u.UserQuestionResults)
                 .HasForeignKey(u => u.UserId);
             
+            // Question Entity
+            // Question Entity with Contest
+            modelBuilder.Entity<QuestionEntity>()
+                .HasOne(q => q.Contest)
+                .WithMany(q => q.Questions)
+                .HasForeignKey(q => q.ContestId);
+            
+            // Question Entity with UserQuestionResult
+            modelBuilder.Entity<QuestionEntity>()
+                .HasMany(q => q.UserQuestionResults)
+                .WithOne(u => u.Question)
+                .HasForeignKey(u => u.QuestionId);
+            
+            // UserContestResult Entity
             // UserContestResult Entity with User
             modelBuilder.Entity<UserContestResultEntity>()
                 .HasOne(u => u.User)
                 .WithMany(u => u.UserContestResults)
                 .HasForeignKey(u => u.UserId);
             
+            // UserContestResult Entity with Contest
+            modelBuilder.Entity<UserContestResultEntity>()
+                .HasOne(u => u.Contest)
+                .WithMany(u => u.UserContestResults)
+                .HasForeignKey(u => u.ContestId);
+            
+            // Contest Entity
             // Contest Entity with Questions
             modelBuilder.Entity<ContestEntity>()
                 .HasMany(c => c.Questions)
@@ -82,6 +103,19 @@ namespace Persistence
                 .WithOne(u => u.Contest)
                 .HasForeignKey(u => u.ContestId);
             
+            // Contest Entity with UserContestResult
+            modelBuilder.Entity<ContestEntity>()
+                .HasMany(c => c.TeamContestResults)
+                .WithOne(u => u.Contest)
+                .HasForeignKey(u => u.ContestId);
+            
+            // Contest Entity with Group
+            modelBuilder.Entity<ContestEntity>()
+                .HasMany(c => c.ContestGroups)
+                .WithOne(c => c.Contest)
+                .HasForeignKey(c => c.ContestId);
+            
+            // Group Entity
             // Group Entity with Location
             modelBuilder.Entity<GroupEntity>()
                 .HasOne(g => g.Location)
@@ -89,6 +123,7 @@ namespace Persistence
                 .HasForeignKey(g => g.LocationId);
             
             // ContestGroup Entity
+            // ContestGroup with Contest
             modelBuilder.Entity<ContestGroupEntity>()
                 .HasKey(cg => new { cg.ContestId, cg.GroupId });
             
@@ -97,6 +132,7 @@ namespace Persistence
                 .WithMany(c => c.ContestGroups)
                 .HasForeignKey(cgm => cgm.ContestId);
 
+            // ContestGroup with Group
             modelBuilder.Entity<ContestGroupEntity>()
                 .HasOne(cgm => cgm.Group)
                 .WithMany(g => g.Contests)

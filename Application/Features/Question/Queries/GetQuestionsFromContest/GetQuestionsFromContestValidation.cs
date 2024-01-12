@@ -1,11 +1,11 @@
 ﻿using Application.Contracts.Persistence;
 using FluentValidation;
 
-namespace Application.Features.Contest.Queries;
+namespace Application.Features.Question.Queries.GetQuestionsFromContest;
 
-public class GetContestLeaderboardValidation : AbstractValidator<GetContestLeaderboardRequest>
+public class GetQuestionsFromContestValidation : AbstractValidator<GetQuestionsFromContestRequest>
 {
-    public GetContestLeaderboardValidation(IUnitOfWork unitOfWork)
+    public GetQuestionsFromContestValidation(IUnitOfWork unitOfWork)
     {
         RuleFor(req => req.ContestId)
             .NotEmpty()
