@@ -6,5 +6,5 @@ namespace Application.DTOs.UserQuestionResult;
 public class UserQuestionsResultResponseDto : QuestionResultResponseDto
 {
     public Guid UserId { get; set; }
-    public UserResponseDto User { get; set; } = null!;
+    public UserResponseWithoutUserQuestionsDto User { get; set; } = null!;
 }

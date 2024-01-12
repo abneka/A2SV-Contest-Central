@@ -76,7 +76,7 @@ public static class SeedData
                     Difficulty = "",
                     Kind = "",
                     Season = "",
-                    Status = "Upcoming",
+                    Status = "FINISHED",
                     CreatedAt = ConvertStringToDateTime("2024-01-01 12:17:09.186746 +00:00"),
                     ModifiedAt = ConvertStringToDateTime("2024-01-01 12:17:09.186750 +00:00")
                 },
@@ -96,7 +96,7 @@ public static class SeedData
                     Difficulty = "3",
                     Kind = "",
                     Season = "",
-                    Status = "FINISHED",
+                    Status = "Upcoming",
                     CreatedAt = ConvertStringToDateTime("2024-01-01 22:24:49.326402 +00:00"),
                     ModifiedAt = ConvertStringToDateTime("2024-01-01 22:24:49.326409 +00:00")
                 }

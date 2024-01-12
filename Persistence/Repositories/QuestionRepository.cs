@@ -25,6 +25,7 @@ public class QuestionRepository : GenericRepository<QuestionEntity>, IQuestionRe
     {
         // sort by q.Index
         var questions = await _dbContext.Questions
+            .Include(q => q.UserQuestionResults)
             .Where(q => q.ContestId == contestId)
             .OrderBy(q => q.Index)
             .ToListAsync();
