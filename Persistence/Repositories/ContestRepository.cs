@@ -1,7 +1,9 @@
 using Application.Contracts.Persistence;
 using Application.DTOs.Contest;
+using Application.DTOs.Group;
 using Application.DTOs.Question;
 using Application.DTOs.User;
+using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +16,11 @@ namespace Persistence.Repositories
     public class ContestRepository : GenericRepository<ContestEntity>, IContestRepository
     {
         private readonly AppDBContext _dbContext;
-        public ContestRepository(AppDBContext dbContext) : base(dbContext)
+        private readonly IMapper _mapper;
+        public ContestRepository(AppDBContext dbContext, IMapper mapper) : base(dbContext)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
 
@@ -72,8 +76,9 @@ namespace Persistence.Repositories
         public async Task<List<ContestEntity>> GetContestsWithGroups()
         {
             var contests = await _dbContext.Contests
-                .Include(c => c.UserContestResults)
                 .Include(c => c.Questions)
+                .ThenInclude(q => q.UserQuestionResults)
+                .Include(c => c.UserContestResults)
                 .Include(c => c.ContestGroups)
                 .ThenInclude(c => c.Group)
                 .ThenInclude(c => c.Location)
@@ -86,9 +91,14 @@ namespace Persistence.Repositories
         {
             var contest = await _dbContext.UserContestResults
                 .Where(u => u.ContestId == contest_id)
+                .Include(u => u.Contest)
+                .ThenInclude(c => c.ContestGroups)
                 .Include(u => u.User)
+                .ThenInclude(u => u.Group)
+                .ThenInclude(g => g.Location)
                 .Include(u => u.User.UserQuestionResults)
                 .ThenInclude(u => u.Question)
+                .ThenInclude(u => u.UserQuestionResults)
                 .ToListAsync();
             
             Console.WriteLine("Contest Id: " + contest_id);
@@ -107,7 +117,8 @@ namespace Persistence.Repositories
                         UserName = userContestResult.User.UserName,
                         CodeforcesHandle = userContestResult.User.CodeforcesHandle,
                         FullName = userContestResult.User.FirstName + " " + userContestResult.User.LastName,
-                        Email = userContestResult.User.Email
+                        Email = userContestResult.User.Email,
+                        UserGroup = _mapper.Map<GroupResponseDto>(userContestResult.User.Group)
                     },
                     SuccessfulHackCount = userContestResult.SuccessfulHackCount,
                     UnsuccessfulHackCount = userContestResult.UnsuccessfulHackCount,
@@ -115,8 +126,8 @@ namespace Persistence.Repositories
                     Penalty = userContestResult.Penalty,
                     Rank = userContestResult.Rank,
                     ContestId = userContestResult.ContestId,
-                    // TODO: calculate the total submissions
-                    TotalSubmissions = 0,
+                    // TODO: calculate the total submissions of a single user, check each question if Point > 0
+                    TotalSubmissions = userContestResult.User.UserQuestionResults.Count(uqr => uqr.Points > 0 && uqr.UserId == userContestResult.UserId),
                     // wrong submission is the sum of the property "rejectedAttemptCount" in Question 
                     WrongSubmissions = userContestResult.User.UserQuestionResults.Sum(uqr => uqr.RejectedAttemptCount),
                     ProblemSolved = userContestResult.User.UserQuestionResults.Count(uqr => uqr.Points > 0),

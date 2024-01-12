@@ -18,7 +18,7 @@ public class GetQuestionsFromContestHandler : IRequestHandler<GetQuestionsFromCo
        
         public async Task<IReadOnlyList<QuestionResponseDto>> Handle(GetQuestionsFromContestRequest request, CancellationToken cancellationToken)
         {
-            var questions = _questionRepository.GetQuestionsFromContestAsync(request.ContestId);
+            var questions = await _questionRepository.GetQuestionsFromContestAsync(request.ContestId);
             return _mapper.Map<IReadOnlyList<QuestionResponseDto>>(questions);
         }
 

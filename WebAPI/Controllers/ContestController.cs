@@ -94,10 +94,10 @@ namespace WebApi.Controllers
         }
         
         [HttpGet]
-        [Route("GetContestLeaderboard/{contestId:guid}")]
-        public async Task<ActionResult<IReadOnlyList<ContestResultDto>>> GetContestLeaderboard(Guid contestId)
+        [Route("GetContestLeaderboardWithGraph/{contestId:guid}")]
+        public async Task<ActionResult<IReadOnlyList<ContestWithGraphsDto>>> GetContestLeaderboard(Guid contestId, [FromQuery] FilterRequestDto filter)
         {
-            var contestLeaderboard = await _mediator.Send(new GetContestLeaderboardRequest{ ContestId = contestId});
+            var contestLeaderboard = await _mediator.Send(new GetContestLeaderboardRequest{ ContestId = contestId, Filter = filter });
             return Ok(contestLeaderboard);
         }
 
