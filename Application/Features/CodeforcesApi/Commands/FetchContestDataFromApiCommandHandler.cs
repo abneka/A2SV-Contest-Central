@@ -157,6 +157,24 @@ namespace Application.Features.CodeforcesApi.Commands
                     }
                 }
                 
+                // get all distinct groups of a contest from its participants
+                var contest = await _unitOfWork.ContestRepository.GetByIdAsync(contest_id_guid);
+                var contestGroups = contest?.UserContestResults.Select(ucr => ucr.User.Group).ToList();
+                
+                // insert the group with contest into ContestGroup table
+                if (contestGroups != null)
+                    foreach (var contestGroup in contestGroups)
+                    {
+                        var contestGroupEntity = new ContestGroupEntity
+                        {
+                            ContestId = contest_id_guid,
+                            GroupId = contestGroup.Id
+                        };
+
+                        // create contestGroup
+                        await _unitOfWork.ContestGroupRepository.CreateAsync(contestGroupEntity);
+                    }
+
                 // questions info
                 // contest result
                 // standing
