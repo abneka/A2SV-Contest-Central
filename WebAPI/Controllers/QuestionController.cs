@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Application.Features.Question.Commands.CreateOrUpdate;
 using Microsoft.AspNetCore.Cors;
+using Application.Features.Question.Commands.CreateFromExt;
 
 namespace WebAPI.Controllers;
 
@@ -61,7 +62,7 @@ public class QuestionController : ControllerBase
     [Route("CreateOrUpdateQuestions")]
     public async Task<ActionResult<bool>> CreateOrUpdateQuestions(QuestionRequestDto questions)
     {
-       bool res = await _mediator.Send(new CreateOrUpdateQuestionCommand {  NewQuestions = questions });
+       bool res = await _mediator.Send(new CreateFromExtQuestionCommand {  NewQuestions = questions });
 
         return Ok(new { status = res });
     }

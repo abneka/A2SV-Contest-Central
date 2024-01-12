@@ -15,8 +15,10 @@ namespace Application.Features.Question.Commands.CreateFromExt
 
         public async Task<bool> Handle(CreateFromExtQuestionCommand command, CancellationToken cancellationToken)
         {
+
             string global_contest_id = ParseIdFromUrl(command.NewQuestions.ContestUrl);
             var contest = await _unitOfWork.ContestRepository.GetContestByGlobalIdAsync(global_contest_id);
+            
             if(contest == null){
                 throw new NotFoundException("Contest doesn't found", command.NewQuestions.ContestUrl);
             }
@@ -47,9 +49,3 @@ namespace Application.Features.Question.Commands.CreateFromExt
         }
     }
 }
-
-        // RuleFor(dto => dto.Questions)
-        //     .NotNull()
-        //     .WithMessage("Questions list cannot be null.")
-        //     .NotEmpty()
-        //     .WithMessage("At least one question is required.");
