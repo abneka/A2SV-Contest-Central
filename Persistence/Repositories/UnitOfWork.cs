@@ -1,4 +1,5 @@
-﻿using Application.Contracts.Persistence;
+﻿using Application.Contracts.Infrastructure;
+using Application.Contracts.Persistence;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Persistence.Repositories;
@@ -20,10 +21,11 @@ public class UnitOfWork : IUnitOfWork
     public IUserQuestionResultRepository UserQuestionResultRepository { get; }
     public ITeamQuestionResultRepository TeamQuestionResultRepository { get; }
     public IContestGroupRepository ContestGroupRepository {get; }
+    public IFileUpload FileUpload { get; }
 
     private readonly AppDBContext _dbContext;
     
-    public UnitOfWork(IContestGroupRepository contestGroupRepository, IQuestionRepository questionRepository, IUserRepository userRepository, IUserTypeRepository userTypeRepository, ITeamRepository teamRepository, IContestRepository contestRepository, ILocationRepository locationRepository, IA2SVGroupRepository a2SvGroupRepository, AppDBContext dbContext, IUserQuestionResultRepository userQuestionResultRepository, ITeamQuestionResultRepository teamQuestionResultRepository, IUserContestResultRepository userContestResultRepository, ITeamContestResultRepository teamContestResultRepository)
+    public UnitOfWork(IContestGroupRepository contestGroupRepository, IQuestionRepository questionRepository, IUserRepository userRepository, IUserTypeRepository userTypeRepository, ITeamRepository teamRepository, IContestRepository contestRepository, ILocationRepository locationRepository, IA2SVGroupRepository a2SvGroupRepository, AppDBContext dbContext, IUserQuestionResultRepository userQuestionResultRepository, ITeamQuestionResultRepository teamQuestionResultRepository, IUserContestResultRepository userContestResultRepository, ITeamContestResultRepository teamContestResultRepository, IFileUpload fileUpload)
     {
         _dbContext = dbContext;
         UserRepository = userRepository;
@@ -37,7 +39,7 @@ public class UnitOfWork : IUnitOfWork
         TeamQuestionResultRepository = teamQuestionResultRepository;
         UserContestResultRepository = userContestResultRepository;
         TeamContestResultRepository = teamContestResultRepository;
+        FileUpload = fileUpload;
         ContestGroupRepository = contestGroupRepository;
-        
     }
 }

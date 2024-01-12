@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Contracts.Infrastructure;
+using Domain.Entities;
 
 namespace Application.Contracts.Persistence;
 
@@ -17,4 +18,5 @@ public interface IUnitOfWork
     IUserQuestionResultRepository UserQuestionResultRepository { get; }
     ITeamQuestionResultRepository TeamQuestionResultRepository { get; }
     IContestGroupRepository ContestGroupRepository {get; }
+    IFileUpload FileUpload { get; }
 }
