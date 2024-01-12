@@ -59,7 +59,7 @@ public class QuestionController : ControllerBase
 
     [HttpPost]
     [Route("CreateOrUpdateQuestions")]
-    public async Task<ActionResult<bool>> ReceiveArray(QuestionRequestDto questions)
+    public async Task<ActionResult<bool>> CreateOrUpdateQuestions(QuestionRequestDto questions)
     {
        bool res = await _mediator.Send(new CreateOrUpdateQuestionCommand {  NewQuestions = questions });
 

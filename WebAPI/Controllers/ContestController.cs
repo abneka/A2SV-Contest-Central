@@ -1,17 +1,17 @@
+using Application.DTOs.Common;
 using Application.DTOs.Contest;
+using Application.DTOs.Contest.CodeforcesExtension;
+using Application.DTOs.Question;
+using Application.Features.Contest.Command.Create;
+using Application.Features.Contest.Command.CreateOrUpdateContestByExtension;
 using Application.Features.Contest.Commands.DeleteContest;
 using Application.Features.Contest.Commands.UpdateContest;
-using Application.Features.Contest.Queries.GetSingleContest;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Application.Features.Contest.Queries.GetAll;
-using Application.Features.Contest.Command.Create;
-using Application.DTOs.Common;
 using Application.Features.Contest.Queries;
 using Application.Features.Contest.Queries.GetContestsByFiltration;
-using Application.DTOs.Contest.CodeforcesExtension;
-using Application.Features.Contest.Command.CreateOrUpdateContestByExtension;
-using Microsoft.AspNetCore.Cors;
+using Application.Features.Contest.Queries.GetSingleContest;
+using Application.Features.Question.Commands.CreateOrUpdate;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
@@ -19,7 +19,6 @@ namespace WebApi.Controllers
     [Route("api/[controller]")]
     public class ContestsController : ControllerBase
     {
-
         private readonly IMediator _mediator;
 
         public ContestsController(IMediator mediator)
@@ -31,7 +30,9 @@ namespace WebApi.Controllers
         [Route("GetSingleContest/{contestId:guid}")]
         public async Task<ActionResult<ContestResponseDto>> GetSingleContest(Guid contestId)
         {
-            var contest = await _mediator.Send(new GetSingleContestRequest{ContestId = contestId});
+            var contest = await _mediator.Send(
+                new GetSingleContestRequest { ContestId = contestId }
+            );
             return Ok(contest);
         }
 
@@ -39,21 +40,31 @@ namespace WebApi.Controllers
         [Route("CreateContest")]
         public async Task<ActionResult<ContestResponseDto>> CreateContest(ContestRequestDto contestRequest)
         {
-            var command = new CreateContestCommand
-            {
-                NewContest = contestRequest
+
+            var new_contest = new ContestInfoRequestDto{
+                ContestName = contestRequest.ContestName,
+                ContestUrl = contestRequest.ContestUrl
             };
+
+            var command = new CreateContestCommand { NewContest = new_contest };
             var contest = await _mediator.Send(command);
 
-            return Ok("created");
-            // return CreatedAtAction(nameof(GetSingleContest), new{Id = contest.Id}, contest);
+            var new_questions = new QuestionRequestDto{
+                ContestId = contest.Id,
+                Questions = contestRequest.Questions
+            };
+            await _mediator.Send(new CreateOrUpdateQuestionCommand{ NewQuestions = new_questions});
+
+            // return Ok("created");
+            return CreatedAtAction(nameof(GetSingleContest), new{Id = contest.Id}, contest);
         }
 
         [HttpPost]
         [Route("CreateContestByExtension")]
-        public async Task<ActionResult<ContestExtResponseDto>> CreateContestByExtension(ContestExtRequestDto contestRequest)
+        public async Task<ActionResult<ContestExtResponseDto>> CreateContestByExtension(
+            ContestInfoRequestDto contestRequest
+        )
         {
-            
             var command = new CreateOrUpdateContestByExtensionCommand
             {
                 NewContest = contestRequest
@@ -65,8 +76,8 @@ namespace WebApi.Controllers
 
         [HttpPut]
         [Route("UpdateContest/{id}")]
-        public async Task<ActionResult> UpdateContest(Guid id, ContestRequestDto ContestRequest)
-        {            
+        public async Task<ActionResult> UpdateContest(Guid id, ContestInfoRequestDto ContestRequest)
+        {
             var command = new UpdateContestCommand
             {
                 ContestId = id,
@@ -88,11 +99,12 @@ namespace WebApi.Controllers
         [HttpGet]
         [Route("GetContestsByFilter")]
         public async Task<ActionResult<PaginatedContestResponseDto>> GetContestsByFiltration(
-            [FromQuery] FilterRequestDto query)
+            [FromQuery] FilterRequestDto query
+        )
         {
             return await _mediator.Send(new GetContestsByFiltrationQuery { Filter = query });
         }
-        
+
         [HttpGet]
         [Route("GetContestLeaderboardWithGraph/{contestId:guid}")]
         public async Task<ActionResult<IReadOnlyList<ContestWithGraphsDto>>> GetContestLeaderboard(Guid contestId, [FromQuery] FilterRequestDto filter)
@@ -116,6 +128,6 @@ namespace WebApi.Controllers
         //    var contests = await _mediator.Send(new SearchContestRequest {Query = query});
         //    return Ok(contests);
         // }
-
     }
 }
+

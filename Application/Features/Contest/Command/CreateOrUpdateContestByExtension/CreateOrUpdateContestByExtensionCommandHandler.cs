@@ -26,15 +26,10 @@ namespace Application.Features.Contest.Command.CreateOrUpdateContestByExtension
             CancellationToken cancellationToken
         )
         {
-            string contest_id = command.NewContest.ContestId;
+            string contest_id = ParseIdFromUrl(command.NewContest.ContestUrl);
             var old_contest = await _unitOfWork.ContestRepository.GetContestByGlobalIdAsync(contest_id);
 
-            var new_contest = new ContestEntity
-            {
-                ContestGlobalId = command.NewContest.ContestId,
-                Name = command.NewContest.ContestName,
-                ContestUrl = command.NewContest.ContestUrl
-            };
+            var new_contest = _mapper.Map<ContestEntity>(command.NewContest);
 
             var res = new ContestExtResponseDto();
 
@@ -59,6 +54,15 @@ namespace Application.Features.Contest.Command.CreateOrUpdateContestByExtension
             res.Message = "contest updated successfully";
 
             return res;
+        }
+
+        public static string ParseIdFromUrl(string url)
+        {
+            url = Uri.UnescapeDataString(url);
+            int index = url.LastIndexOf('/');
+            string id = url.Substring(index + 1);
+
+            return id;
         }
     }
 }

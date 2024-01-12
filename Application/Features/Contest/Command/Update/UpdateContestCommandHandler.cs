@@ -38,16 +38,9 @@ public class UpdateContestCommandHandler : IRequestHandler<UpdateContestCommand,
             throw new NotFoundException($"Contest with id {command.ContestId} does't exist!", command);
         }
 
-        // if(old_contest.Status) return Unit.Value;
-
         old_contest.Name = command.UpdateContest.ContestName;
         old_contest.ContestUrl = command.UpdateContest.ContestUrl;
 
-        // await _unitOfWork.Questions.UpdateAsync(command.ContestId, command.UpdateContest.Questions);
-        // await _unitOfWork.Groups.UpdateAsync(command.ContestId, command.UpdateContest.Groups);
-        
-        // use transaction to make sure that all questions and the contest are updated
-        
         await _unitOfWork.ContestRepository.UpdateAsync(command.ContestId, old_contest);
         return Unit.Value;
     }

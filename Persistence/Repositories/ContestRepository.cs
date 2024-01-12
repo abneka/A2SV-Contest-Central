@@ -8,7 +8,6 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Repositories.Common;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace Persistence.Repositories
@@ -34,6 +33,7 @@ namespace Persistence.Repositories
         {
             var item = await _dbContext.Contests
             .Where(contest => contest.ContestGlobalId == contest_id).FirstOrDefaultAsync();
+
             return item;
         }
 

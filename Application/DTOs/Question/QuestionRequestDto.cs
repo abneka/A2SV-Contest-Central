@@ -2,7 +2,8 @@ namespace Application.DTOs.Question
 {
     public class QuestionRequestDto
     {
-        public string ContestId { get; set; } = null!;
-        public IReadOnlyList<string> Questions { get; set; } = null!;
+        public Guid ContestId { get; set; }
+        public string ContestUrl { get; set; } = string.Empty;
+        public IReadOnlyList<QuestionInfoDto> Questions { get; set; } = null!;
     }
 }

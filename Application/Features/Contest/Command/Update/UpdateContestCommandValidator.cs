@@ -26,17 +26,6 @@ public class UpdateContestCommandValidator : AbstractValidator<UpdateContestComm
             .Must(BeValidCodeforcesContestUrl)
             .WithMessage("Invalid Codeforces contest URL.");
 
-        RuleFor(dto =>dto.UpdateContest.Questions)
-            .NotNull()
-            .WithMessage("Questions list cannot be null.")
-            .NotEmpty()
-            .WithMessage("At least one question is required.");
-
-        RuleFor(dto => dto.UpdateContest.Groups)
-            .NotNull()
-            .WithMessage("Groups list cannot be null.")
-            .NotEmpty()
-            .WithMessage("At least one group is required.");
     }
 
     private bool BeValidCodeforcesContestUrl(string url)

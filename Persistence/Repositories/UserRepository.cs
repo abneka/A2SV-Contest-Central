@@ -48,7 +48,21 @@ namespace Persistence.Repositories
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.CodeforcesHandle == codeforcesHandle);
             return user?.Id;
         }
-        
+        public async Task<UserEntity> GetUserByUsernameAsync(string username)
+        {
+            var user = await _dbContext.Users
+                .FirstOrDefaultAsync(u => u.UserName == username);
+            
+            return user;
+        }
+
+        public async Task<UserEntity> GetUserByEmailAsync(string email)
+        {
+            var user = await _dbContext.Users
+                .FirstOrDefaultAsync(u => u.Email == email);
+            
+            return user;
+        }
         
     }
 }

@@ -1,4 +1,5 @@
-﻿using Application.Contracts.Persistence;
+﻿using Application.Contracts.Infrastructure.ExternalServices;
+using Application.Contracts.Persistence;
 using Application.DTOs.Contest;
 using Application.Features.Contest.Command.Create;
 using AutoMapper;
@@ -12,11 +13,13 @@ public class CreateContestCommandHandler : IRequestHandler<CreateContestCommand,
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ICodeforcesApiService _codeforcesApiService;
 
-    public CreateContestCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public CreateContestCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICodeforcesApiService codeforcesApiService)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
+        _codeforcesApiService = codeforcesApiService;
     }
 
     public async Task<ContestResponseDto> Handle(
@@ -24,7 +27,7 @@ public class CreateContestCommandHandler : IRequestHandler<CreateContestCommand,
         CancellationToken cancellationToken
     )
     {
-        var validator = new CreateContestCommandValidator(_unitOfWork);
+        var validator = new CreateContestCommandValidator(_unitOfWork,_codeforcesApiService);
         var validationResult = await validator.ValidateAsync(command.NewContest, cancellationToken);
         if (!validationResult.IsValid)
         {
@@ -39,33 +42,6 @@ public class CreateContestCommandHandler : IRequestHandler<CreateContestCommand,
         };
 
         var createdContest = await _unitOfWork.ContestRepository.CreateAsync(new_contest);
-
-        List<QuestionEntity> questionList = command.NewContest.Questions.Select(question =>
-            {
-                var questionEntity = new QuestionEntity
-                {
-                    GlobalQuestionUrl = question,
-                    ContestId = createdContest.Id
-                };
-                return questionEntity;
-            })
-            .ToList();
-
-        List<ContestGroupEntity> groupList = command
-            .NewContest.Groups.Select( group_id =>
-            {
-                Guid groupId = Guid.Parse(group_id);
-                var groupEntity = new ContestGroupEntity
-                {
-                    GroupId = groupId,
-                    ContestId = createdContest.Id
-                };
-                return groupEntity;
-            })
-            .ToList();
-
-        await _unitOfWork.QuestionRepository.CreateListAsync(questionList);
-        await _unitOfWork.ContestGroupRepository.CreateListAsync(groupList);
 
         return _mapper.Map<ContestResponseDto>(createdContest);
     }

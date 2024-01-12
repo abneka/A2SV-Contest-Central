@@ -58,6 +58,16 @@ public class ExceptionMiddleware
                     Detail = NotFound.InnerException?.Message,
                 };
                 break;
+            case PasswordMismatch passwordMismatch:
+                statusCode = HttpStatusCode.BadRequest;
+                problem = new CustomProblemDetails
+                {
+                    Title = passwordMismatch.Message,
+                    Status = (int)statusCode,
+                    Type = nameof(PasswordMismatch),
+                    Detail = passwordMismatch.InnerException?.Message,
+                };
+                break;
             case ValidationException validation:
                 statusCode = HttpStatusCode.BadRequest;
                 problem = new CustomProblemDetails

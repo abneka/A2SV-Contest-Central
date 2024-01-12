@@ -1,5 +1,4 @@
 using Application.Features.CodeforcesApi.Commands;
-using Application.Features.CodeforcesApi.Queries.CheckContestUrl;
 using MediatR;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -25,12 +24,5 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        [Route("ContestUrlChecker/{contest_url}")]
-        public async Task<IActionResult> ContestUrlChecker(string contest_url)
-        {
-            bool res = await _mediator.Send(new ContestUrlCheckerRequest { ContestUrl = contest_url.Trim() });
-            return Ok(res);
-        }
     }
 }
