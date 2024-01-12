@@ -8,9 +8,9 @@ public class UserEntity : BaseDomainEntity
     public string LastName { get; set; } = null!;
     public string Email { get; set; } = null!;
     public string UserName { get; set; } = null!;
-    public string CodeforcesHandle { get; set; } = null!;
-    public string? ProfilePicture { get; set; } = null!;
-    public string? CoverPicture { get; set; } = null!;
+    public string CodeforcesHandle { get; set; } = string.Empty;
+    public string ProfilePicture { get; set; } = string.Empty;
+    public string CoverPicture { get; set; } = string.Empty;
     public string Gender { get; set; } = null!;
     public DateOnly BirthDate { get; set; }
     public string Phone { get; set; } = null!;
