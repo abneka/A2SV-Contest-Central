@@ -26,11 +26,11 @@ namespace Application.Features.User.Commands.AddUserUsingCsvFile
 
             using var streamReader = new StreamReader(command.UserFile.OpenReadStream());
             using var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
-
+            // Ensure the stream is at the beginning
+            csvReader.Read();
             // Get the actual header fields from the CSV file
             csvReader.ReadHeader();
             var actualFields = csvReader.HeaderRecord;
-
 
             // Check if all expected fields are present in the actual header fields
             if (!expectedFields.All(field => actualFields.Contains(field)))
@@ -38,7 +38,6 @@ namespace Application.Features.User.Commands.AddUserUsingCsvFile
                 throw new Exception("CSV file is missing or contains incorrect header fields.");
             }
 
-            var users = new List<UserEntity>();
             var invalidUserRecords = new List<InvalidUserRecord>();
 
             while (csvReader.Read())
@@ -63,8 +62,8 @@ namespace Application.Features.User.Commands.AddUserUsingCsvFile
                     string.IsNullOrWhiteSpace(password) ||
                     string.IsNullOrWhiteSpace(role) ||
                     string.IsNullOrWhiteSpace(group) ||
-                    (string.IsNullOrWhiteSpace(email) && !await IsValidEmailAsync(email)) ||
-                    (string.IsNullOrWhiteSpace(username) && !await IsValidUsernameAsync(username)))
+                    (string.IsNullOrWhiteSpace(email) || !await IsValidEmailAsync(email)) ||
+                    (string.IsNullOrWhiteSpace(username) || !await IsValidUsernameAsync(username)))
                 {
                     // If any required field is missing or invalid, add the user to the invalid users list
                     var invalidUserRecord = new InvalidUserRecord
@@ -99,13 +98,10 @@ namespace Application.Features.User.Commands.AddUserUsingCsvFile
                     };
 
                 user.UserTypeId = await _unitOfWork.UserTypeRepository.GetUserTypeIdByUserTypeName(role);
-                user.GroupId = await _unitOfWork.A2SVGroupRepository.GetGroupIdByGroupName("Group-" + group);
-
-                users.Add(user);
+                user.GroupId = await _unitOfWork.A2SVGroupRepository.GetGroupIdByGroupName("Group " + group);
+                await _unitOfWork.UserRepository.CreateAsync(user);
             }
             
-            await _unitOfWork.UserRepository.CreateListAsync(users);
-
             return invalidUserRecords;
         }
 
