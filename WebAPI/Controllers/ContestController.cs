@@ -48,11 +48,12 @@ namespace WebApi.Controllers
 
             var command = new CreateContestCommand { NewContest = new_contest };
             var contest = await _mediator.Send(command);
-
+            
             var new_questions = new QuestionRequestDto{
                 ContestId = contest.Id,
                 Questions = contestRequest.Questions
             };
+
             await _mediator.Send(new CreateOrUpdateQuestionCommand{ NewQuestions = new_questions});
 
             return Ok("created");
@@ -65,6 +66,7 @@ namespace WebApi.Controllers
             ContestInfoRequestDto contestRequest
         )
         {
+            
             var command = new CreateOrUpdateContestByExtensionCommand
             {
                 NewContest = contestRequest
