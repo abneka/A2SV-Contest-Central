@@ -9,9 +9,9 @@ namespace Application.Features.Contest.Commands.CreateContest;
 public class CreateContestCommandValidator : AbstractValidator<ContestInfoRequestDto>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private ICodeforcesApiService _codeforcesApiService;
+    private IFetchedDataProcessing _codeforcesApiService;
 
-    public CreateContestCommandValidator(IUnitOfWork unitOfWork,ICodeforcesApiService codeforcesApiService)
+    public CreateContestCommandValidator(IUnitOfWork unitOfWork,IFetchedDataProcessing codeforcesApiService)
     {
         _unitOfWork = unitOfWork;
         _codeforcesApiService = codeforcesApiService;
@@ -92,7 +92,9 @@ public class CreateContestCommandValidator : AbstractValidator<ContestInfoReques
                 string contest_id = ParseIdFromUrl(url);
 
                 //fetch data from codeforces using codeforces api
-                dynamic data = await _codeforcesApiService.GetContestData(contest_id);
+                // dynamic data = await _codeforcesApiService.GetContestData(contest_id);
+                // TODO: work on this: @mieraf
+                dynamic data = null;
 
                 if (data == null)
                     return false;

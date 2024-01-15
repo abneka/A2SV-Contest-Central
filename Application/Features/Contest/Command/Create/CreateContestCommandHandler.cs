@@ -13,9 +13,9 @@ public class CreateContestCommandHandler : IRequestHandler<CreateContestCommand,
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ICodeforcesApiService _codeforcesApiService;
+    private readonly IFetchedDataProcessing _codeforcesApiService;
 
-    public CreateContestCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICodeforcesApiService codeforcesApiService)
+    public CreateContestCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IFetchedDataProcessing codeforcesApiService)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;

@@ -8,21 +8,15 @@ using Newtonsoft.Json;
 
 namespace Infrastructure.ExternalServices
 {
-    public class CodeforcesApiService : ICodeforcesApiService
+    public class CodeforcesApiService
     {
-        private readonly CodeforcesAPISettings _codeforcesAPISettings;
-        private readonly HttpClient _httpClient;
-
-        public CodeforcesApiService(IOptions<CodeforcesAPISettings> codeforcesAPISettings, HttpClient httpClient)
-        {
-            _codeforcesAPISettings = codeforcesAPISettings.Value;
-            _httpClient = httpClient;
-        }
+        public CodeforcesAPISettings codeforcesAPISettings { get; set; } = null!;
+        public HttpClient httpClient { get; set; } = null!;
 
         public async Task<dynamic> GetContestData(string contestId)
         {
-            string apiKey = _codeforcesAPISettings.ApiKey;
-            string apiSecret = _codeforcesAPISettings.ApiSecret;
+            string apiKey = codeforcesAPISettings.ApiKey;
+            string apiSecret = codeforcesAPISettings.ApiSecret;
             string randStr = GenerateRandomString();
             long currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
@@ -30,7 +24,7 @@ namespace Infrastructure.ExternalServices
             string hash = CalculateSHA512(apiSig);
 
             string url = $"https://codeforces.com/api/contest.standings?contestId={contestId}&apiKey={apiKey}&time={currentTime}&apiSig={randStr}{hash}";
-            HttpResponseMessage response = await _httpClient.GetAsync(url);
+            HttpResponseMessage response = await httpClient.GetAsync(url);
 
             string responseData = await response.Content.ReadAsStringAsync();
 
