@@ -47,6 +47,9 @@ namespace Application.Features.CodeforcesApi.Commands
                 //fetch data from codeforces using codeforces api
                 // dynamic data = await _codeforcesApiService.GetContestData(contest_id);
                 // TODO: work on this @Nahom
+                // TODO: check for Team or Individual Contest
+                // TODO: map out Group with Contest using User group
+                // TODO: update UserEntity of Numberofproblemssolved and numberofproblemstaken
                 dynamic data = null;
                 
                 //status and phase
