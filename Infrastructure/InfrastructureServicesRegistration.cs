@@ -20,7 +20,7 @@ public static class InfrastructureServicesRegistration
         
         services.AddScoped<IEmailSender, EmailSender>();
         services.AddSingleton<IConfiguration>(configuration);
-        services.AddScoped<ICodeforcesApiService, CodeforcesApiService>();
+        services.AddScoped<IFetchedDataProcessing, FetchedDataProcessing>();
         services.AddScoped<IFileUpload, FileUploader>();
         services.Configure<CodeforcesAPISettings>(
             configuration.GetSection("CodeforcesAPISettings")

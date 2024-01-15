@@ -9,6 +9,7 @@ public class QuestionEntity : BaseDomainEntity
     public string Name { get; set; } = string.Empty;
     
     public string Index { get; set; } = string.Empty;
+    public int Rating { get; set; }
     
     public Guid ContestId { get; set; }
     

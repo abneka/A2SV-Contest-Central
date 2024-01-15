@@ -9,11 +9,11 @@ namespace Application.Features.CodeforcesApi.Commands
         : AbstractValidator<FetchContestDataFromApiCommand>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ICodeforcesApiService _codeforcesApiService;
+        private readonly IFetchedDataProcessing _codeforcesApiService;
 
         public FetchContestDataFromApiCommandValidator(
             IUnitOfWork unitOfWork,
-            ICodeforcesApiService codeforcesApiService
+            IFetchedDataProcessing codeforcesApiService
         )
         {
             _unitOfWork = unitOfWork;

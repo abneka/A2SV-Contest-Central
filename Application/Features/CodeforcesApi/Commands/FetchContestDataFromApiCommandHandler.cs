@@ -11,12 +11,12 @@ namespace Application.Features.CodeforcesApi.Commands
     public class FetchContestDataFromApiCommandHandler
         : IRequestHandler<FetchContestDataFromApiCommand, bool>
     {
-        private readonly ICodeforcesApiService _codeforcesApiService;
+        private readonly IFetchedDataProcessing _codeforcesApiService;
         private readonly IUnitOfWork _unitOfWork;
 
         public FetchContestDataFromApiCommandHandler(
             IUnitOfWork unitOfWork,
-            ICodeforcesApiService codeforcesApiService
+            IFetchedDataProcessing codeforcesApiService
         )
         {
             _unitOfWork = unitOfWork;
@@ -45,8 +45,10 @@ namespace Application.Features.CodeforcesApi.Commands
                 // string contest_id = "abcd";
 
                 //fetch data from codeforces using codeforces api
-                dynamic data = await _codeforcesApiService.GetContestData(contest_id);
-
+                // dynamic data = await _codeforcesApiService.GetContestData(contest_id);
+                // TODO: work on this @Nahom
+                dynamic data = null;
+                
                 //status and phase
                 if (data.status == "FAILED")
                     return false;
@@ -114,7 +116,9 @@ namespace Application.Features.CodeforcesApi.Commands
                     string userCodeforcesHandle = singleUser.party.members[0].handle.ToString();
                     Guid? userId =
                         await _unitOfWork.UserRepository.GetUserIdByCodeforcesHandle(userCodeforcesHandle);
-                    
+                    Console.WriteLine("user;: ");
+                    Console.WriteLine(userId);
+                    Console.WriteLine(userCodeforcesHandle);
                     // if user doesn't exist in our database, skip this user
                     if (userId == null) continue;
                     
@@ -122,7 +126,7 @@ namespace Application.Features.CodeforcesApi.Commands
                     var userContestResult = new UserContestResultEntity
                     {
                         ContestId = contest_id_guid,
-                        UserId = (Guid)userId,
+                        UserId = Guid.Parse(userId.ToString() ?? string.Empty),
                         Rank = (int)singleUser.rank,
                         Penalty = (int)singleUser.penalty,
                         SuccessfulHackCount = (int)singleUser.successfulHackCount,
@@ -130,7 +134,9 @@ namespace Application.Features.CodeforcesApi.Commands
                     };
                     
                     // create userContestResult
+                    Console.WriteLine("Before userContestResult");
                     await _unitOfWork.UserContestResultRepository.CreateAsync(userContestResult);
+                    Console.WriteLine("AFter userContestResult");
                     
                     var userQuestions = singleUser.problemResults;
                     for (int i=0; i<userQuestions.Count; i++)
@@ -138,29 +144,42 @@ namespace Application.Features.CodeforcesApi.Commands
                         
                         // update question info into database
                         var userQuestion = userQuestions[i];
-                        Guid questionId = contestQuestions[i].Id;
+                        
+                        // get question id from database
+                        Guid? questionId = contestQuestions[i].Id;
+                        
+                        Console.WriteLine(questionId);
+                        Console.WriteLine("After questioID");
+                        Console.WriteLine(userQuestions.Count);
+                        Console.WriteLine(userQuestion.points);
+                        Console.WriteLine(userQuestion.rejectedAttemptCount);
+                        Console.WriteLine("abcd" + userQuestion?.bestSubmissionTimeSeconds);
                         
                         // create new UserQuestionResultEntity and add it to database
                         var userQuestionResult = new UserQuestionResultEntity
                         {
-                            QuestionId = questionId,
-                            UserId = (Guid)userId,
-                            Points = (double)userQuestion.points,
-                            RejectedAttemptCount = (int)userQuestion.rejectedAttemptCount,
-                            BestSubmissionTimeSeconds = userQuestion.bestSubmissionTimeSeconds.ToString(),
-                            CreatedAt = DateTime.Now,
-                            ModifiedAt = DateTime.Now
+                            QuestionId = Guid.Parse(questionId.ToString() ?? string.Empty),
+                            UserId = Guid.Parse(userId.ToString() ?? string.Empty),
+                            Points = userQuestion.points,
+                            RejectedAttemptCount = userQuestion.rejectedAttemptCount,
+                            // bestSubmissionTimeSeconds might not exist
+                            BestSubmissionTimeSeconds = userQuestion.bestSubmissionTimeSeconds?.ToString() ?? "",
+                            // CreatedAt = DateTime.Now,
+                            // ModifiedAt = DateTime.Now,
                         };
                         
                         // create userQuestionResult
+                        Console.WriteLine("Before userquestionresult");
                         await _unitOfWork.UserQuestionResultRepository.CreateAsync(userQuestionResult);
+                        Console.WriteLine("AFter userQuestionResult");
                     }
                 }
+                
                 
                 // get all distinct groups of a contest from its participants
                 var contest = await _unitOfWork.ContestRepository.GetByIdAsync(contest_id_guid);
                 var contestGroups = contest?.UserContestResults.Select(ucr => ucr.User.Group).ToList();
-                
+                Console.WriteLine("cgroup c: " + contestGroups.Count.ToString());
                 // insert the group with contest into ContestGroup table
                 if (contestGroups != null)
                     foreach (var contestGroup in contestGroups)
@@ -172,7 +191,9 @@ namespace Application.Features.CodeforcesApi.Commands
                         };
 
                         // create contestGroup
+                        Console.WriteLine("Before create contestGroup");
                         await _unitOfWork.ContestGroupRepository.CreateAsync(contestGroupEntity);
+                        Console.WriteLine("After create contestGroup");
                     }
 
                 // questions info
@@ -183,7 +204,7 @@ namespace Application.Features.CodeforcesApi.Commands
             catch (Exception ex)
             {
                 Console.WriteLine("An error occurred while fetching data from Codeforces", ex);
-                throw new Exception("An error occurred while fetching data from Codeforces");
+                throw new Exception(ex.Message);
             }
         }
     }
