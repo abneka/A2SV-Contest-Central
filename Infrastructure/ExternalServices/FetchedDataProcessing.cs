@@ -6,7 +6,7 @@ namespace Infrastructure.ExternalServices;
 
 public class FetchedDataProcessing : IFetchedDataProcessing
 {
-    private dynamic response;
+    private dynamic response = null!;
     private readonly CodeforcesApiService codeforcesApi;
 
 
@@ -50,40 +50,78 @@ public class FetchedDataProcessing : IFetchedDataProcessing
         return contestData;
 }
 
-public IReadOnlyList<FetchedQuestion> GetContestQuestions()
-{
-    var questions = response.result?.problems;
-    
-    if (questions == null)
-        throw new Exception("Questions data is null");
-    
-    var contestQuestions = new List<FetchedQuestion>();
-
-    foreach (var question in questions)
+    public IReadOnlyList<FetchedQuestion> GetContestQuestions()
     {
-        var contestQuestion = new FetchedQuestion
-        {
-            Name = question.name ?? string.Empty,
-            Rating = question.rating ?? 0,
-            ContestId = question.contestId ?? string.Empty,
-            Index = question.index ?? string.Empty,
-        };
+        var questions = response.result?.problems;
         
-        contestQuestions.Add(contestQuestion);
+        if (questions == null)
+            throw new Exception("Questions data is null");
+        
+        var contestQuestions = new List<FetchedQuestion>();
+
+        foreach (var question in questions)
+        {
+            var contestQuestion = new FetchedQuestion
+            {
+                Name = question.name ?? string.Empty,
+                Rating = question.rating ?? 0,
+                ContestId = question.contestId ?? string.Empty,
+                Index = question.index ?? string.Empty,
+            };
+            
+            contestQuestions.Add(contestQuestion);
+        }
+
+        return contestQuestions;
     }
 
-    return contestQuestions;
-}
+    public IReadOnlyList<FetchedUserContestResult> GetUserContestResults()
+    {
+        List<FetchedUserContestResult> fetchedUserContestResults = new List<FetchedUserContestResult>();
 
-public async Task<IReadOnlyList<FetchedUserContestResult>> GetUserContestResults()
-{
-    throw new NotImplementedException();
-}
+        foreach (var row in response.rows)
+        {
+            FetchedUserContestResult userContestResult = new FetchedUserContestResult
+            {
+                ContestId = row.party.contestId,
+                Rank = row.rank,
+                Points = (float)row.points,
+                Penalty = row.penalty,
+                SuccessfulHackCount = row.successfulHackCount,
+                UnsuccessfulHackCount = row.unsuccessfulHackCount,
+                TeamName = row.party.teamName ?? string.Empty,
+                TeamId = row.party.teamId ?? string.Empty
+            };
 
+            
+            foreach(var member in row.party.members){
+                userContestResult.Handles.Add(member);
+            }
 
-async Task IFetchedDataProcessing.FetchContestData(string contestId)
-{
-    throw new NotImplementedException();
-}
+            foreach (var problemResult in row.problemResults)
+            {
+                int index = row.ProblemResults.IndexOf(problemResult);
+                string charIndex = ((char)('A' + index)).ToString();
 
+                FetchedUserQuestionResult questionResult = new FetchedUserQuestionResult
+                {
+                    Index = charIndex,
+                    Points = problemResult.points,
+                    RejectedAttemptCount = problemResult.rejectedAttemptCount,
+                    BestSubmissionTimeSeconds = problemResult.bestSubmissionTimeSeconds
+                };
+
+                userContestResult.QuestionResults.Add(questionResult);
+            }
+
+            fetchedUserContestResults.Add(userContestResult);
+        }
+
+        return fetchedUserContestResults;
+    }
+
+    Task IFetchedDataProcessing.FetchContestData(string contestId)
+    {
+        throw new NotImplementedException();
+    }
 }

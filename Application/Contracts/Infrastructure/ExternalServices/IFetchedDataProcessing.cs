@@ -8,7 +8,7 @@ namespace Application.Contracts.Infrastructure.ExternalServices
         public FetchedContest GetContestData();
         public IReadOnlyList<FetchedQuestion> GetContestQuestions();
         
-        public Task<IReadOnlyList<FetchedUserContestResult>> GetUserContestResults();
+        public IReadOnlyList<FetchedUserContestResult> GetUserContestResults();
         
     }
 }

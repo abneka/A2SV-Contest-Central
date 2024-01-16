@@ -10,11 +10,11 @@ public class FetchedUserContestResult
     // Contest Result
     public int ContestId { get; set; }
     public int Rank { get; set; }
-    public int Points { get; set; }
+    public float Points { get; set; }
     public int Penalty { get; set; }
     public int SuccessfulHackCount { get; set; }
     public int UnsuccessfulHackCount { get; set; }
     
     // Question Results
-    List<FetchedUserQuestionResult> QuestionResults { get; set; } = new List<FetchedUserQuestionResult>();
+    public List<FetchedUserQuestionResult> QuestionResults { get; set; } = new List<FetchedUserQuestionResult>();
 }
