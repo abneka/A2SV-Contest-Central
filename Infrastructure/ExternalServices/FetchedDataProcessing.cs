@@ -77,7 +77,51 @@ public class FetchedDataProcessing : IFetchedDataProcessing
 
     public IReadOnlyList<FetchedUserContestResult> GetUserContestResults()
     {
-        throw new NotImplementedException();
+        List<FetchedUserContestResult> fetchedUserContestResults = new List<FetchedUserContestResult>();
+
+        foreach (var row in response.rows)
+        {
+            FetchedUserContestResult userContestResult = new FetchedUserContestResult
+            {
+                ContestId = row.party.contestId,
+                Rank = row.rank,
+                Points = (float)row.points,
+                Penalty = row.penalty,
+                SuccessfulHackCount = row.successfulHackCount,
+                UnsuccessfulHackCount = row.unsuccessfulHackCount,
+                TeamName = row.party.teamName ?? string.Empty,
+                TeamId = row.party.teamId ?? string.Empty
+            };
+
+            
+            foreach(var member in row.party.members){
+                userContestResult.Handles.Add(member);
+            }
+
+            foreach (var problemResult in row.problemResults)
+            {
+                int index = row.ProblemResults.IndexOf(problemResult);
+                string charIndex = ((char)('A' + index)).ToString();
+
+                FetchedUserQuestionResult questionResult = new FetchedUserQuestionResult
+                {
+                    Index = charIndex,
+                    Points = problemResult.points,
+                    RejectedAttemptCount = problemResult.rejectedAttemptCount,
+                    BestSubmissionTimeSeconds = problemResult.bestSubmissionTimeSeconds
+                };
+
+                userContestResult.QuestionResults.Add(questionResult);
+            }
+
+            fetchedUserContestResults.Add(userContestResult);
+        }
+
+        return fetchedUserContestResults;
     }
 
+    Task IFetchedDataProcessing.FetchContestData(string contestId)
+    {
+        throw new NotImplementedException();
+    }
 }
