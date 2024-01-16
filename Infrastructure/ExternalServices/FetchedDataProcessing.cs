@@ -6,7 +6,7 @@ namespace Infrastructure.ExternalServices;
 
 public class FetchedDataProcessing : IFetchedDataProcessing
 {
-    private dynamic response;
+    private dynamic response = null!;
     private readonly CodeforcesApiService codeforcesApi;
 
 
