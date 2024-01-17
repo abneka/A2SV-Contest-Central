@@ -9,6 +9,8 @@ namespace Application.Contracts.Infrastructure.ExternalServices
         public IReadOnlyList<FetchedQuestion> GetContestQuestions();
         
         public IReadOnlyList<FetchedUserContestResult> GetUserContestResults();
+        public Task<bool> IsHandleValid(string handle);
+        public bool IsContestValid(string contest_id);
         
     }
 }

@@ -4,8 +4,8 @@ using Application.Features.Auth.ForgetPassword;
 using Application.Features.Auth.LogIn;
 using Application.Features.Auth.ResetPassword;
 using Application.Features.User.Commands.CreateUser;
+using Application.Models.Authentication;
 using MediatR;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -35,7 +35,7 @@ public class AuthController : ControllerBase
     }
     
     [HttpPost("login")]
-    public async Task<ActionResult<AuthResponse>> Login(AuthRequest authRequest)
+    public async Task<ActionResult<LoginResponse>> Login(AuthRequest authRequest)
     {
         var response = await _mediator.Send(new LoginUserCommand
         {

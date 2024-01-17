@@ -1,19 +1,16 @@
-using System.Net.Http.Json;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using Application.Contracts.Infrastructure.ExternalServices;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace Infrastructure.ExternalServices
 {
-    public class CodeforcesApiService
+    public static class CodeforcesApiService
     {
-        public CodeforcesAPISettings codeforcesAPISettings { get; set; } = null!;
-        public HttpClient httpClient { get; set; } = null!;
+        public static CodeforcesAPISettings codeforcesAPISettings { get; set; } = null!;
+        public static HttpClient httpClient { get; set; } = null!;
 
-        public async Task<dynamic> GetContestData(string contestId)
+        public static async Task<dynamic> GetContestData(string contestId)
         {
             string apiKey = codeforcesAPISettings.ApiKey;
             string apiSecret = codeforcesAPISettings.ApiSecret;
@@ -55,5 +52,28 @@ namespace Infrastructure.ExternalServices
             }
         }
 
+        public static async Task<bool> IsHandleValid(string handle)
+        {
+            HttpClient client = new HttpClient();
+            string url = $"https://codeforces.com/api/user.info?handles={handle}";
+            HttpResponseMessage response = await client.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string result = await response.Content.ReadAsStringAsync();
+                dynamic userInfo = JsonConvert.DeserializeObject<dynamic>(result)!;
+                
+                // Return true if the status is OK, otherwise return false
+                return userInfo.status == "OK";
+            }
+            else
+            {
+                throw new Exception($"Error: {response.StatusCode}");
+            }
+        }
+
+
     }
 }
+
+

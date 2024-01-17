@@ -32,7 +32,7 @@ public class CsvFileController : ControllerBase
             var result = await _mediator.Send(command);
 
             // Check if there are invalid users and return the CSV content
-            if (result != null)
+            if (result.Count != 0)
             {
                 var invalidUsersCsv = ConvertInvalidUsersToCsv(result);
                 return File(Encoding.UTF8.GetBytes(invalidUsersCsv), "text/csv", "InvalidUsers.csv");

@@ -1,11 +1,7 @@
-﻿using System.Security.Claims;
-using Application.DTOs.Auth;
-using Application.DTOs.Common;
+﻿using Application.DTOs.Auth;
 using Application.DTOs.User;
 using Application.Features.User.Commands.AddCoverPicture;
 using Application.Features.User.Commands.AddProfilePicture;
-using Application.Features.User.Commands.AddUserUsingCsvFile;
-using Application.Features.User.Commands.CreateUser;
 using Application.Features.User.Commands.DeleteUser;
 using Application.Features.User.Commands.UpdateUser;
 using Application.Features.User.Commands.UpdateUserPassword;
@@ -13,18 +9,15 @@ using Application.Features.User.Commands.VerifyUser;
 using Application.Features.User.Queries.GetAllUsers;
 using Application.Features.User.Queries.GetSingleUser;
 using Application.Features.User.Queries.GetUsersByFiltration;
-// using Application.Features.User.Queries.Login;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Service;
 
-// using System.Web;
 
 namespace WebApi.Controllers
 {
+    // [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/[controller]")]
     public class UsersController : ControllerBase

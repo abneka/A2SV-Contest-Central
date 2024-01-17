@@ -9,12 +9,12 @@ namespace Application.Features.Contest.Commands.CreateContest;
 public class CreateContestCommandValidator : AbstractValidator<ContestInfoRequestDto>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private IFetchedDataProcessing _codeforcesApiService;
+    private IFetchedDataProcessing _fetchedDataProcessing;
 
-    public CreateContestCommandValidator(IUnitOfWork unitOfWork,IFetchedDataProcessing codeforcesApiService)
+    public CreateContestCommandValidator(IUnitOfWork unitOfWork, IFetchedDataProcessing fetchedDataProcessing)
     {
         _unitOfWork = unitOfWork;
-        _codeforcesApiService = codeforcesApiService;
+        _fetchedDataProcessing = fetchedDataProcessing;
 
         RuleFor(dto => dto.ContestName)
             .NotEmpty()
@@ -85,31 +85,12 @@ public class CreateContestCommandValidator : AbstractValidator<ContestInfoReques
     }
 
     private async Task<bool> IsContestCreatedOnCodeforcesAsync(string url, CancellationToken cancellationToken)
-        {
-            try
-            {
-                //parse id from contest url
-                string contest_id = ParseIdFromUrl(url);
+    {
+        
+        //parse id from contest url
+        string contest_id = ParseIdFromUrl(url);
 
-                //fetch data from codeforces using codeforces api
-                // dynamic data = await _codeforcesApiService.GetContestData(contest_id);
-                // TODO: work on this: @mieraf
-                dynamic data = null;
-
-                if (data == null)
-                    return false;
-
-                if (data.status == "FAILED")
-                {
-                    if (data.comment == $"contestId: Contest with id {contest_id} not found")
-                        return false;
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred while fetching data from Codeforces", ex);
-                throw new Exception("An error occurred while fetching data from Codeforces");
-            }
-        }
+        await _fetchedDataProcessing.FetchContestData(contest_id);
+        return _fetchedDataProcessing.IsContestValid(contest_id);
+    }
 }

@@ -25,4 +25,15 @@ public class UserTypeRepository : GenericRepository<UserTypeEntity>, IUserTypeRe
         }
         return Guid.Empty;
     }
+
+    public async Task<string> GetUserTypeNameById(Guid user_type_id)
+    {
+        var role = await _dbContext.UserTypeEntity.FindAsync(user_type_id);
+
+        if (role != null)
+        {
+            return role.Name;
+        }
+        return string.Empty;
+    }
 }

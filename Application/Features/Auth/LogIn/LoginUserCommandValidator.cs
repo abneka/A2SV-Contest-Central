@@ -5,17 +5,17 @@ namespace Application.Features.Auth.LogIn;
 
 public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
 {
-    public LoginUserCommandValidator(IUserRepository userRepository)
+    public LoginUserCommandValidator(IUnitOfWork unitOfWork)
     {
         RuleFor(p => p.AuthRequest.Email)
             .NotEmpty().WithMessage("Email is required.")
-            .EmailAddress().WithMessage("Email is not valid.")
+            .EmailAddress().WithMessage("Invalid email address.")
             .MustAsync(async (email, token) =>
             {
-                var userExists = await userRepository.GetUserByEmail(email);
+                var userExists = await unitOfWork.UserRepository.GetUserByEmail(email);
                 return userExists != null;
             })
-            .WithMessage("No user found with this email.");
+            .WithMessage("Invalid email or password");
 
         RuleFor(p => p.AuthRequest.Password)
             .NotEmpty().WithMessage("{PropertyName} is required.")
