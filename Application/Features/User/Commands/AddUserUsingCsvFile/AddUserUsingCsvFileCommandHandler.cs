@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Net.Mail;
+using Application.Contracts.Infrastructure.ExternalServices;
 using Application.Contracts.Persistence;
 using Application.DTOs.User;
 using CsvHelper;
@@ -11,9 +12,11 @@ namespace Application.Features.User.Commands.AddUserUsingCsvFile
     public class AddUserUsingCsvFileCommandHandler : IRequestHandler<AddUserUsingCsvFileCommand, IReadOnlyList<InvalidUserRecord>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public AddUserUsingCsvFileCommandHandler(IUnitOfWork unitOfWork)
+        private readonly IFetchedDataProcessing _fetchedDataProcessing;
+        public AddUserUsingCsvFileCommandHandler(IUnitOfWork unitOfWork, IFetchedDataProcessing fetchedDataProcessing)
         {
             _unitOfWork = unitOfWork;   
+            _fetchedDataProcessing = fetchedDataProcessing;
         }
         public async Task<IReadOnlyList<InvalidUserRecord>> Handle(AddUserUsingCsvFileCommand command, CancellationToken cancellationToken)
         {
@@ -26,14 +29,16 @@ namespace Application.Features.User.Commands.AddUserUsingCsvFile
 
             using var streamReader = new StreamReader(command.UserFile.OpenReadStream());
             using var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
+
             // Ensure the stream is at the beginning
             csvReader.Read();
+
             // Get the actual header fields from the CSV file
             csvReader.ReadHeader();
             var actualFields = csvReader.HeaderRecord;
 
             // Check if all expected fields are present in the actual header fields
-            if (!expectedFields.All(field => actualFields.Contains(field)))
+            if (actualFields == null || !expectedFields.All(field => actualFields.Contains(field)))
             {
                 throw new Exception("CSV file is missing or contains incorrect header fields.");
             }
@@ -57,13 +62,16 @@ namespace Application.Features.User.Commands.AddUserUsingCsvFile
                 if (string.IsNullOrWhiteSpace(firstName) ||
                     string.IsNullOrWhiteSpace(lastName) ||
                     string.IsNullOrWhiteSpace(codeforcesHandle) ||
+                    await _fetchedDataProcessing.IsHandleValid(codeforcesHandle) ||
                     string.IsNullOrWhiteSpace(phone) ||
                     string.IsNullOrWhiteSpace(gender) ||
                     string.IsNullOrWhiteSpace(password) ||
                     string.IsNullOrWhiteSpace(role) ||
                     string.IsNullOrWhiteSpace(group) ||
-                    (string.IsNullOrWhiteSpace(email) || !await IsValidEmailAsync(email)) ||
-                    (string.IsNullOrWhiteSpace(username) || !await IsValidUsernameAsync(username)))
+                    string.IsNullOrWhiteSpace(email) || 
+                    !await IsValidEmailAsync(email) ||
+                    string.IsNullOrWhiteSpace(username) || 
+                    !await IsValidUsernameAsync(username))
                 {
                     // If any required field is missing or invalid, add the user to the invalid users list
                     var invalidUserRecord = new InvalidUserRecord

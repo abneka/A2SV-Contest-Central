@@ -2,7 +2,6 @@
 using Application.DTOs.User;
 using AutoMapper;
 using MediatR;
-using System.Collections.Generic;
 
 namespace Application.Features.User.Queries.GetAllUsers;
 
@@ -10,7 +9,6 @@ public class GetAllUserRequestHandler : IRequestHandler<GetAllUsersRequest, List
 {
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
-
     public GetAllUserRequestHandler(IUserRepository userRepository, IMapper mapper)
     {
         _userRepository = userRepository;

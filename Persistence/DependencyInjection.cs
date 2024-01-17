@@ -5,10 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Repositories.Common;
 using Persistence.Repositories;
-using Application.Contracts.Persistence.Auth;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Persistence.Repositories.Auth;
 
 namespace Persistence
 {
@@ -28,7 +26,6 @@ namespace Persistence
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IContestRepository, ContestRepository>();
-            services.AddScoped<IAuth, AuthRepository>();
             services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddScoped<ITeamRepository, TeamRepository>();
             services.AddScoped<ITeamQuestionResultRepository, TeamQuestionResultRepository>();

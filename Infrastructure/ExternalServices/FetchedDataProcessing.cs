@@ -7,21 +7,22 @@ namespace Infrastructure.ExternalServices;
 public class FetchedDataProcessing : IFetchedDataProcessing
 {
     private dynamic response = null!;
-    private readonly CodeforcesApiService codeforcesApi;
-
 
     public FetchedDataProcessing(IOptions<CodeforcesAPISettings> codeforcesAPISettings, HttpClient httpClient)
     {
-        codeforcesApi = new CodeforcesApiService
-        {
-            codeforcesAPISettings = codeforcesAPISettings.Value,
-            httpClient = httpClient
-        };
+
+        CodeforcesApiService.codeforcesAPISettings = codeforcesAPISettings.Value;
+        CodeforcesApiService.httpClient = httpClient;
+        
     }
 
-    public async void FetchContestData(string contest_id)
+    public async Task<bool> IsHandleValid(string handle){
+        return await CodeforcesApiService.IsHandleValid(handle);
+    }
+
+    public async Task FetchContestData(string contest_id)
     {
-        response = await codeforcesApi.GetContestData(contest_id);
+        response = await CodeforcesApiService.GetContestData(contest_id);
     }
 
     public FetchedContest GetContestData()
@@ -120,8 +121,16 @@ public class FetchedDataProcessing : IFetchedDataProcessing
         return fetchedUserContestResults;
     }
 
-    Task IFetchedDataProcessing.FetchContestData(string contestId)
+    public bool IsContestValid(string contest_id)
     {
-        throw new NotImplementedException();
+        if (response == null)
+            return false;
+
+        if (response.status == "FAILED")
+        {
+            if (response.comment == $"contestId: Contest with id {contest_id} not found")
+                return false;
+        }
+        return true;
     }
 }

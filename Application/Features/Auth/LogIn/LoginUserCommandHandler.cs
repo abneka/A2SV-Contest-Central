@@ -1,26 +1,26 @@
-﻿using Application.Contracts.Persistence;
-using Application.Contracts.Persistence.Auth;
-using Application.DTOs.Auth;
-using Application.DTOs.User;
+﻿using Application.Contracts.Infrastructure;
+using Application.Contracts.Persistence;
+using Application.Exceptions;
+using Application.Models.Authentication;
 using FluentValidation;
 using MediatR;
 
 namespace Application.Features.Auth.LogIn;
 
-public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthResponse>
+public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginResponse>
 {
-    private readonly IAuth _auth;
-    private readonly IUserRepository _userRepository;
+    private readonly IAuthenticationService _authService;
+    private readonly IUnitOfWork _unitOfWork;
     
-    public LoginUserCommandHandler(IAuth auth, IUserRepository userRepository)
+    public LoginUserCommandHandler(IAuthenticationService authService, IUnitOfWork unitOfWork)
     {
-        _auth = auth;
-        _userRepository = userRepository;
+        _authService = authService;
+        _unitOfWork = unitOfWork;
     }
     
-    public async Task<AuthResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public async Task<LoginResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
-        var validator = new LoginUserCommandValidator(_userRepository);
+        var validator = new LoginUserCommandValidator(_unitOfWork);
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         
         if (!validationResult.IsValid)
@@ -28,7 +28,27 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthRes
             throw new ValidationException(validationResult.Errors);
         }
         
-        var user = await _auth.Login(request.AuthRequest);
-        return user;
+        var user = await _unitOfWork.UserRepository.GetUserByEmail(request.AuthRequest.Email);
+        if(user == null){
+            throw new NotFoundException("Invalid email or password", request.AuthRequest.Email);
+        }
+
+        var role = await _unitOfWork.UserTypeRepository.GetByIdAsync(user.UserTypeId);
+
+        var login_request = new LoginRequest{
+            Email = request.AuthRequest.Email,
+            LoginPassword = request.AuthRequest.Password,
+            UserName = user.UserName,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Id = user.Id,
+            OriginalPassword = user.Password,
+            Role = role?.Name ?? string.Empty,
+            Priority = role?.Priority ?? 0
+        };
+
+        var res = _authService.Login(login_request);
+        return res;
     }
+
 }

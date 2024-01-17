@@ -13,13 +13,13 @@ public class CreateContestCommandHandler : IRequestHandler<CreateContestCommand,
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IFetchedDataProcessing _codeforcesApiService;
+    private readonly IFetchedDataProcessing _fetchedDataProcessing;
 
-    public CreateContestCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IFetchedDataProcessing codeforcesApiService)
+    public CreateContestCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IFetchedDataProcessing fetchedDataProcessing)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
-        _codeforcesApiService = codeforcesApiService;
+        _fetchedDataProcessing = fetchedDataProcessing;
     }
 
     public async Task<ContestResponseDto> Handle(
@@ -27,7 +27,7 @@ public class CreateContestCommandHandler : IRequestHandler<CreateContestCommand,
         CancellationToken cancellationToken
     )
     {
-        var validator = new CreateContestCommandValidator(_unitOfWork,_codeforcesApiService);
+        var validator = new CreateContestCommandValidator(_unitOfWork, _fetchedDataProcessing);
         var validationResult = await validator.ValidateAsync(command.NewContest, cancellationToken);
         if (!validationResult.IsValid)
         {
